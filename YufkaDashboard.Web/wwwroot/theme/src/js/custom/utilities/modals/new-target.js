@@ -29,8 +29,8 @@ var KTModalNewTarget = function () {
 		// Due date. For more info, please visit the official plugin site: https://flatpickr.js.org/
 		var dueDate = $(form.querySelector('[name="due_date"]'));
 		dueDate.flatpickr({
-			enableTime: true,
-			dateFormat: "d, M Y, H:i",
+			enableTime: false,
+			dateFormat: "d, M Y",
 		});
 
 		// Team assign. For more info, plase visit the official plugin site: https://select2.org/
@@ -52,28 +52,28 @@ var KTModalNewTarget = function () {
 					target_title: {
 						validators: {
 							notEmpty: {
-								message: 'Target title is required'
+								message: 'Bu alan zorunludur'
 							}
 						}
 					},
 					target_assign: {
 						validators: {
 							notEmpty: {
-								message: 'Target assign is required'
+								message: 'Bu alan zorunludur'
 							}
 						}
 					},
 					target_due_date: {
 						validators: {
 							notEmpty: {
-								message: 'Target due date is required'
+								message: 'Bu alan zorunludur'
 							}
 						}
 					},
 					target_tags: {
 						validators: {
 							notEmpty: {
-								message: 'Target tags are required'
+								message: 'Bu alan zorunludur'
 							}
 						}
 					},
@@ -95,6 +95,7 @@ var KTModalNewTarget = function () {
 				}
 			}
 		);
+
 
 		// Action buttons
 		submitButton.addEventListener('click', function (e) {
@@ -137,10 +138,10 @@ var KTModalNewTarget = function () {
 					} else {
 						// Show error message.
 						Swal.fire({
-							text: "Sorry, looks like there are some errors detected, please try again.",
+							text: "Zorunlu alanlar\u0131 doldurun ve l\u00fctfen tekrar deneyin",
 							icon: "error",
 							buttonsStyling: false,
-							confirmButtonText: "Ok, got it!",
+							confirmButtonText: "Tamam",
 							customClass: {
 								confirmButton: "btn btn-primary"
 							}
@@ -152,34 +153,36 @@ var KTModalNewTarget = function () {
 
 		cancelButton.addEventListener('click', function (e) {
 			e.preventDefault();
-
-			Swal.fire({
-				text: "Are you sure you would like to cancel?",
-				icon: "warning",
-				showCancelButton: true,
-				buttonsStyling: false,
-				confirmButtonText: "Yes, cancel it!",
-				cancelButtonText: "No, return",
-				customClass: {
-					confirmButton: "btn btn-primary",
-					cancelButton: "btn btn-active-light"
-				}
-			}).then(function (result) {
-				if (result.value) {
-					form.reset(); // Reset form	
-					modal.hide(); // Hide modal				
-				} else if (result.dismiss === 'cancel') {
-					Swal.fire({
-						text: "Your form has not been cancelled!.",
-						icon: "error",
-						buttonsStyling: false,
-						confirmButtonText: "Ok, got it!",
-						customClass: {
-							confirmButton: "btn btn-primary",
-						}
-					});
-				}
-			});
+			form.reset();
+			modal.hide();
+			validator.resetForm(true);
+			//Swal.fire({
+			//	text: "Are you sure you would like to cancel?",
+			//	icon: "warning",
+			//	showCancelButton: true,
+			//	buttonsStyling: false,
+			//	confirmButtonText: "Yes, cancel it!",
+			//	cancelButtonText: "No, return",
+			//	customClass: {
+			//		confirmButton: "btn btn-primary",
+			//		cancelButton: "btn btn-active-light"
+			//	}
+			//}).then(function (result) {
+			//	if (result.value) {
+			//		form.reset(); // Reset form	
+			//		modal.hide(); // Hide modal				
+			//	} else if (result.dismiss === 'cancel') {
+			//		Swal.fire({
+			//			text: "Your form has not been cancelled!.",
+			//			icon: "error",
+			//			buttonsStyling: false,
+			//			confirmButtonText: "Ok, got it!",
+			//			customClass: {
+			//				confirmButton: "btn btn-primary",
+			//			}
+			//		});
+			//	}
+			//});
 		});
 	}
 
