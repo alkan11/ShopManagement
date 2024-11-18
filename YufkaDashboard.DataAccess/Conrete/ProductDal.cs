@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Shared.Context;
-using Shared.Models;
+using Shared.Models.Products;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,7 +11,7 @@ using YufkaDashboard.DataAccess.Abstract;
 
 namespace YufkaDashboard.DataAccess.Conrete
 {
-	public class ProductDal : IProductDal
+    public class ProductDal : IProductDal
 	{
 		private readonly Context _context;
 
@@ -20,15 +20,15 @@ namespace YufkaDashboard.DataAccess.Conrete
 			_context = context;
 		}
 
-		public async Task<Products> AddProduct(Products model)
+		public async Task<AddProduct> AddProduct(AddProduct model)
 		{
 			using (var dbConnection = _context.CreateConnection())
 			{
 				string procedure = "AddProduct";
-				var parameters = new { parameters = model };
-				var result = await dbConnection.ExecuteScalarAsync<Products>(procedure, parameters, commandType: CommandType.StoredProcedure);
+				var parameters = new { Name= model.Name, Type=model.Type, UnitPrice = model.UnitPrice,Status=model.Status};
+				var result = await dbConnection.ExecuteScalarAsync<AddProduct>(procedure, parameters, commandType: CommandType.StoredProcedure);
 				return result;
-				//business kodunda kaldın
+				//target.js newtarget kontrol edicez ve devam edicez
 			}
 		}
 

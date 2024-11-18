@@ -27,7 +27,7 @@ var KTModalNewTarget = function () {
 		});
 
 		// Due date. For more info, please visit the official plugin site: https://flatpickr.js.org/
-		var dueDate = $(form.querySelector('[name="due_date"]'));
+		var dueDate = $(form.querySelector('[name="CreatedDate"]'));
 		dueDate.flatpickr({
 			enableTime: false,
 			dateFormat: "d, M Y",
@@ -63,7 +63,7 @@ var KTModalNewTarget = function () {
 							}
 						}
 					},
-					target_due_date: {
+					target_dueDate: {
 						validators: {
 							notEmpty: {
 								message: 'Bu alan zorunludur'
@@ -119,22 +119,22 @@ var KTModalNewTarget = function () {
 							submitButton.disabled = false;
 							
 							// Show success message. For more info check the plugin's official documentation: https://sweetalert2.github.io/
-							Swal.fire({
-								text: "Form has been successfully submitted!",
-								icon: "success",
-								buttonsStyling: false,
-								confirmButtonText: "Ok, got it!",
-								customClass: {
-									confirmButton: "btn btn-primary"
-								}
-							}).then(function (result) {
-								if (result.isConfirmed) {
-									modal.hide();
-								}
-							});
+							//Swal.fire({
+							//	text: "Form has been successfully submitted!",
+							//	icon: "success",
+							//	buttonsStyling: false,
+							//	confirmButtonText: "Ok, got it!",
+							//	customClass: {
+							//		confirmButton: "btn btn-primary"
+							//	}
+							//}).then(function (result) {
+							//	if (result.isConfirmed) {
+							//		modal.hide();
+							//	}
+							//});
 
-							//form.submit(); // Submit form
-						}, 2000);   						
+							form.submit(); // Submit form
+						}, 1000);   						
 					} else {
 						// Show error message.
 						Swal.fire({

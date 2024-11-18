@@ -27,7 +27,7 @@ var KTModalCreateProjectTargets = function () {
 		});
 
 		// Due date. For more info, please visit the official plugin site: https://flatpickr.js.org/
-		var dueDate = $(form.querySelector('[name="target_due_date"]'));
+		var dueDate = $(form.querySelector('[name="target_dueDate"]'));
 		dueDate.flatpickr({
 			enableTime: true,
 			dateFormat: "d, M Y, H:i",
@@ -60,7 +60,7 @@ var KTModalCreateProjectTargets = function () {
 							}
 						}
 					},
-					'target_due_date': {
+					'target_dueDate': {
 						validators: {
 							notEmpty: {
 								message: 'Due date is required'
