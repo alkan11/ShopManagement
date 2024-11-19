@@ -10,6 +10,7 @@ namespace YufkaDashboard.DataAccess.Abstract
     public interface IProductDal
 	{
 		Task<AddProduct> AddProduct(AddProduct model);
+		Task<List<Products>> GetAllProducts();
 		Task<Products> UpdateProduct(Products model);
 		Task Delete(int id);
 	}

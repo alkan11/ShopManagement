@@ -13,8 +13,18 @@ namespace YufkaDashboard.Web.Controllers
 			_productBusiness = productBusiness;
 		}
 
-		public IActionResult ProductList()
+		public async Task<IActionResult> ProductList()
 		{
+			var result = await _productBusiness.GetAllProducts();
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					TempData["error"] = result.Message;
+					return View();
+				}
+				ViewBag.Data = result.Data;
+			}
 			return View();
 		}
 		[HttpGet]

@@ -39,5 +39,22 @@ namespace YufkaDashboard.Business.Concrete
 		{
 			throw new NotImplementedException();
 		}
+
+		public async Task<Response<List<Products>>> GetAllProducts()
+		{
+			try
+			{
+				var result = await _productDal.GetAllProducts();
+
+				return Response<List<Products>>.Success(result,StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<List<Products>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+			
+
+		}
 	}
 }
