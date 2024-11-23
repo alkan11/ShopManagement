@@ -27,9 +27,8 @@ namespace YufkaDashboard.DataAccess.Conrete
 			{
 				string procedure = "AddProduct";
 				var parameters = new { Name= model.Name, Type=model.Type, UnitPrice = model.UnitPrice,Status=model.Status,CreatedDate=model.CreatedDate,Description=model.Description};
-				var result = await dbConnection.ExecuteScalarAsync<AddProduct>(procedure, parameters, commandType: CommandType.StoredProcedure);
+				var result = await dbConnection.QueryFirstOrDefaultAsync<AddProduct>(procedure, parameters, commandType: CommandType.StoredProcedure);
 				return result;
-				//target.js newtarget kontrol edicez ve devam edicez
 			}
 		}
 

@@ -22,6 +22,8 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddScoped<IProductBusiness,ProductBusiness>();
 builder.Services.AddScoped<IProductDal, ProductDal>();
+builder.Services.AddScoped<ISystemBusiness, SystemBusiness>();
+builder.Services.AddScoped<ISystemDal, SystemDal>();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<Context>();
 var app = builder.Build();
@@ -43,6 +45,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Product}/{action=ProductList}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

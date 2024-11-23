@@ -13,6 +13,10 @@ namespace YufkaDashboard.Web.Controllers
 			_productBusiness = productBusiness;
 		}
 
+		public  async Task<IActionResult> Index()
+		{
+			return View();
+		}
 		public async Task<IActionResult> ProductList()
 		{
 			var result = await _productBusiness.GetAllProducts();
@@ -27,11 +31,7 @@ namespace YufkaDashboard.Web.Controllers
 			}
 			return View();
 		}
-		[HttpGet]
-		public async Task<IActionResult> AddProduct()
-		{
-			return View();
-		}
+
 		[HttpPost]
 		public async Task<IActionResult> AddProduct(AddProduct model)
 		{

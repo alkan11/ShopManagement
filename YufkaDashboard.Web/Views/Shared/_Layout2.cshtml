@@ -25,7 +25,7 @@ License: For each use you must have a valid license purchased only from above li
 	<meta property="og:url" content="https://keenthemes.com/metronic" />
 	<meta property="og:site_name" content="Keenthemes | Metronic" />
 	<link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-	<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+	<link rel="shortcut icon" href="~/theme/demo7/dist/assets/media/logos/favicon.ico" />
 	<!--begin::Fonts-->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 	<!--end::Fonts-->
@@ -42,7 +42,7 @@ License: For each use you must have a valid license purchased only from above li
 <!--begin::Body-->
 <body data-kt-name="metronic" id="kt_body" style="background-image: url()" class="header-fixed header-tablet-and-mobile-fixed aside-fixed aside-secondary-disable">
 	<!--begin::Theme mode setup on page load-->
-	<script>if (document.documentElement) { const defaultThemeMode = "light"; const name = document.body.getAttribute("data-kt-name"); let themeMode = localStorage.getItem("kt_" + (name !== null ? name + "_" : "") + "theme_mode_value"); console.log(themeMode) if (themeMode === null) { if (defaultThemeMode === "light") { themeMode = window.matchMedia("(prefers-color-scheme: light)").matches ? "dark" : "light"; } else { themeMode = defaultThemeMode; } } document.documentElement.setAttribute("data-theme", themeMode); }</script>
+	<script>if (document.documentElement) { const defaultThemeMode = "light"; const name = document.body.getAttribute("data-kt-name"); let themeMode = localStorage.getItem("kt_" + (name !== null ? name + "_" : "") + "theme_mode_value"); if (themeMode === null) { if (defaultThemeMode === "light") { themeMode = window.matchMedia("(prefers-color-scheme: light)").matches ? "dark" : "light"; } else { themeMode = defaultThemeMode; } } document.documentElement.setAttribute("data-theme", themeMode); }</script>
 	<!--end::Theme mode setup on page load-->
 	<!--begin::Main-->
 	<!--begin::Root-->
@@ -83,8 +83,8 @@ License: For each use you must have a valid license purchased only from above li
 				</div>
 				<!--end::Aside mobile toggle-->
 				<!--begin::Logo-->
-				<a href="../../demo7/dist/index.html" class="d-flex align-items-center">
-					<img alt="Logo" src="assets/media/logos/demo7.svg" class="h-30px" />
+				<a href="#" class="d-flex align-items-center">
+					<img alt="Logo" src="#" class="h-30px" />
 				</a>
 				<!--end::Logo-->
 			</div>
@@ -231,32 +231,6 @@ License: For each use you must have a valid license purchased only from above li
 		<!--end::Container-->
 	</div>
 				@RenderBody()
-				<div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
-		<!--begin::Container-->
-		<div class="container-xxl d-flex flex-column flex-md-row flex-stack">
-			<!--begin::Copyright-->
-			<div class="text-dark order-2 order-md-1">
-				<span class="text-gray-400 fw-semibold me-1">Created by</span>
-				<a href="https://keenthemes.com" target="_blank" class="text-muted text-hover-primary fw-semibold me-2 fs-6">Keenthemes</a>
-			</div>
-			<!--end::Copyright-->
-			<!--begin::Menu-->
-			<ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-				<li class="menu-item">
-					<a href="https://keenthemes.com" target="_blank" class="menu-link px-2">About</a>
-				</li>
-				<li class="menu-item">
-					<a href="https://devs.keenthemes.com" target="_blank" class="menu-link px-2">Support</a>
-				</li>
-				<li class="menu-item">
-					<a href="https://1.envato.market/EA4JP" target="_blank" class="menu-link px-2">Purchase</a>
-				</li>
-			</ul>
-			<!--end::Menu-->
-		</div>
-		<!--end::Container-->
-	</div>
-				<!--end::Footer-->
 			</div>
 			<!--end::Wrapper-->
 			
@@ -274,7 +248,7 @@ License: For each use you must have a valid license purchased only from above li
 		<!--end::Svg Icon-->
 	</div>
 	<div class="page-loader flex-column">
-		<img alt="Logo" class="max-h-75px" src="~/Documents/logo-red.png">
+		<img alt="Logo" class="max-h-75px" src="#">
 		<div class="d-flex align-items-center mt-5">
 			<span class="spinner-border text-primary" role="status"></span>
 			<span class="text-muted fs-6 fw-semibold ms-5">Loading...</span>
@@ -285,27 +259,15 @@ License: For each use you must have a valid license purchased only from above li
 			<div class="loader mb-5"></div>
 		</div>
 	</div>
+
 	<script>var hostUrl = "~/theme/demo7/dist/assets/";</script>
 	<!--begin::Global Javascript Bundle(used by all pages)-->
-	<script src="~/theme/demo7/dist/assets/plugins/global/plugins.bundle.js"></script>
-	<script src="~/theme/demo7/dist/assets/js/scripts.bundle.js"></script>
-	<!--end::Global Javascript Bundle-->
-	<!--begin::Vendors Javascript(used by this page)-->
-	<script src="~/theme/demo7/dist/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-	<script src="~/theme/demo7/dist/assets/plugins/custom/vis-timeline/vis-timeline.bundle.js"></script>
-	<!--end::Vendors Javascript-->
-	<!--begin::Custom Javascript(used by this page)-->
-	<script src="~/theme/demo7/dist/assets/js/widgets.bundle.js"></script>
-	<script src="~/theme/demo7/dist/assets/js/custom/widgets.js"></script>
-	<script src="~/theme/demo7/dist/assets/js/custom/apps/chat/chat.js"></script>
-	<script src="~/theme/demo7/dist/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-	<script src="~/theme/demo7/dist/assets/js/custom/utilities/modals/create-app.js"></script>
-	<script src="~/theme/demo7/dist/assets/js/custom/utilities/modals/users-search.js"></script>
-	<script src="~/theme/demo7/dist/assets/js/custom/apps/calendar/calendar.js"></script>
-	<script src="~/theme/src/js/custom/utilities/modals/new-target.js"></script>
+	<script src="~/Scripts/js/plugins.bundle.js"></script>
+	<script src="~/Scripts/js/scripts.bundle.js"></script>
 
-	<!--end::Custom Javascript-->
+	<!--end::Global Javascript Bundle-->
 	<!--end::Javascript-->
 </body>
+
 <!--end::Body-->
 </html>
