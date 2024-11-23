@@ -15,7 +15,9 @@ namespace YufkaDashboard.DataAccess.Abstract
 		Task<List<Strings>> GetAllStringsCurrentPage();
 		Task<List<Strings>> GetAllGroupDetailList(string groupName);
 		Task<List<Strings>> GetAllStrings();
-		Task<Strings> UpdateString(Strings model);
+		Task<Strings> GetStringById(int id);
+		Task UpdateString(UpdateString model);
+		Task UpdateStringLocale(UpdateStringLocale model);
 		Task Delete(int id);
 	}
 }

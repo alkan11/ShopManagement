@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Models.Products;
 using Shared.Models.System;
+using System;
 using YufkaDashboard.Business.Abstract;
 using YufkaDashboard.Business.Concrete;
 
@@ -51,6 +52,21 @@ namespace YufkaDashboard.Web.Controllers
 			return View();
 		}
 
+		[HttpGet]
+		public async Task<JsonResult> GetStringById(int id)
+		{
+			var data = new Strings();
+
+			var result = await _systembusiness.GetStringById(id);
+			if (result != null)
+			{
+				data = result.Data;
+				return Json(data);
+			}
+
+			return Json(data);
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> AddString(AddString model)
 		{
@@ -87,6 +103,38 @@ namespace YufkaDashboard.Web.Controllers
 			}
 			
 			return RedirectToAction("StringList");
+		}
+		[HttpPost]
+		public async Task<IActionResult> UpdateString(int id,UpdateString model)
+		{
+			model.Id = id;
+			var result = await _systembusiness.UpdateString(model);
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					TempData["error"] = result.Message;
+					return RedirectToAction("StringList");
+				}
+			}
+
+			return RedirectToAction("GroupDetailList", "System", new {groupname=model.StringGroup});
+		}
+		[HttpGet]
+		public async Task<JsonResult> DeleteStringRecord(int id)
+		{
+			bool success = false;
+			var result = await _systembusiness.Delete(id);
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					return Json(new { ok = success,text=result.Message });
+				}
+				success = true;
+			}
+
+			return Json(new {ok=success});
 		}
 	}
 }

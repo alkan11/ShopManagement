@@ -5,6 +5,7 @@ using Shared.Models.System;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -56,9 +57,16 @@ namespace YufkaDashboard.DataAccess.Conrete
 			}
 		}
 
-		public Task Delete(int id)
+		public async Task Delete(int id)
 		{
-			throw new NotImplementedException();
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string query = @"BEGIN TRANSACTION DELETE Strings WHERE Id = @id COMMIT TRANSACTION
+								 BEGIN TRANSACTION DELETE StringLocale WHERE StringId = @id COMMIT TRANSACTION";
+				var parameters = new { id };
+				await dbConnection.ExecuteAsync(query, parameters, commandType: CommandType.Text);
+			}
+			
 		}
 
 		public Task<List<Strings>> GetAllStrings()
@@ -88,10 +96,58 @@ namespace YufkaDashboard.DataAccess.Conrete
 			}
 		}
 
-
-		public Task<Strings> UpdateString(Strings model)
+		public async Task<Strings> GetStringById(int id)
 		{
-			throw new NotImplementedException();
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pGetStringById";
+				var parameters = new { @id = id };
+				var result = await dbConnection.QueryFirstAsync<Strings>(procedure, parameters, commandType: CommandType.StoredProcedure);
+				return result;
+			}
+		}
+
+		public async Task UpdateString(UpdateString model)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "UpdateString";
+				var parameters = new
+				{
+					Id=model.Id,
+					StringGroup = model.StringGroup,
+					StringDescription = model.StringDescription,
+					Value1 = model.Value1,
+					Value2 = model.Value2,
+					Description1 = model.Description1,
+					Description2 = model.Description2,
+					ParentId = model.ParentId,
+					IsActive = model.IsActive,
+					IsSystem = model.IsSystem,
+					IsSystemValue = model.IsSystemValue,
+					IsSystemKey = model.IsSystemKey,
+					CreatedDate = model.CreatedDate
+				};
+				await dbConnection.QueryFirstOrDefaultAsync<UpdateString>(procedure, parameters, commandType: CommandType.StoredProcedure);
+			}
+		}
+
+		public async Task UpdateStringLocale(UpdateStringLocale model)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "UpdateStringLocale";
+				var parameters = new
+				{
+					StringId = model.StringId,
+					LangId = model.LangId,
+					StringDescription = model.StringDescription,
+					Description1 = model.Description1,
+					Description2 = model.Description2,
+					CreatedDate = model.CreatedDate
+				};
+				await dbConnection.QueryFirstOrDefaultAsync<UpdateStringLocale>(procedure, parameters, commandType: CommandType.StoredProcedure);
+			}
 		}
 	}
 }

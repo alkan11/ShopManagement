@@ -1,5 +1,6 @@
 ﻿window.onload = function () {
-	$("#flatpickr-date").flatpickr();
+	$("#add_flatpickr_date").flatpickr();
+	$("#uflatpickr-date").flatpickr();
 
 	// Define form element
 	//add_form validation

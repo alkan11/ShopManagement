@@ -52,9 +52,19 @@ namespace YufkaDashboard.Business.Concrete
 			}
 		}
 
-		public Task<Response<NoContent>> Delete(int id)
+		public async Task<Response<NoContent>> Delete(int id)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				await _systemDal.Delete(id);
+
+				return Response<NoContent>.Success(StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<NoContent>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
 		}
 
 		public Task<Response<List<Strings>>> GetAllStrings()
@@ -89,6 +99,45 @@ namespace YufkaDashboard.Business.Concrete
 			{
 
 				return Response<List<Strings>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		public async Task<Response<Strings>> GetStringById(int id)
+		{
+			try
+			{
+				var result = await _systemDal.GetStringById(id);
+
+				return Response<Strings>.Success(result, StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<Strings>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		public async Task<Response<NoContent>> UpdateString(UpdateString model)
+		{
+			try
+			{
+				await _systemDal.UpdateString(model);
+
+				await _systemDal.UpdateStringLocale(new UpdateStringLocale
+				{
+					StringId = model.Id,
+					StringDescription = model.StringDescription,
+					LangId = 0,
+					Description1 = model.Description1,
+					Description2 = model.Description2,
+					CreatedDate = model.CreatedDate
+				});
+
+				return Response<NoContent>.Success(StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+				return Response<NoContent>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
 			}
 		}
 	}
