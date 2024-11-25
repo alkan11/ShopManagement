@@ -10,7 +10,7 @@ namespace Shared.Models.System
 	{
 		public Strings() { }
 		public int Id { get; set; }
-		public string? StringGroup { get; set; }
+		public int GroupId { get; set; }
 		public string? StringDescription { get; set; }
 		public int Value1 { get; set; }
 		public int Value2 { get; set; }

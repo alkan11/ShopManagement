@@ -7,10 +7,13 @@ namespace YufkaDashboard.Web.Controllers
 	public class ProductController : Controller
 	{
 		private readonly IProductBusiness _productBusiness;
+		private readonly ISystemBusiness _systemBusiness;
 
-		public ProductController(IProductBusiness productBusiness)
+
+		public ProductController(IProductBusiness productBusiness, ISystemBusiness systemBusiness)
 		{
 			_productBusiness = productBusiness;
+			_systemBusiness = systemBusiness;
 		}
 
 		public  async Task<IActionResult> Index()
@@ -28,6 +31,8 @@ namespace YufkaDashboard.Web.Controllers
 					return View();
 				}
 				ViewBag.Data = result.Data;
+				var result2 = await _systemBusiness.GetAllStringsByStringGroup("SalesUnit");
+				ViewBag.SalesUnit = result2.Data;
 			}
 			return View();
 		}

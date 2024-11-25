@@ -20,9 +20,9 @@ namespace YufkaDashboard.Web.Controllers
 		{
 			return View();
 		}
-		public async Task<IActionResult> StringList()
+		public async Task<IActionResult> StringGroupList()
 		{
-			var result = await _systembusiness.GetAllStringsCurrentPage();
+			var result = await _systembusiness.GetAllStringGroupCurrentPage();
 			if (result != null)
 			{
 				if (!result.IsSuccessful)
@@ -31,14 +31,13 @@ namespace YufkaDashboard.Web.Controllers
 					return View();
 				}
 
-				var stringData = result.Data;
-				ViewBag.Data = stringData.DistinctBy(x => x.StringGroup).ToList();
+				ViewBag.Data = result.Data;
 			}
 			return View();
 		}
-		public async Task<IActionResult> GroupDetailList(string groupName)
+		public async Task<IActionResult> StringList(int groupId)
 		{
-			var result = await _systembusiness.GetAllGroupDetailList(groupName);
+			var result = await _systembusiness.GetAllStringListCurrentPage(groupId);
 			if (result != null)
 			{
 				if (!result.IsSuccessful)
@@ -46,7 +45,7 @@ namespace YufkaDashboard.Web.Controllers
 					TempData["error"] = result.Message;
 					return View();
 				}
-
+				ViewBag.GroupId=groupId;
 				ViewBag.Data = result.Data;
 			}
 			return View();
@@ -76,7 +75,7 @@ namespace YufkaDashboard.Web.Controllers
 				if (!result.IsSuccessful)
 				{
 					TempData["error"] = result.Message;
-					return RedirectToAction("StringList");
+					return RedirectToAction("StringList", "System", new { groupId = model.GroupId });
 				}
 				AddStringLocale modelLocale = new AddStringLocale()
 				{
@@ -95,17 +94,17 @@ namespace YufkaDashboard.Web.Controllers
 					if (!resultLocale.IsSuccessful)
 					{
 						TempData["error"] = resultLocale.Message;
-						return RedirectToAction("StringList");
+						return RedirectToAction("StringList", "System", new{groupId = model.GroupId});
 					}
 					TempData["success"] = "RecordSuccessfullyCreated";
 				}
 
 			}
 			
-			return RedirectToAction("StringList");
+			return RedirectToAction("StringList", "System", new{groupId = model.GroupId});
 		}
 		[HttpPost]
-		public async Task<IActionResult> UpdateString(int id,UpdateString model)
+		public async Task<IActionResult> UpdateString(int id, UpdateString model)
 		{
 			model.Id = id;
 			var result = await _systembusiness.UpdateString(model);
@@ -114,11 +113,11 @@ namespace YufkaDashboard.Web.Controllers
 				if (!result.IsSuccessful)
 				{
 					TempData["error"] = result.Message;
-					return RedirectToAction("StringList");
+					return RedirectToAction("StringList","System", new { groupId = model.GroupId });
 				}
 			}
 
-			return RedirectToAction("GroupDetailList", "System", new {groupname=model.StringGroup});
+			return RedirectToAction("StringList", "System", new { groupId = model.GroupId });
 		}
 		[HttpGet]
 		public async Task<JsonResult> DeleteStringRecord(int id)

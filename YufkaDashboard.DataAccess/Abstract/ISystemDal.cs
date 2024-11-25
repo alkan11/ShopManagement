@@ -12,9 +12,10 @@ namespace YufkaDashboard.DataAccess.Abstract
 	{
 		Task<AddString> AddStringAsync(AddString model);
 		Task<AddStringLocale> AddStringLocaleAsync(AddStringLocale model);
-		Task<List<Strings>> GetAllStringsCurrentPage();
-		Task<List<Strings>> GetAllGroupDetailList(string groupName);
+		Task<List<StringGroup>> GetAllStringGroupCurrentPage();
+		Task<List<Strings>> GetAllStringListCurrentPage(int groupId);
 		Task<List<Strings>> GetAllStrings();
+		Task<StringGroup> GetAllStringsByStringGroup(string groupName);
 		Task<Strings> GetStringById(int id);
 		Task UpdateString(UpdateString model);
 		Task UpdateStringLocale(UpdateStringLocale model);

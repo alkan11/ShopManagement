@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YufkaDashboard.Business.Abstract;
 using YufkaDashboard.DataAccess.Abstract;
@@ -72,35 +73,6 @@ namespace YufkaDashboard.Business.Concrete
 			throw new NotImplementedException();
 		}
 
-		public async Task<Response<List<Strings>>> GetAllStringsCurrentPage()
-		{
-			try
-			{
-				var result = await _systemDal.GetAllStringsCurrentPage();
-
-				return Response<List<Strings>>.Success(result, StatusCodes.Status201Created);
-			}
-			catch (Exception ex)
-			{
-
-				return Response<List<Strings>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
-			}
-		}
-
-		public async Task<Response<List<Strings>>> GetAllGroupDetailList(string groupName)
-		{
-			try
-			{
-				var result = await _systemDal.GetAllGroupDetailList(groupName);
-
-				return Response<List<Strings>>.Success(result, StatusCodes.Status201Created);
-			}
-			catch (Exception ex)
-			{
-
-				return Response<List<Strings>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
-			}
-		}
 
 		public async Task<Response<Strings>> GetStringById(int id)
 		{
@@ -138,6 +110,53 @@ namespace YufkaDashboard.Business.Concrete
 			catch (Exception ex)
 			{
 				return Response<NoContent>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		public async Task<Response<List<StringGroup>>> GetAllStringGroupCurrentPage()
+		{
+			try
+			{
+				var result = await _systemDal.GetAllStringGroupCurrentPage();
+
+				return Response<List<StringGroup>>.Success(result, StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<List<StringGroup>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		public async Task<Response<List<Strings>>> GetAllStringListCurrentPage(int groupId)
+		{
+			try
+			{
+				var result = await _systemDal.GetAllStringListCurrentPage(groupId);
+
+				return Response<List<Strings>>.Success(result, StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<List<Strings>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
+
+
+		public async Task<Response<StringGroup>> GetAllStringsByStringGroup(string groupName)
+		{
+			try
+			{
+				var result = await _systemDal.GetAllStringsByStringGroup(groupName);
+
+				return Response<StringGroup>.Success(result, StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<StringGroup>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
 			}
 		}
 	}

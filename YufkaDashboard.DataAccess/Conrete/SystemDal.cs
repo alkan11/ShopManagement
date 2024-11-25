@@ -9,6 +9,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YufkaDashboard.DataAccess.Abstract;
 
@@ -27,7 +28,7 @@ namespace YufkaDashboard.DataAccess.Conrete
 			using (var dbConnection = _context.CreateConnection())
 			{
 				string procedure = "AddString";
-				var parameters = new { StringGroup = model.StringGroup, StringDescription = model.StringDescription, Value1 = model.Value1, Value2 = model.Value2, Description1 = model.Description1, Description2 = model.Description2 ,
+				var parameters = new { GroupId = model.GroupId, StringDescription = model.StringDescription, Value1 = model.Value1, Value2 = model.Value2, Description1 = model.Description1, Description2 = model.Description2 ,
 					ParentId=model.ParentId, IsActive=model.IsActive ,
 					IsSystem=model.IsSystem,
 					IsSystemValue=model.IsSystemValue,
@@ -74,28 +75,6 @@ namespace YufkaDashboard.DataAccess.Conrete
 			throw new NotImplementedException();
 		}
 
-		public async Task<List<Strings>> GetAllStringsCurrentPage()
-		{
-			using (var dbConnection = _context.CreateConnection())
-			{
-				string procedure = "pGetAllStringsCurrentPage";
-				var parameters = new { @langid = 0 };
-				var result = await dbConnection.QueryAsync<Strings>(procedure,parameters,commandType: CommandType.StoredProcedure);
-				return result.ToList();
-			}
-		}
-
-		public async Task<List<Strings>> GetAllGroupDetailList(string groupName)
-		{
-			using (var dbConnection = _context.CreateConnection())
-			{
-				string procedure = "pGetAllGroupDetailList";
-				var parameters = new { @groupName = groupName };
-				var result = await dbConnection.QueryAsync<Strings>(procedure, parameters, commandType: CommandType.StoredProcedure);
-				return result.ToList();
-			}
-		}
-
 		public async Task<Strings> GetStringById(int id)
 		{
 			using (var dbConnection = _context.CreateConnection())
@@ -115,7 +94,7 @@ namespace YufkaDashboard.DataAccess.Conrete
 				var parameters = new
 				{
 					Id=model.Id,
-					StringGroup = model.StringGroup,
+					GroupId = model.GroupId,
 					StringDescription = model.StringDescription,
 					Value1 = model.Value1,
 					Value2 = model.Value2,
@@ -147,6 +126,48 @@ namespace YufkaDashboard.DataAccess.Conrete
 					CreatedDate = model.CreatedDate
 				};
 				await dbConnection.QueryFirstOrDefaultAsync<UpdateStringLocale>(procedure, parameters, commandType: CommandType.StoredProcedure);
+			}
+		}
+
+		public async Task<List<StringGroup>> GetAllStringGroupCurrentPage()
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pGetAllStringGroupCurrentPage";
+				var result = await dbConnection.QueryAsync<StringGroup>(procedure, commandType: CommandType.StoredProcedure);
+				return result.ToList();
+			}
+		}
+
+		public async Task<List<Strings>> GetAllStringListCurrentPage(int groupId)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pGetAllStringsCurrentPage";
+				var parameters = new { @groupId = groupId, @langid = 0 };
+				var result = await dbConnection.QueryAsync<Strings>(procedure, parameters, commandType: CommandType.StoredProcedure);
+				return result.ToList();
+			}
+		}
+
+		public async Task<StringGroup> GetAllStringsByStringGroup(string groupName)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pGetAllStringsByStringGroup";
+				var parameters = new {@groupName = groupName, @langId = 0 };
+				var result = await dbConnection.QueryFirstOrDefaultAsync<StringGroup>(procedure, parameters, commandType: CommandType.StoredProcedure);
+				if (result != null)
+				{
+					string procedure2 = "pGetAllStringsCurrentPage";
+					var parameters2 = new { @groupId = result.Id, @langid = 0 };
+					var result2 = await dbConnection.QueryAsync<Strings>(procedure2, parameters2, commandType: CommandType.StoredProcedure);
+					if (result2.Any())
+					{
+						result._strings.AddRange(result2);
+					}
+				}
+				return result;
 			}
 		}
 	}

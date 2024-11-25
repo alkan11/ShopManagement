@@ -3,8 +3,23 @@
 	ViewData["Title"] = "ProductList";
 	Layout = "~/Views/Shared/_Layout2.cshtml";
 	var data = ViewBag.Data != null ? ViewBag.Data as IEnumerable<Shared.Models.Products.Products> : null;
+	var salesUnit = ViewBag.SalesUnit != null ? ViewBag.SalesUnit as Shared.Models.System.StringGroup : null;
 }
-
+<div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
+	<div class="container-xxl d-flex align-items-center justify-content-between" id="kt_header_container">
+		<!--begin::Page title-->
+		<div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap mt-n5 mt-lg-0 me-lg-2 pb-2 pb-lg-0" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
+			<!--begin::Heading-->
+			<h1 class="text-dark fw-bold my-0 fs-2">Ürün Yönetimi</h1>
+			<!--end::Heading-->
+			<ol class="breadcrumb text-muted fs-6 fw-semibold" style="margin-top:10px;">
+				<li class="breadcrumb-item"><a href="@Url.Action("Index","Home")" class="">Ana Sayfa</a></li>
+				<li class="breadcrumb-item text-muted">Ürün Listesi</li>
+			</ol>
+		</div>
+		<!--end::Toolbar wrapper-->
+	</div>
+</div>
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 	<div class="container-xxl" id="kt_content_container">
@@ -208,9 +223,15 @@
 							<div class="col-md-3 fv-row">
 								<label class="required fs-6 fw-semibold mb-2">Ürün Tipi</label>
 								<select class="form-select form-select-solid" data-control="select2" data-hide-search="true" name="Type" value="">
-									<option value="">Seçiniz</option>
-									<option value="1">Adet</option>
-									<option value="2">Kilogram</option>
+									<option value="" selected>Seçiniz</option>
+									@if (salesUnit != null)
+									{
+										foreach (var item in salesUnit._strings)
+										{
+											<option value="@item.Id">@item.StringDescription</option>
+											
+										}
+									}
 								</select>
 							</div>
 							<div class="col-md-3 fv-row">

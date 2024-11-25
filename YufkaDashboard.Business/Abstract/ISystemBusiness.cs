@@ -14,10 +14,11 @@ namespace YufkaDashboard.Business.Abstract
 		Task<Response<AddString>> AddStringAsync(AddString model);
 		Task<Response<AddStringLocale>> AddStringLocaleAsync(AddStringLocale model);
 		Task<Response<List<Strings>>> GetAllStrings();
-		Task<Response<List<Strings>>> GetAllStringsCurrentPage();
+		Task<Response<StringGroup>> GetAllStringsByStringGroup(string groupName);
+		Task<Response<List<Strings>>> GetAllStringListCurrentPage(int groupId);
+		Task<Response<List<StringGroup>>> GetAllStringGroupCurrentPage();
 		Task<Response<Strings>> GetStringById(int id);
 		Task<Response<NoContent>> UpdateString(UpdateString model);
-		Task<Response<List<Strings>>> GetAllGroupDetailList(string groupName);
 		Task<Response<NoContent>> Delete(int id);
 	}
 }
