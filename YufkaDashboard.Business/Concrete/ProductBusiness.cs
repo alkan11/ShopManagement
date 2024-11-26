@@ -4,6 +4,7 @@ using Shared.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using YufkaDashboard.Business.Abstract;
@@ -35,9 +36,19 @@ namespace YufkaDashboard.Business.Concrete
 			}
 		}
 
-		public Task<Response<NoContent>> Delete(int id)
+		public async Task<Response<NoContent>> Delete(int id)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				 await _productDal.Delete(id);
+
+				return Response<NoContent>.Success(StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<NoContent>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
 		}
 
 		public async Task<Response<List<Products>>> GetAllProducts()
@@ -55,6 +66,21 @@ namespace YufkaDashboard.Business.Concrete
 			}
 			
 
+		}
+
+		public async Task<Response<Products>> GetProductById(int id)
+		{
+			try
+			{
+				var result = await _productDal.GetProductById(id);
+
+				return Response<Products>.Success(result, StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<Products>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
 		}
 	}
 }

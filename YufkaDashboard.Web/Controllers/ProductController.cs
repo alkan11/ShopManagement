@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Models.Products;
 using YufkaDashboard.Business.Abstract;
+using YufkaDashboard.Business.Concrete;
 
 namespace YufkaDashboard.Web.Controllers
 {
@@ -51,6 +52,36 @@ namespace YufkaDashboard.Web.Controllers
 			}
 			TempData["success"] = "RecordSuccessfullyCreated";
 			return RedirectToAction("ProductList");
+		}
+		[HttpGet]
+		public async Task<JsonResult> GetProductById(int id)
+		{
+			var data = new Products();
+
+			var result = await _productBusiness.GetProductById(id);
+			if (result != null)
+			{
+				data = result.Data;
+				return Json(data);
+			}
+
+			return Json(data);
+		}
+		[HttpGet]
+		public async Task<JsonResult> DeleteStringRecord(int id)
+		{
+			bool success = false;
+			var result = await _productBusiness.Delete(id);
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					return Json(new { ok = success, text = result.Message });
+				}
+				success = true;
+			}
+
+			return Json(new { ok = success });
 		}
 	}
 }

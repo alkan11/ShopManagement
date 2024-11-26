@@ -15,6 +15,7 @@ namespace Shared.Models.Products
         public int Type { get; set; }
         public decimal UnitPrice { get; set; }
         public string Description { get; set; }
+        public string TypeName { get; set; }
         public DateTime CreatedDate { get; set; }
         public int Status { get; set; }
     }

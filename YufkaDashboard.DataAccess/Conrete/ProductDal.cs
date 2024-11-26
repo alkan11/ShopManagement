@@ -32,11 +32,6 @@ namespace YufkaDashboard.DataAccess.Conrete
 			}
 		}
 
-		public Task Delete(int id)
-		{
-			throw new NotImplementedException();
-		}
-
 		public async Task<List<Products>> GetAllProducts()
 		{
 			using (var dbConnection = _context.CreateConnection())
@@ -47,9 +42,30 @@ namespace YufkaDashboard.DataAccess.Conrete
 			}
 		}
 
-		public Task<Products> UpdateProduct(Products model)
+		public async Task<Products> UpdateProduct(Products model)
 		{
 			throw new NotImplementedException();
+		}
+
+		public async Task<Products> GetProductById(int id)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pGetProductById";
+				var parameters = new { @id = id };
+				var result = await dbConnection.QueryFirstAsync<Products>(procedure, parameters, commandType: CommandType.StoredProcedure);
+				return result;
+			}
+		}
+		public async Task Delete(int id)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string query = @"Delete Products where Id=@id";
+				var parameters = new { id };
+				await dbConnection.ExecuteAsync(query, parameters, commandType: CommandType.Text);
+			}
+
 		}
 	}
 }

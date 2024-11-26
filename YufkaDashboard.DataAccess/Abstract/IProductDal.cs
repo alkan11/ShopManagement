@@ -12,6 +12,7 @@ namespace YufkaDashboard.DataAccess.Abstract
 		Task<AddProduct> AddProduct(AddProduct model);
 		Task<List<Products>> GetAllProducts();
 		Task<Products> UpdateProduct(Products model);
+		Task<Products> GetProductById(int id);
 		Task Delete(int id);
 	}
 }

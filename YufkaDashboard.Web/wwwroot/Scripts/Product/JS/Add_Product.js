@@ -1,5 +1,90 @@
-﻿window.onload = function () {
-	$("#flatpickr-date").flatpickr();
+﻿//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function GetRowDetail(id) {
+
+	var uri = "/Product/UpdateProduct/" + id;
+	$('#frmUpdateProduct').attr('action', uri);
+
+	$.ajax({
+		type: "GET",
+		url: "/Product/GetProductById",
+		dataType: "json",
+		data: { "id": id },
+		success: function (sonuc) {
+			if (sonuc != null) {
+
+				$("#uName").val(sonuc.name);
+				$("#uType").val(sonuc.type).change();
+				$("#uUnitPrice").val(sonuc.unitPrice);
+				$("#uflatpickr-date").val(sonuc.createdDate);
+				$("#uDescription").val(sonuc.description);
+				$("#uStatus").prop("checked", sonuc.status);
+			}
+		}
+	});
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function DeleteStringRecord(id, systemId) {
+
+	const swalWithBootstrapButtons = Swal.mixin({
+		customClass: {
+			confirmButton: "btn btn-success",
+			cancelButton: "btn btn-danger"
+		},
+		buttonsStyling: false
+	});
+
+	if (systemId == 1) {
+		swalWithBootstrapButtons.fire({
+			title: "Silinemez",
+			text: "Bu kayıt sistem bir kaydıdır.",
+			icon: "error"
+		});
+	}
+	else {
+		swalWithBootstrapButtons.fire({
+			title: "Silmek istediğinizden emin misiniz?",
+			text: "Yaptığınız işlemin geri dönüşü yoktur!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Evet",
+			cancelButtonText: "Hayır",
+			reverseButtons: false
+		}).then((result) => {
+			if (result.isConfirmed) {
+
+				$.ajax({
+					type: "GET",
+					url: "/Product/DeleteStringRecord",
+					dataType: "json",
+					data: { "id": id },
+					success: function (result) {
+						if (result != null) {
+
+							if (result.ok) {
+								window.location.reload(true);
+							}
+							else {
+								swalWithBootstrapButtons.fire({
+									title: "İşlem gerçekleşmedi",
+									text: result.text,
+									icon: "error"
+								});
+							}
+						}
+					}
+				});
+
+
+			}
+		});
+	}
+
+
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+window.onload = function () {
+	$("#uflatpickr-date").flatpickr();
 
 	// Define form element
 	//add_form validation
@@ -96,6 +181,7 @@
 		validator.resetForm(true);
 		document.getElementById('product_modal_cancel').setAttribute('data-bs-dismiss', 'modal');
 	});
+	
 };
 
 
