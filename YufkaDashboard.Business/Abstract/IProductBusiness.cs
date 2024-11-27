@@ -12,6 +12,7 @@ namespace YufkaDashboard.Business.Abstract
 	{
 		Task<Response<AddProduct>> AddProduct(AddProduct model);
 		Task<Response<List<Products>>> GetAllProducts();
+		Task<Response<NoContent>> UpdateProduct(Products model);
 		Task<Response<Products>> GetProductById(int id);
 		Task<Response<NoContent>> Delete(int id);
 	}

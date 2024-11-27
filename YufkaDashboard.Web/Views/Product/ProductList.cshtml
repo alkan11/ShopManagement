@@ -161,7 +161,7 @@
 											<!--end::Menu item-->
 											<!--begin::Menu item-->
 											<div class="menu-item px-3">
-												<a onclick="DeleteStringRecord(@item.Id,0)" class="menu-link px-3" data-kt-ecommerce-product-filter="delete_row">Sil</a>
+												<a onclick="DeleteUpdateRecord(@item.Id,0)" class="menu-link px-3" data-kt-ecommerce-product-filter="delete_row">Sil</a>
 											</div>
 											<!--end::Menu item-->
 										</div>
@@ -236,7 +236,7 @@
 							</div>
 							<div class="col-md-3 fv-row">
 								<label class="required fs-6 fw-semibold mb-2">Birim Fiyat</label>
-								<input type="text" class="form-control form-control-solid" name="UnitPrice" id="UnitPrice" value="" />
+								<input type="number" class="form-control form-control-solid" name="UnitPrice" id="UnitPrice" value="" />
 							</div>
 							<!--end::Col-->
 							<!--begin::Col-->
@@ -364,7 +364,7 @@
 							</div>
 							<div class="col-md-3 fv-row">
 								<label class="required fs-6 fw-semibold mb-2">Birim Fiyat</label>
-							<input type="text" class="form-control form-control-solid" name="UnitPrice" value="" id="uUnitPrice" />
+							<input type="number" class="form-control form-control-solid" name="UnitPrice" value="" id="uUnitPrice" />
 							</div>
 							<!--end::Col-->
 							<!--begin::Col-->
@@ -385,7 +385,7 @@
 									<!--end::Svg Icon-->
 									<!--end::Icon-->
 									<!--begin::Datepicker-->
-									<input id="uflatpickr-date" class="form-control form-control-solid ps-12" placeholder="Select a date" name="CreatedDate" value="" />
+								<input id="uflatpickr-date_update" class="form-control form-control-solid ps-12" placeholder="Select a date" data-enable-time="false" data-date-format="Y-m-d" name="CreatedDate" value="" />
 									<!--end::Datepicker-->
 								</div>
 								<!--end::Input-->
@@ -472,45 +472,68 @@
 	};
 	</script>
 
-@*<script>
+<script>
+	function DeleteUpdateRecord(id, systemId) {
 
-	document.addEventListener("DOMContentLoaded", function () {
-		const type = document.getElementById("Type");
-
-		const valueInput = document.getElementById("UnitPrice");
-
-		type.addEventListener("change", function () {
-			const selectedOption = type.options[type.selectedIndex];
-			const dataAttribute = selectedOption.dataset.isysytemkey; 
-			console.log(dataAttribute)
+		const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: "btn btn-success",
+				cancelButton: "btn btn-danger"
+			},
+			buttonsStyling: false
 		});
 
-		valueInput.addEventListener("input", function () {
-			const selectedType = selectedOption.dataset.issystemkey
-			let value = valueInput.value;
-			console.log("girdi3")
-			console.log(selectedType)
-			if (selectedType === "ADT") {
-				console.log("adet")
-				// Adet seçiliyse yalnızca tam sayılara izin ver
-				value = value.replace(/[^0-9]/g, ""); // Sadece rakamları tutar
-			} else if (selectedType === "GRM" || selectedType === "KLGM") {
-				console.log("gram")
-				// Gram seçiliyse yalnızca sayı ve virgüle izin ver
-				value = value.replace(/[^0-9,]/g, ""); // Rakamlar ve virgül izinli
-				// Virgül doğru formatlanmış mı kontrol et
-				const parts = value.split(",");
-				if (parts.length > 2) {
-					value = parts[0] + "," + parts[1]; // Birden fazla virgülü engelle
+		if (systemId == 1) {
+			swalWithBootstrapButtons.fire({
+				title: "Silinemez",
+				text: "Bu kayıt sistem bir kaydıdır.",
+				icon: "error"
+			});
+		}
+		else {
+			swalWithBootstrapButtons.fire({
+				title: "Silmek istediğinizden emin misiniz?",
+				text: "Yaptığınız işlemin geri dönüşü yoktur!",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Evet",
+				cancelButtonText: "Hayır",
+				reverseButtons: false
+			}).then((result) => {
+				if (result.isConfirmed) {
+
+					$.ajax({
+						type: "GET",
+						url: "/Product/DeleteUpdateRecord",
+						dataType: "json",
+						data: { "id": id },
+						success: function (result) {
+							if (result != null) {
+
+								if (result.ok) {
+									window.location.reload(true);
+								}
+								else {
+									swalWithBootstrapButtons.fire({
+										title: "İşlem gerçekleşmedi",
+										text: result.text,
+										icon: "error"
+									});
+								}
+							}
+						}
+					});
+
+
 				}
-			}
+			});
+		}
 
-			valueInput.value = value; // İşlenmiş değeri geri yaz
-		});
-	});
-</script>*@
 
+	}
+</script>
 <script src="~/Scripts/Product/JS/Add_Product.js"></script>
+
 
 
 

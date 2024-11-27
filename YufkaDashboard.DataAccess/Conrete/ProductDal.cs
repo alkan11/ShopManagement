@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Shared.Context;
 using Shared.Models.Products;
+using Shared.Models.System;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -42,9 +43,23 @@ namespace YufkaDashboard.DataAccess.Conrete
 			}
 		}
 
-		public async Task<Products> UpdateProduct(Products model)
+		public async Task UpdateProduct(Products model)
 		{
-			throw new NotImplementedException();
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "UpdateProduct";
+				var parameters = new
+				{
+					Id=model.Id,
+					Name = model.Name,
+					Type = model.Type,
+					UnitPrice = model.UnitPrice,
+					Description = model.Description,
+					CreatedDate = model.CreatedDate,
+					Status = model.Status
+				};
+				await dbConnection.QueryFirstOrDefaultAsync<Products>(procedure, parameters, commandType: CommandType.StoredProcedure);
+			}
 		}
 
 		public async Task<Products> GetProductById(int id)

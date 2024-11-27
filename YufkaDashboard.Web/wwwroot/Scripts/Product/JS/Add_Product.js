@@ -11,11 +11,11 @@ function GetRowDetail(id) {
 		data: { "id": id },
 		success: function (sonuc) {
 			if (sonuc != null) {
-
+				console.log(sonuc)
 				$("#uName").val(sonuc.name);
 				$("#uType").val(sonuc.type).change();
 				$("#uUnitPrice").val(sonuc.unitPrice);
-				$("#uflatpickr-date").val(sonuc.createdDate);
+				$("#uflatpickr-date_update").val(sonuc.createdDate.split("T")[0]);
 				$("#uDescription").val(sonuc.description);
 				$("#uStatus").prop("checked", sonuc.status);
 			}
@@ -85,6 +85,7 @@ function DeleteStringRecord(id, systemId) {
 
 window.onload = function () {
 	$("#uflatpickr-date").flatpickr();
+	$("#uflatpickr-date_update").flatpickr();
 
 	// Define form element
 	//add_form validation

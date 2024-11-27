@@ -82,5 +82,20 @@ namespace YufkaDashboard.Business.Concrete
 				return Response<Products>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
 			}
 		}
+
+		public async Task<Response<NoContent>> UpdateProduct(Products model)
+		{
+			try
+			{
+				await _productDal.UpdateProduct(model);
+
+				return Response<NoContent>.Success(StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<NoContent>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
 	}
 }
