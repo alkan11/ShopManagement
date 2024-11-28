@@ -1,6 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout2.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_Layout2.cshtml";
+	var allProducts = ViewBag.AllProducts != null ? ViewBag.AllProducts as IEnumerable<Shared.Models.Products.Products> : null;
 }
 <div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
 	<div class="container-xxl d-flex align-items-center justify-content-between" id="kt_header_container">
@@ -2741,44 +2742,74 @@
 					<!--end::Wrapper-->
 					</div>
 					<!--begin::Repeater-->
+					<form id="repeaterForm" action="@Url.Action("AddBasket","Home")" method="POST">
 					<div class="py-5">
 						<div class="rounded border p-10">
 							<!--begin::Repeater-->
-							<div id="repeater_basic">
-								<!--begin::Form group-->
-								<div class="form-group">
-									<div data-repeater-list="repeater_basic">
-										<div data-repeater-item="">
-											<div class="form-group row mb-5">
-												<div class="col-md-3">
-													<label class="form-label">Ürün:</label>
-													<input type="email" class="form-control mb-2 mb-md-0" placeholder="" />
-												</div>
-												<div class="col-md-3">
-													<label class="form-label">Tipi:</label>
-													<input type="email" class="form-control mb-2 mb-md-0" placeholder="" />
-												</div>
-												<div class="col-md-4">
-													<a href="javascript:;" data-repeater-delete="" class="btn btn-sm btn-light-danger mt-3 mt-md-9">
-														<i class="la la-trash-o fs-3"></i>Delete
-													</a>
+							
+								<div id="repeater_basic">
+									<!--begin::Form group-->
+									<div class="form-group">
+										<div class="col-md-2">
+											<a href="javascript:;" data-repeater-create="" class="btn btn-light-primary mt-1 mt-md-9">
+												<i class="la la-plus fs-3"></i>Ürün Ekle
+											</a>
+										</div>
+										<div data-repeater-list="Baskets">
+											<div data-repeater-item="">
+
+												<div class="form-group row mb-5">
+													<div class="col-md-2">
+														<a href="javascript:;" data-repeater-delete="" class="btn btn-sm btn-light-danger mt-1 mt-md-9">
+															<i class="la la-trash-o fs-3"></i>Ürün Sil
+														</a>
+													</div>
+
+													<div class="col-md-3">
+														<label class="form-label">Ürün Seçiniz:</label>
+														<select class="form-select" data-kt-repeater="select2" name="ProductId" id="ProductId">
+															<option value="" selected>Seçiniz</option>
+															@if (allProducts != null)
+															{
+																foreach (var item in allProducts)
+																{
+																	<option value="@item.Id">@item.Name</option>
+																}
+															}
+														</select>
+													</div>
+													<div class="col-md-3">
+														<label class="form-label">Miktar Giriniz:</label>
+														<input type="number" class="form-control mb-2 mb-md-0" placeholder="" name="Amount" id="Amount" />
+													</div>
+													<div class="col-md-3">
+														<label class="form-label">Tutar</label>
+														<input type="number" class="form-control mb-2 mb-md-0" placeholder="" name="Price" id="Price" readonly style="background-color: #f8f9fa; color: #6c757d; cursor: not-allowed;" />
+													</div>
 												</div>
 											</div>
 										</div>
+										
 									</div>
+									
+									<!--end::Form group-->
+									<!--begin::Form group-->
+									<!--end::Form group-->
 								</div>
-								<!--end::Form group-->
-								<!--begin::Form group-->
-								<div class="form-group">
-									<a href="javascript:;" data-repeater-create="" class="btn btn-light-primary">
-										<i class="la la-plus"></i>Add
-									</a>
-								</div>
-								<!--end::Form group-->
-							</div>
+								
+							
+							
 							<!--end::Repeater-->
 						</div>
 					</div>
+						<div class="form-group row mb-5" style="float: right;">
+							<div class="col-md-2">
+								<button class="btn btn-light-primary mt-1 mt-md-9" type="submit">
+									<i class="la la-plus fs-3"></i>Sepeti Onayla
+								</button>
+							</div>
+						</div>
+					</form>
 					<!--end::Repeater-->
 				<!--end::Modal body-->
 				</div>
