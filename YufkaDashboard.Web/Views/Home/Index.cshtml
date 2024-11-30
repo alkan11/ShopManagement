@@ -3,6 +3,20 @@
 	Layout = "~/Views/Shared/_Layout2.cshtml";
 	var allProducts = ViewBag.AllProducts != null ? ViewBag.AllProducts as IEnumerable<Shared.Models.Products.Products> : null;
 }
+<style>
+	.locked {
+		pointer-events: none; /* Etkileşimi devre dışı bırakır */
+		background-color: #e9ecef; /* Gri arka plan */
+		opacity: 0.7; /* Şeffaflık */
+	}
+
+	.repeater-locked {
+		pointer-events: none; /* Tüm tıklama etkileşimlerini devre dışı bırakır */
+		background-color: #e9ecef; /* Gri arka plan */
+		opacity: 0.7; /* Hafif şeffaflık */
+	}
+
+</style>
 <div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
 	<div class="container-xxl d-flex align-items-center justify-content-between" id="kt_header_container">
 		<!--begin::Page title-->
@@ -2708,7 +2722,7 @@
 			<!--begin::Modal dialog-->
 		<div class="modal-dialog modal-dialog-centered mw-800px">
 			<!--begin::Modal content-->
-			<div class="modal-content">
+			<div class="modal-content" id="modalDiv">
 				<!--begin::Modal header-->
 				<div class="modal-header pb-0 border-0 justify-content-end">
 					<!--begin::Close-->
@@ -2742,12 +2756,13 @@
 					<!--end::Wrapper-->
 					</div>
 					<!--begin::Repeater-->
-					<form id="repeaterForm" action="@Url.Action("AddBasket","Home")" method="POST">
-					<div class="py-5">
+					@* <form id="repeaterForm" action="@Url.Action("AddBasket","Home")" method="POST"> *@
+					<form id="repeaterForm" action="#" method="POST">
+						<div class="py-5" id="repeater_basic">
 						<div class="rounded border p-10">
 							<!--begin::Repeater-->
 							
-								<div id="repeater_basic">
+								<div id="repeater_basic2" class="form-repeater">
 									<!--begin::Form group-->
 									<div class="form-group">
 										<div class="col-md-2">
@@ -2802,13 +2817,51 @@
 							<!--end::Repeater-->
 						</div>
 					</div>
-						<div class="form-group row mb-5" style="float: right;">
-							<div class="col-md-2">
-								<button class="btn btn-light-primary mt-1 mt-md-9" type="submit">
-									<i class="la la-plus fs-3"></i>Sepeti Onayla
+						<div class="form-group row mb-5 justify-content-center">
+							
+							<div class="col-md-1 text-center">
+								<button type="reset" id="Cancel" class="btn btn-light-danger mt-1 mt-md-9" data-bs-dismiss="modal">
+									Vazgeç
+								</button>
+							</div>
+							<div class="col-md-4 text-center">
+								<button id="lockButton" class="btn btn-light-success mt-1 mt-md-9" type="button" onclick="ShowPaymentTypeDiv()">
+									Sepeti Onayla
 								</button>
 							</div>
 						</div>
+						<div class="form-group row mb-5" style="justify-content: center; display:none" id="PaymentTypeDiv">
+
+							<div class="row" style="justify-content: center;">
+								<!-- İlk Ödeme Tipi Alanı -->
+								<div class="col-md-5">
+									<label class="form-label">Ödeme Tipini Seçiniz:</label>
+									<select class="form-select" data-kt-repeater="select2" name="PaymentType" id="PaymentType">
+										<option value="" selected>Seçiniz</option>
+										<option value="0">Nakit</option>
+										<option value="1">Kredi/Banka Kartı</option>
+										<option value="2">Veresiye</option>
+									</select>
+								</div>
+
+								<!-- İkinci Ödeme Tipi Alanı -->
+								<div class="col-md-5">
+									<label class="form-label">Toplam Tutar:</label>
+									<input type="number" class="form-control mb-1 mb-md-0" placeholder="" name="TotalPrice" id="TotalPrice" />
+								</div>
+							</div>
+							<div class="form-group row mb-5 justify-content-center">
+								<div class="col-md-4 text-center">
+									<button id="sendButton" class="btn btn-light-success mt-1 mt-md-9" type="button">
+										Sepeti Kaydet
+									</button>
+								</div>
+							</div>
+							
+							
+							
+						</div>
+						
 					</form>
 					<!--end::Repeater-->
 				<!--end::Modal body-->
@@ -2820,7 +2873,19 @@
 	</div>
 	<!--end::Content-->
 	<!--begin::Footer-->
-
+	<script>
+		function ShowPaymentTypeDiv()
+		{
+			const repeater = document.getElementById("repeater_basic");
+			repeater.classList.add("repeater-locked");
+			const inputs = document.querySelectorAll(".form-repeater input, .form-repeater select");
+			inputs.forEach((element) => {
+				element.classList.add("locked"); // Gri görünüm için sınıf ekle
+				element.disabled = true; // Alanı devre dışı bırak
+			});
+			$("#PaymentTypeDiv").show();
+		}
+	</script>
 	<script>
 		window.onload = function (){
 			$('#repeater_basic').repeater({
@@ -2912,6 +2977,17 @@
 					if(!enteredValue){enteredValue=0}
 					inputFieldPrice.value=productUnitPrice*enteredValue
 				});
+			});
+		});
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const myModal = document.getElementById('basket-modal');
+
+			// Modal kapatıldığında formu resetle
+			myModal.addEventListener('hidden.bs.modal', () => {
+				console.log("içerde")
+				window.location.reload();
 			});
 		});
 	</script>
