@@ -2785,13 +2785,16 @@
 														<label class="required form-label">Ürün Seçiniz:</label>
 														<select class="form-select" data-kt-repeater="select2" name="ProductId" id="ProductId" required>
 															<option value="" selected>Seçiniz</option>
-															@if (allProducts != null)
+															<option value="1" selected>Yufka</option>
+															<option value="2" selected>Mantı</option>
+															<option value="3" selected>Seçiniz</option>
+															@* @if (allProducts != null)
 															{
 																foreach (var item in allProducts)
 																{
 																	<option value="@item.Id">@item.Name</option>
 																}
-															}
+															} *@
 														</select>
 													</div>
 													<div class="col-md-3">
@@ -2957,6 +2960,13 @@
 					});
 
 					$("#PaymentTypeDiv").show();
+
+					console.log("burdayım")
+					console.log(repeater)
+					repeater.forEach(element => {
+						console.log("elemetsnt değerleri")
+						console.log(element)
+					});
 				}
 			});
 
@@ -3003,6 +3013,7 @@
 		}
 		
 	</script>
+
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
 
@@ -3013,8 +3024,8 @@
 				const targetName=target.name;
 				var productUnitPrice=0;
 				var index=0;
-				console.log("sdfsdfs")
-				const formElements = document.querySelectorAll('input, select');
+				index = targetName.split('[')[1].split(']')[0];
+				const formElements = document.querySelectorAll('input');
 
 				// Her öğeye tıklama olayı ekliyoruz
 				formElements.forEach(element => {
@@ -3022,10 +3033,12 @@
 						// Tıklanan öğenin 'name' attribute'unu alıyoruz
 						const nameValue = element.name;
 						index=nameValue.split('[')[1].split(']')[0];
-						console.log(index)
+
 					});
 				});
-
+				
+				console.log(target.name)
+				console.log(index)
 				const selectElement = document.querySelector('select[name="Baskets[' + index + '][ProductId]"]');
 				var selectProductValue=selectElement.value;
 				// change olayı dinleyici ekliyoruz
@@ -3035,46 +3048,45 @@
 					console.log("Selected productId: ", selectProductValue);  // Seçilen değeri logluyoruz
 					
 				});
-				console.log(selectElement)
 
-				//if(selectProductValue){
-				//	 //Eğer gerekli API çağrısını yapacaksa, burada işlemi yapabilirsiniz
-				//	fetch('/Home/GetProductPrice?productId=' + selectProductValue)
-				//	     .then(response => response.json())
-				//	     .then(data => {
-				//	          productUnitPrice = data.unitPrice;
-				//	     })
-				//	     .catch(error => {
-				//	         console.error('ürün Fiyat Alımında Js Hatası:', error);
-				//	     });
-				//}
+				if(selectProductValue){
+					 //Eğer gerekli API çağrısını yapacaksa, burada işlemi yapabilirsiniz
+					fetch('/Home/GetProductPrice?productId=' + selectProductValue)
+					     .then(response => response.json())
+					     .then(data => {
+					          productUnitPrice = data.unitPrice;
+					     })
+					     .catch(error => {
+					         console.error('ürün Fiyat Alımında Js Hatası:', error);
+					     });
+				}
 				
 				
 
 				 //Ürün seçildiğinde fiyatı getir
-				//if (target && target.name === 'Baskets['+index+'][ProductId]') {
+				// if (target && target.name === 'Baskets['+index+'][ProductId]') {
 
-				//	const productId = target.value;
-
-				//	fetch('/Home/GetProductPrice?productId=' + productId)
-				//		.then(response => response.json())
-				//		.then(data => {
+				// 	const productId = target.value;
+				// 	productUnitPrice = 100;
+				// 	// fetch('/Home/GetProductPrice?productId=' + productId)
+				// 	// 	.then(response => response.json())
+				// 	// 	.then(data => {
 							
-				//			productUnitPrice = data.unitPrice;
-				//		});
+				// 	// 		productUnitPrice = data.unitPrice;
+				// 	// 	});
 
-				//}
+				// }
 
-				//const inputFieldAmount = document.querySelector('input[name="Baskets['+index+'][Amount]"]');
-				//const inputFieldPrice = document.querySelector('input[name="Baskets[' + index + '][Price]"]');
+				const inputFieldAmount = document.querySelector('input[name="Baskets['+index+'][Amount]"]');
+				const inputFieldPrice = document.querySelector('input[name="Baskets[' + index + '][Price]"]');
 
-				//// Input alanındaki değişiklikleri dinliyoruz
-				//inputFieldAmount.addEventListener("input", function (event) {
-				//	// Girilen değeri alıyoruz
-				//	let enteredValue = inputFieldAmount.value;
-				//	if(!enteredValue){enteredValue=0}
-				//	inputFieldPrice.value=productUnitPrice*enteredValue
-				//});
+				// Input alanındaki değişiklikleri dinliyoruz
+				inputFieldAmount.addEventListener("input", function (event) {
+					// Girilen değeri alıyoruz
+					let enteredValue = inputFieldAmount.value;
+					if(!enteredValue){enteredValue=0}
+					inputFieldPrice.value=productUnitPrice*enteredValue
+				});
 			});
 		});
 	</script>
