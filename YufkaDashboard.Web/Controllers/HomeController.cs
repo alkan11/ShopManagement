@@ -21,7 +21,9 @@ namespace YufkaDashboard.Web.Controllers
 		public async Task<IActionResult> Index()
         {
             var allProducts = await _productBusiness.GetAllProducts();
+            var allPaymentType = await _systemBusiness.GetAllStringsByStringGroup("PaymentType");
             ViewBag.AllProducts = allProducts.Data;
+            ViewBag.AllPaymentType = allPaymentType.Data;
             return View();
         }
         [HttpPost]

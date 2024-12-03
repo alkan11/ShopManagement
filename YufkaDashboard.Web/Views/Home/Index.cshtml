@@ -2,6 +2,7 @@
 	ViewData["Title"] = "Index";
 	Layout = "~/Views/Shared/_Layout2.cshtml";
 	var allProducts = ViewBag.AllProducts != null ? ViewBag.AllProducts as IEnumerable<Shared.Models.Products.Products> : null;
+	var allPaymentType = ViewBag.AllPaymentType != null ? ViewBag.AllPaymentType as Shared.Models.System.StringGroup : null;
 }
 <style>
 	.locked {
@@ -2781,8 +2782,8 @@
 													</div>
 
 													<div class="col-md-3">
-														<label class="form-label">Ürün Seçiniz:</label>
-														<select class="form-select" data-kt-repeater="select2" name="ProductId" id="ProductId" >
+														<label class="required form-label">Ürün Seçiniz:</label>
+														<select class="form-select" data-kt-repeater="select2" name="ProductId" id="ProductId" required>
 															<option value="" selected>Seçiniz</option>
 															@if (allProducts != null)
 															{
@@ -2794,8 +2795,8 @@
 														</select>
 													</div>
 													<div class="col-md-3">
-														<label class="form-label">Miktar Giriniz:</label>
-														<input type="number" class="form-control mb-2 mb-md-0" placeholder="" name="Amount" id="Amount" />
+														<label class="required form-label">Miktar Giriniz:</label>
+														<input type="number" class="form-control mb-2 mb-md-0" placeholder="" name="Amount" id="Amount" required/>
 													</div>
 													<div class="col-md-3">
 														<label class="form-label">Tutar</label>
@@ -2835,12 +2836,16 @@
 							<div class="row" style="justify-content: center;">
 								<!-- İlk Ödeme Tipi Alanı -->
 								<div class="col-md-5">
-									<label class="form-label">Ödeme Tipini Seçiniz:</label>
-									<select class="form-select" data-kt-repeater="select2" name="PaymentType" id="PaymentType">
+									<label class="required form-label">Ödeme Tipini Seçiniz:</label>
+									<select class="form-select" data-kt-repeater="select2" name="PaymentType" id="PaymentType" required>
 										<option value="" selected>Seçiniz</option>
-										<option value="0">Nakit</option>
-										<option value="1">Kredi/Banka Kartı</option>
-										<option value="2">Veresiye</option>
+										@if (allPaymentType != null)
+										{
+											foreach (var item in allPaymentType._strings)
+											{
+												<option value="@item.Id">@item.StringDescription</option>
+											}
+										}
 									</select>
 								</div>
 
@@ -2876,16 +2881,107 @@
 	<script>
 		function ShowPaymentTypeDiv()
 		{
-			const repeater = document.getElementById("repeater_basic");
-			repeater.classList.add("repeater-locked");
-			const inputs = document.querySelectorAll(".form-repeater input, .form-repeater select");
-			inputs.forEach((element) => {
-				element.classList.add("locked"); // Gri görünüm için sınıf ekle
-				element.disabled = true; // Alanı devre dışı bırak
-			});
-			$("#PaymentTypeDiv").show();
+			GetFormValidate()
 		}
 	</script>
+	<script>
+		function GetFormValidate()
+		{
+
+			const form = document.getElementById("repeaterForm");
+			
+			const addFields = function (index) {
+				const namePrefix = "Baskets[" + index + "]";
+
+				// Add validators
+				validator.addField(namePrefix + "[ProductId]", {
+					validators: {
+						notEmpty: {
+							message: "Bu alan zorunludur"
+						}
+					}
+				});
+				validator.addField(namePrefix + "[Amount]", {
+					validators: {
+						notEmpty: {
+							message: "Bu alan zorunludur"
+						}
+					}
+				});
+
+			};
+
+			const removeFields = function (index) {
+				const namePrefix = "Baskets[" + index + "]";
+				validator.addField(namePrefix + "[ProductId]");
+				validator.addField(namePrefix + "[Amount]");
+			}
+			
+			
+			// Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+			var validator = FormValidation.formValidation(
+				form,
+				{
+					plugins: {
+						trigger: new FormValidation.plugins.Trigger(),
+						bootstrap: new FormValidation.plugins.Bootstrap5({
+							rowSelector: ".fv-row",
+							eleInvalidClass: "",
+							eleValidClass: ""
+						}),
+						excluded: new FormValidation.plugins.Excluded({
+							excluded: function (field, ele, eles) {
+								console.log(field)
+								if (form.querySelector('[name="' + field + '"]') === null) {
+									return true;
+								}
+							},
+						}),
+					}
+				}
+			);
+			
+
+			
+
+			validator.validate().then(function (status) 
+			{
+				if(status=="Valid")
+				{
+					const repeater = document.getElementById("repeater_basic");
+					repeater.classList.add("repeater-locked");
+					const inputs = document.querySelectorAll(".form-repeater input, .form-repeater select");
+					inputs.forEach((element) => {
+						element.classList.add("locked"); // Gri görünüm için sınıf ekle
+						element.disabled = true; // Alanı devre dışı bırak
+					});
+
+					$("#PaymentTypeDiv").show();
+				}
+			});
+
+			addFields(0);
+
+			$(form).repeater({
+				initEmpty: false,
+
+				show: function () {
+					$(this).slideDown();
+
+					const index = $(this).closest("[data-repeater-item]").index();
+
+					addFields(index);
+				},
+
+				hide: function (deleteElement) {
+					$(this).slideUp(deleteElement);
+				}
+			});
+			
+			
+		}
+	</script>
+
 	<script>
 		window.onload = function (){
 			$('#repeater_basic').repeater({
@@ -2917,7 +3013,7 @@
 				const targetName=target.name;
 				var productUnitPrice=0;
 				var index=0;
-
+				console.log("sdfsdfs")
 				const formElements = document.querySelectorAll('input, select');
 
 				// Her öğeye tıklama olayı ekliyoruz
@@ -2926,7 +3022,7 @@
 						// Tıklanan öğenin 'name' attribute'unu alıyoruz
 						const nameValue = element.name;
 						index=nameValue.split('[')[1].split(']')[0];
-
+						console.log(index)
 					});
 				});
 
@@ -2939,17 +3035,19 @@
 					console.log("Selected productId: ", selectProductValue);  // Seçilen değeri logluyoruz
 					
 				});
-				if(selectProductValue){
-					 //Eğer gerekli API çağrısını yapacaksa, burada işlemi yapabilirsiniz
-					fetch('/Home/GetProductPrice?productId=' + selectProductValue)
-					     .then(response => response.json())
-					     .then(data => {
-					          productUnitPrice = data.unitPrice;
-					     })
-					     .catch(error => {
-					         console.error('ürün Fiyat Alımında Js Hatası:', error);
-					     });
-				}
+				console.log(selectElement)
+
+				//if(selectProductValue){
+				//	 //Eğer gerekli API çağrısını yapacaksa, burada işlemi yapabilirsiniz
+				//	fetch('/Home/GetProductPrice?productId=' + selectProductValue)
+				//	     .then(response => response.json())
+				//	     .then(data => {
+				//	          productUnitPrice = data.unitPrice;
+				//	     })
+				//	     .catch(error => {
+				//	         console.error('ürün Fiyat Alımında Js Hatası:', error);
+				//	     });
+				//}
 				
 				
 
@@ -2967,16 +3065,16 @@
 
 				//}
 
-				const inputFieldAmount = document.querySelector('input[name="Baskets['+index+'][Amount]"]');
-				const inputFieldPrice = document.querySelector('input[name="Baskets[' + index + '][Price]"]');
+				//const inputFieldAmount = document.querySelector('input[name="Baskets['+index+'][Amount]"]');
+				//const inputFieldPrice = document.querySelector('input[name="Baskets[' + index + '][Price]"]');
 
-				// Input alanındaki değişiklikleri dinliyoruz
-				inputFieldAmount.addEventListener("input", function (event) {
-					// Girilen değeri alıyoruz
-					let enteredValue = inputFieldAmount.value;
-					if(!enteredValue){enteredValue=0}
-					inputFieldPrice.value=productUnitPrice*enteredValue
-				});
+				//// Input alanındaki değişiklikleri dinliyoruz
+				//inputFieldAmount.addEventListener("input", function (event) {
+				//	// Girilen değeri alıyoruz
+				//	let enteredValue = inputFieldAmount.value;
+				//	if(!enteredValue){enteredValue=0}
+				//	inputFieldPrice.value=productUnitPrice*enteredValue
+				//});
 			});
 		});
 	</script>
@@ -2986,7 +3084,6 @@
 
 			// Modal kapatıldığında formu resetle
 			myModal.addEventListener('hidden.bs.modal', () => {
-				console.log("içerde")
 				window.location.reload();
 			});
 		});
