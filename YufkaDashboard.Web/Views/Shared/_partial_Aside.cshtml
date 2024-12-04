@@ -127,19 +127,19 @@
 						</span>
 						<!--end::Svg Icon-->
 					</a>
-					<div class="menu-sub menu-sub-dropdown p-3 w-300px">
+					<div class="menu-sub menu-sub-dropdown p-3 w-300px" id="dropdownMenu5">
 							<div class="menu-item">
 							<span href="#" class="px-1 py-3">
-								<span class="text-primary pb-2 px-3 fs-7 text-uppercase">Detay</span>
+								<span class="text-primary pb-2 px-3 fs-7 text-uppercase">Doküman Yönetimi</span>
 							</span>
 							</div>
 						<div class="separator my-2"></div>
 						<div class="menu-item">
-								<a href="#" class="menu-link px-1 py-3">
+							<a href="@Url.Action("Index", "Documents")" class="menu-link px-1 py-3" id="menuLink5_1">
 									<span class="menu-bullet mr-3 text-gray-800">
 										<span class="las la-chevron-right"></span>
 									</span>
-									<span class="menu-title">Detays</span>
+									<span class="menu-title">Dokümanlar</span>
 								</a>
 						</div>
 					</div>
@@ -399,6 +399,9 @@
 	$('#dropdownToggle3').click(function() {
         $('#dropdownMenu3').toggle(); // Menü açma / kapama
     });
+	$('#dropdownToggle5').click(function() {
+        $('#dropdownMenu5').toggle(); // Menü açma / kapama
+    });
 	$('#dropdownToggle7').click(function() {
         $('#dropdownMenu7').toggle(); // Menü açma / kapama
     });
@@ -419,6 +422,14 @@
 	//Menu-3
 	// Yönlendirme için link tıklama
     $('#menuLink3').click(function(event) {
+        event.stopPropagation(); // Menü kapanmasını engelle
+        // Yönlendirmeyi gerçekleştir
+        window.location.href = $(this).attr('href');
+    });
+	
+	//Menu-5
+	// Yönlendirme için link tıklama
+    $('#menuLink5_1').click(function(event) {
         event.stopPropagation(); // Menü kapanmasını engelle
         // Yönlendirmeyi gerçekleştir
         window.location.href = $(this).attr('href');

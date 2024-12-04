@@ -2961,12 +2961,21 @@
 
 					$("#PaymentTypeDiv").show();
 
-					console.log("burdayım")
-					console.log(repeater)
-					repeater.forEach(element => {
-						console.log("elemetsnt değerleri")
-						console.log(element)
+					const formElement = document.querySelectorAll('input');
+					var totalPrice = 0;
+					formElement.forEach(element => {
+
+						keyString=element.name
+						let parts = keyString.split(/[\[\]]/);
+						let targetKey = parts[3];
+						
+						if(targetKey=="Price"){
+							totalPrice = Number(element.value) + totalPrice;
+						}
+						
 					});
+					const formTotalPrice = document.getElementById("TotalPrice");
+					formTotalPrice.value=totalPrice;
 				}
 			});
 
@@ -3037,15 +3046,13 @@
 					});
 				});
 				
-				console.log(target.name)
-				console.log(index)
+
 				const selectElement = document.querySelector('select[name="Baskets[' + index + '][ProductId]"]');
 				var selectProductValue=selectElement.value;
 				// change olayı dinleyici ekliyoruz
 				selectElement.addEventListener('change', function () {
 					// Seçilen productId'yi alıyoruz, ilk değer de dahil
 					 selectProductValue = selectElement.value;
-					console.log("Selected productId: ", selectProductValue);  // Seçilen değeri logluyoruz
 					
 				});
 
