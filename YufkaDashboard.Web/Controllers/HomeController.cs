@@ -39,12 +39,12 @@ namespace YufkaDashboard.Web.Controllers
 		[HttpGet]
 		public async Task<JsonResult> GetProductPrice(int productId)
 		{
-			//var result = await _productBusiness.GetProductById(productId); // Ürünü veritabanından al
+			var result = await _productBusiness.GetProductById(productId); // Ürünü veritabanından al
 
-			//if (!result.IsSuccessful) return Json(new { unitPrice = 0 });
+			if (!result.IsSuccessful) return Json(new { unitPrice = 0 });
 
-			//var product = result.Data;
-			return Json(new { unitPrice = 15 });
+			var product = result.Data;
+			return Json(new { unitPrice = product.UnitPrice });
 		}
 		public IActionResult Index2()
         {

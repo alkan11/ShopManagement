@@ -345,9 +345,21 @@ window.onload = function () {
                                     // Create folder link
                                     const folderLink = document.createElement('a');
                                     const folderLinkClasses = ['text-gray-800', 'text-hover-primary'];
-                                    folderLink.setAttribute('href', '?page=apps/file-manager/blank');
+                                    folderLink.setAttribute('href', '?page=apps/file-manager/blank');//gidilecek dosya yolu
                                     folderLink.classList.add(...folderLinkClasses);
                                     folderLink.innerText = rowInput.value;
+
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "/Document/AddFolder",
+                                        dataType: "json",
+                                        data: { "folderName": rowInput.value },
+                                        success: function (sonuc) {
+                                            if (sonuc != null) {
+                                                console.log(sonuc)
+                                            }
+                                        }
+                                    });
 
                                     const newRow = datatable.row.add({
                                         'checkbox': checkboxTemplate.innerHTML,
@@ -388,7 +400,7 @@ window.onload = function () {
                                         "hideMethod": "fadeOut"
                                     };
 
-                                    toastr.success(rowInput.value + ' was created!');
+                                    toastr.success(rowInput.value + ' dosyasý oluþturuldu.');
 
                                     // Disable indicator
                                     rowButton.removeAttribute("data-kt-indicator");

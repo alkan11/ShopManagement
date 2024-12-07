@@ -2757,8 +2757,7 @@
 					<!--end::Wrapper-->
 					</div>
 					<!--begin::Repeater-->
-					@* <form id="repeaterForm" action="@Url.Action("AddBasket","Home")" method="POST"> *@
-					<form id="repeaterForm" action="#" method="POST">
+					<form id="repeaterForm" action="@Url.Action("AddBasket","Home")" method="POST">
 						<div class="py-5" id="repeater_basic">
 						<div class="rounded border p-10">
 							<!--begin::Repeater-->
@@ -2785,16 +2784,13 @@
 														<label class="required form-label">Ürün Seçiniz:</label>
 														<select class="form-select" data-kt-repeater="select2" name="ProductId" id="ProductId" required>
 															<option value="" selected>Seçiniz</option>
-															<option value="1" selected>Yufka</option>
-															<option value="2" selected>Mantı</option>
-															<option value="3" selected>Seçiniz</option>
-															@* @if (allProducts != null)
+															@if (allProducts != null)
 															{
 																foreach (var item in allProducts)
 																{
 																	<option value="@item.Id">@item.Name</option>
 																}
-															} *@
+															}
 														</select>
 													</div>
 													<div class="col-md-3">
@@ -3029,10 +3025,13 @@
 			
 			// Tüm repeater item'larını izle
 			document.querySelector('#repeater_basic').addEventListener('change', function (e) {
+				console.log("repeattekrar")
 				const target = e.target;
 				const targetName=target.name;
 				var productUnitPrice=0;
 				var index=0;
+				console.log("sdfsdf")
+				console.log(targetName)
 				index = targetName.split('[')[1].split(']')[0];
 				const formElements = document.querySelectorAll('input');
 
@@ -3045,7 +3044,8 @@
 
 					});
 				});
-				
+				console.log("index")
+				console.log(index)
 
 				const selectElement = document.querySelector('select[name="Baskets[' + index + '][ProductId]"]');
 				var selectProductValue=selectElement.value;
@@ -3055,7 +3055,8 @@
 					 selectProductValue = selectElement.value;
 					
 				});
-
+				console.log("selected")
+				console.log(selectProductValue)
 				if(selectProductValue){
 					 //Eğer gerekli API çağrısını yapacaksa, burada işlemi yapabilirsiniz
 					fetch('/Home/GetProductPrice?productId=' + selectProductValue)
