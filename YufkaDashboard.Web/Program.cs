@@ -23,6 +23,8 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<IProductBusiness,ProductBusiness>();
 builder.Services.AddScoped<IProductDal, ProductDal>();
 builder.Services.AddScoped<ISystemBusiness, SystemBusiness>();
+builder.Services.AddScoped<IHomeBusiness, HomeBusiness>();
+builder.Services.AddScoped<IHomeDal, HomeDal>();
 builder.Services.AddScoped<ISystemDal, SystemDal>();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<Context>();

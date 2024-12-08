@@ -14,11 +14,11 @@ namespace YufkaDashboard.Web.Controllers
 			string filePath = @"C:\path\to\your\file.txt";
 
 			// Dosyayı oluşturuyor
-			using (FileStream fs = File.Create(filePath))
-			{
-				// Dosya başarıyla oluşturuldu
-				Console.WriteLine("Dosya oluşturuldu: " + filePath);
-			}
+			//using (FileStream fs = File.Create(filePath))
+			//{
+			//	// Dosya başarıyla oluşturuldu
+			//	Console.WriteLine("Dosya oluşturuldu: " + filePath);
+			//}
 
 			return Json(new {ok=true});
 		}
