@@ -22,4 +22,8 @@
     <ProjectReference Include="..\YufkaDashboard.Business\YufkaDashboard.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Documents\" />
+  </ItemGroup>
+
 </Project>
