@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Documents\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
 
 </Project>
