@@ -23,6 +23,21 @@ namespace YufkaDashboard.Business.Concrete
 			_documentDal = documentDal;
 		}
 
+		public async Task<Response<Files>> AddFile(Files model)
+		{
+			try
+			{
+				var result = await _documentDal.AddFile(model);
+
+				return Response<Files>.Success(result, StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<Files>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
 		public async Task<Response<AddFolder>> AddFolder(AddFolder model)
 		{
 			try
@@ -35,6 +50,21 @@ namespace YufkaDashboard.Business.Concrete
 			{
 
 				return Response<AddFolder>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		public async Task<Response<List<Files>>> GetAllFilesByFolderId(int folderId)
+		{
+			try
+			{
+				var result = await _documentDal.GetAllFilesByFolderId(folderId);
+
+				return Response<List<Files>>.Success(result, StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<List<Files>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
 			}
 		}
 

@@ -11,6 +11,8 @@ namespace YufkaDashboard.Business.Abstract
 	public interface IDocumentBusiness
 	{
 		public Task<Response<AddFolder>> AddFolder(AddFolder model);
+		public Task<Response<Files>> AddFile(Files model);
 		public Task<Response<List<Folder>>> GetAllFolderMain();
+		public Task<Response<List<Files>>> GetAllFilesByFolderId(int folderId);
 	}
 }

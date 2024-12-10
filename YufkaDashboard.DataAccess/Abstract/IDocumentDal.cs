@@ -11,6 +11,8 @@ namespace YufkaDashboard.DataAccess.Abstract
 	public interface IDocumentDal
 	{
 		public Task<AddFolder> AddFolder(AddFolder model);
+		public Task<Files> AddFile(Files model);
 		public Task<List<Folder>> GetAllFolderMain();
+		public Task<List<Files>> GetAllFilesByFolderId(int folderId);
 	}
 }
