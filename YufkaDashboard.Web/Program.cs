@@ -5,6 +5,7 @@ using YufkaDashboard.Business.Abstract;
 using YufkaDashboard.Business.Concrete;
 using YufkaDashboard.DataAccess.Abstract;
 using YufkaDashboard.DataAccess.Conrete;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +43,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider("C:\\Users\\simse\\source\\repos\\YufkaDashboard\\YufkaDashboard\\YufkaDashboard.Web\\wwwroot\\Documents\\"),
+	RequestPath = "/Documents"
+});
 app.UseRouting();
 
 app.UseAuthorization();

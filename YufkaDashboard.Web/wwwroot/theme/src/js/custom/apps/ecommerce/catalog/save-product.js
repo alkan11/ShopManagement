@@ -134,17 +134,18 @@ var KTAppEcommerceSaveProduct = function () {
     // Init DropzoneJS --- more info:
     const initDropzone = () => {
         var myDropzone = new Dropzone("#kt_ecommerce_add_product_media", {
-            url: "https://keenthemes.com/scripts/void.php", // Set the url for your upload script location
+            url: "/Documents/AddFile", // Set the url for your upload script location
             paramName: "file", // The name that will be used to transfer the file
             maxFiles: 10,
             maxFilesize: 10, // MB
             addRemoveLinks: true,
             accept: function (file, done) {
-                if (file.name == "wow.jpg") {
-                    done("Naha, you don't.");
-                } else {
-                    done();
-                }
+                console.log(file)
+                //if (file.name == "wow.jpg") {
+                //    done("Naha, you don't.");
+                //} else {
+                //    done();
+                //}
             }
         });
     }

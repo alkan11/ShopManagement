@@ -65,5 +65,16 @@ namespace YufkaDashboard.DataAccess.Conrete
 				return result.ToList();
 			}
 		}
+
+		public async Task<Folder> FindFolder(int id)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pFindFolder";
+				var parameters = new { @id = id };
+				var result = await dbConnection.QueryFirstOrDefaultAsync<Folder>(procedure,parameters,commandType: CommandType.StoredProcedure);
+				return result;
+			}
+		}
 	}
 }

@@ -53,6 +53,21 @@ namespace YufkaDashboard.Business.Concrete
 			}
 		}
 
+		public async Task<Response<Folder>> FindFolder(int id)
+		{
+			try
+			{
+				var result = await _documentDal.FindFolder(id);
+
+				return Response<Folder>.Success(result, StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<Folder>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
 		public async Task<Response<List<Files>>> GetAllFilesByFolderId(int folderId)
 		{
 			try

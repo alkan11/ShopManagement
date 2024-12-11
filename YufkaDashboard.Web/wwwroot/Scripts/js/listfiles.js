@@ -223,7 +223,39 @@ var KTFileManagerList = function () {
             newFolderRow.parentNode.removeChild(newFolderRow);
         }
     }
-
+    var myDropzone = new Dropzone("#kt_ecommerce_add_product_media", {
+        url: "/Documents/AddFile", // Set the url for your upload script location
+        paramName: "file", // The name that will be used to transfer the file
+        maxFiles: 10,
+        maxFilesize: 10, // MB
+        addRemoveLinks: true,
+        accept: function (file, done) {
+            console.log(file)
+            $.ajax({
+                type: "POST",
+                url: "/Documents/AddFile",
+                data: { file: encodeURIComponent(JSON.stringify(file.upload)), folderId: folderId },
+                success: function (sonuc) {
+                    if (sonuc != null && sonuc.ok) {
+                        console.log(sonuc)
+                        if (sonuc.control == 1) {
+                            toastr.error("Ýþlem gerçekleþirken hata oluþtu. Dosya yüklenemedi");
+                        }
+                        else if (sonuc.control == 2) {
+                            toastr.error("Ýþlem gerçekleþirken hata oluþtu. Klasör bulunamadýðý için belge klasöre eklenemedi.");
+                        }
+                        else {
+                            toastr.success("Dosya klasöre baþarý ile yüklendi.");
+                            window.location.reload(true);
+                        }
+                    }
+                    else {
+                        toastr.success("Ýþlem gerçekleþirken hata oluþtu.");
+                    }
+                }
+            });
+        }
+    });
 
     // Rename callback
     const renameCallback = (e) => {
@@ -479,17 +511,25 @@ var KTFileManagerList = function () {
                     }
                 }, 20);
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     url: "/Documents/AddFile",
                     data: { file: encodeURIComponent(JSON.stringify(file.upload)), folderId: folderId },
                     success: function (sonuc) {
                         if (sonuc != null && sonuc.ok) {
-                            if (sonuc.control == 0) {
-                                
+                            console.log(sonuc)
+                            if (sonuc.control == 1) {
+                                toastr.error("Ýþlem gerçekleþirken hata oluþtu. Dosya yüklenemedi");
+                            }
+                            else if (sonuc.control == 2) {
+                                toastr.error("Ýþlem gerçekleþirken hata oluþtu. Klasör bulunamadýðý için belge klasöre eklenemedi.");
                             }
                             else {
-                                toastr.error("Ýþlem gerçekleþirken hata oluþtu.");
+                                toastr.success("Dosya klasöre baþarý ile yüklendi.");
+                                window.location.reload(true);
                             }
+                        }
+                        else {
+                            toastr.success("Ýþlem gerçekleþirken hata oluþtu.");
                         }
                     }
                 });

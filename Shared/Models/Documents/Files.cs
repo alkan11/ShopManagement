@@ -12,6 +12,7 @@ namespace Shared.Models.Documents
         public int FolderId { get; set; }
         public string Name { get; set; }
         public string Filename { get; set; }
+        public string FolderName { get; set; }
         public string Uuid { get; set; }
         public DateTime CreatedDate { get; set; }
         public int Status { get; set; }

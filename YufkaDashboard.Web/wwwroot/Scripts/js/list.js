@@ -21,83 +21,83 @@ var KTFileManagerList = function () {
         checkboxTemplate = document.querySelector('[data-kt-filemanager-template="checkbox"]');
     }
 
-    const initDatatable = () => {
-        // Set date data order
-        const tableRows = table.querySelectorAll('tbody tr');
+    //const initDatatable = () => {
+    //    // Set date data order
+    //    const tableRows = table.querySelectorAll('tbody tr');
 
-        tableRows.forEach(row => {
-            const dateRow = row.querySelectorAll('td');
-            const dateCol = dateRow[3]; // select date from 4th column in table
-            const realDate = moment(dateCol.innerHTML, "DD MMM YYYY, LT").format();
-            dateCol.setAttribute('data-order', realDate);
-        });
+    //    tableRows.forEach(row => {
+    //        const dateRow = row.querySelectorAll('td');
+    //        const dateCol = dateRow[3]; // select date from 4th column in table
+    //        const realDate = moment(dateCol.innerHTML, "DD MMM YYYY, LT").format();
+    //        dateCol.setAttribute('data-order', realDate);
+    //    });
 
-        const foldersListOptions = {
-            "info": false,
-            'order': [],
-            "scrollY": "700px",
-            "scrollCollapse": true,
-            "paging": false,
-            'ordering': false,
-            'columns': [
-                { data: 'checkbox' },
-                { data: 'name' },
-                { data: 'size' },
-                { data: 'date' },
-                { data: 'action' },
-            ],
-            'language': {
-                emptyTable: `<div class="d-flex flex-column flex-center">
-                    <div class="fs-1 fw-bolder text-dark">Kayit Bulunamadi!</div>
-                    <div class="fs-6">Yeni bir klasor ekleyebilirsiniz.</div>
-                </div>`
-            }
-        };
+    //    const foldersListOptions = {
+    //        "info": false,
+    //        'order': [],
+    //        "scrollY": "700px",
+    //        "scrollCollapse": true,
+    //        "paging": false,
+    //        'ordering': false,
+    //        'columns': [
+    //            { data: 'checkbox' },
+    //            { data: 'name' },
+    //            { data: 'size' },
+    //            { data: 'date' },
+    //            { data: 'action' },
+    //        ],
+    //        'language': {
+    //            emptyTable: `<div class="d-flex flex-column flex-center">
+    //                <div class="fs-1 fw-bolder text-dark">Kayit Bulunamadi!</div>
+    //                <div class="fs-6">Yeni bir klasor ekleyebilirsiniz.</div>
+    //            </div>`
+    //        }
+    //    };
 
-        const filesListOptions = {
-            "info": false,
-            'order': [],
-            'pageLength': 10,
-            "lengthChange": false,
-            'ordering': false,
-            'columns': [
-                { data: 'checkbox' },
-                { data: 'name' },
-                { data: 'size' },
-                { data: 'date' },
-                { data: 'action' },
-            ],
-            'language': {
-                emptyTable: `<div class="d-flex flex-column flex-center">
-                    <div class="fs-1 fw-bolder text-dark mb-4">Kayit Bulunamadi!</div>
-                    <div class="fs-6">Yeni bir belge ekleyebilirsiniz.</div>
-                </div>`
-            },
-            conditionalPaging: true
-        };
+    //    const filesListOptions = {
+    //        "info": false,
+    //        'order': [],
+    //        'pageLength': 10,
+    //        "lengthChange": false,
+    //        'ordering': false,
+    //        'columns': [
+    //            { data: 'checkbox' },
+    //            { data: 'name' },
+    //            { data: 'size' },
+    //            { data: 'date' },
+    //            { data: 'action' },
+    //        ],
+    //        'language': {
+    //            emptyTable: `<div class="d-flex flex-column flex-center">
+    //                <div class="fs-1 fw-bolder text-dark mb-4">Kayit Bulunamadi!</div>
+    //                <div class="fs-6">Yeni bir belge ekleyebilirsiniz.</div>
+    //            </div>`
+    //        },
+    //        conditionalPaging: true
+    //    };
 
-        // Define datatable options to load
-        var loadOptions;
-        if (table.getAttribute('data-kt-filemanager-table') === 'folders') {
-            loadOptions = foldersListOptions;
-        } else {
-            loadOptions = filesListOptions;
-        }
+    //    // Define datatable options to load
+    //    var loadOptions;
+    //    if (table.getAttribute('data-kt-filemanager-table') === 'folders') {
+    //        loadOptions = foldersListOptions;
+    //    } else {
+    //        loadOptions = filesListOptions;
+    //    }
 
-        // Init datatable --- more info on datatables: https://datatables.net/manual/
-        datatable = $(table).DataTable(loadOptions);
+    //    // Init datatable --- more info on datatables: https://datatables.net/manual/
+    //    datatable = $(table).DataTable(loadOptions);
 
-        // Re-init functions on every table re-draw -- more info: https://datatables.net/reference/event/draw
-        datatable.on('draw', function () {
-            initToggleToolbar();
-            handleDeleteRows();
-            toggleToolbars();
-            resetNewFolder();
-            KTMenu.createInstances();
-            initCopyLink();
-            handleRename();
-        });
-    }
+    //    // Re-init functions on every table re-draw -- more info: https://datatables.net/reference/event/draw
+    //    datatable.on('draw', function () {
+    //        initToggleToolbar();
+    //        handleDeleteRows();
+    //        toggleToolbars();
+    //        resetNewFolder();
+    //        KTMenu.createInstances();
+    //        initCopyLink();
+    //        handleRename();
+    //    });
+    //}
 
     // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
     const handleSearchDatatable = () => {

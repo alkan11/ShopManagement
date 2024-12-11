@@ -12,6 +12,7 @@ namespace YufkaDashboard.Business.Abstract
 	{
 		public Task<Response<AddFolder>> AddFolder(AddFolder model);
 		public Task<Response<Files>> AddFile(Files model);
+		public Task<Response<Folder>> FindFolder(int id);
 		public Task<Response<List<Folder>>> GetAllFolderMain();
 		public Task<Response<List<Files>>> GetAllFilesByFolderId(int folderId);
 	}

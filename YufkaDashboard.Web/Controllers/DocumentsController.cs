@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Shared.Models.Documents;
 using System.IO;
@@ -38,7 +39,7 @@ namespace YufkaDashboard.Web.Controllers
 			if(!string.IsNullOrEmpty(folderName)) 
 			{
 				var path = Directory.GetCurrentDirectory();
-				string folderPath = $"{path}\\Documents\\{folderName}";
+				string folderPath = $"{path}\\wwwroot\\Documents\\{folderName}";
 
 				// Klasör oluştur
 				DirectoryInfo folderInfo = Directory.CreateDirectory(folderPath);
@@ -83,21 +84,23 @@ namespace YufkaDashboard.Web.Controllers
 			ViewBag.folderId=folderId;
 			return View();
 		}
-		[HttpGet]
+		[HttpPost]
 		public async Task<JsonResult> AddFile(string file,int folderId)
 		{
 			Files model=new Files();
 			var decodedFile = Uri.UnescapeDataString(file);
 			bool success = false;
-
+			byte[] fileContent;
 			using (JsonDocument doc = JsonDocument.Parse(decodedFile))
 			{
 				var root = doc.RootElement;
-
+				
 				// JSON içinden değerleri tek tek çek
 				model.Uuid = root.GetProperty("uuid").GetString();
-				model.Filename = root.GetProperty("filename").GetString(); 
+				model.Filename = root.GetProperty("filename").GetString();
 
+				long total = root.GetProperty("total").GetInt64();
+				fileContent = BitConverter.GetBytes(total);
 			}
 
 			model.FolderId = folderId;
@@ -109,43 +112,52 @@ namespace YufkaDashboard.Web.Controllers
 			{
 				if (!result.IsSuccessful)
 				{
-
+					return Json(new { ok = success, control = 1 });
 				}
 
-				//var folder= await _documentBusines Find sorgusu yazmak lazım
+
+
+				var folder = await _documentBusiness.FindFolder(folderId);
+				if (folder != null)
+				{
+					if (!folder.IsSuccessful)
+					{
+						return Json(new { ok = success, control = 2 });
+					}
+
+					if (folder.Data != null)
+					{
+						if (!string.IsNullOrEmpty(folder.Data.Name))
+						{
+							var path = Directory.GetCurrentDirectory();
+							string folderPath = $"{path}\\wwwroot\\Documents\\{folder.Data.Name}\\{model.Filename}";
+
+							if (fileContent != null && fileContent.Length > 0)
+							{
+								System.IO.File.WriteAllBytes(folderPath, fileContent);
+								success = true;
+								if (System.IO.File.Exists(folderPath))
+								{
+									var writtenContent = System.IO.File.ReadAllBytes(folderPath);
+									if (writtenContent.Length == fileContent.Length)
+									{
+										success = true;
+									}
+									else
+									{
+										throw new InvalidOperationException("Dosya eksik veya hatalı yazıldı.");
+									}
+								}
+							}
+
+						}
+					}
+					
+
+				}
 			}
 
-			//if (!string.IsNullOrEmpty(folderName))
-			//{
-			//	var path = Directory.GetCurrentDirectory();
-			//	string folderPath = $"{path}\\Documents\\{folderName}";
-
-			//	// Klasör oluştur
-			//	DirectoryInfo folderInfo = Directory.CreateDirectory(folderPath);
-			//	if (folderInfo.Exists)
-			//	{
-			//		success = true;
-
-			//		model.Name = folderName;
-			//		model.CreatedDate = DateTime.Now;
-			//		model.Status = 1;
-
-
-			//		var createdFolder = await _documentBusiness.AddFolder(model);
-			//		if (createdFolder != null)
-			//		{
-			//			if (!createdFolder.IsSuccessful)
-			//			{
-			//				return Json(new { ok = success, control = 1 });
-			//			}
-
-			//		}
-			//	}
-
-			//}
-
-
-			return Json(new { ok = success });
+			return Json(new { ok = success,control=0 });
 		}
 	}
 }
