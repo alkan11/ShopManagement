@@ -358,48 +358,8 @@ var KTFileManagerList = function () {
                                         success: function (sonuc) {
                                             if (sonuc != null && sonuc.ok) {
                                                 if (sonuc.control == 0) {
-                                                    const newRow = datatable.row.add({
-                                                        'checkbox': checkboxTemplate.innerHTML,
-                                                        'name': folderIcon.outerHTML + folderLink.outerHTML,
-                                                        "size": '-',
-                                                        "date": '-',
-                                                        'action': actionTemplate.innerHTML
-                                                    }).node();
-                                                    $(newRow).find('td').eq(4).attr('data-kt-filemanager-table', 'action_dropdown');
-                                                    $(newRow).find('td').eq(4).addClass('text-end'); // Add custom class to last 'td' element --- more info: https://datatables.net/forums/discussion/22341/row-add-cell-class
-
-                                                    toastr.options = {
-                                                        "closeButton": true,
-                                                        "debug": false,
-                                                        "newestOnTop": false,
-                                                        "progressBar": false,
-                                                        "positionClass": "toastr-top-right",
-                                                        "preventDuplicates": false,
-                                                        "showDuration": "300",
-                                                        "hideDuration": "1000",
-                                                        "timeOut": "5000",
-                                                        "extendedTimeOut": "1000",
-                                                        "showEasing": "swing",
-                                                        "hideEasing": "linear",
-                                                        "showMethod": "fadeIn",
-                                                        "hideMethod": "fadeOut"
-                                                    };
-                                                    let text = rowInput.value + " adlý klasör oluþturuldu!";
-                                                    /*toastr.success(rowInput.value + text);*/
-                                                    toastr.success(text.normalize('NFC'));
-
-                                                    // Disable indicator
-                                                    rowButton.removeAttribute("data-kt-indicator");
-
-                                                    // Reset input
-                                                    rowInput.value = '';
-
-                                                    datatable.draw(false);
 
                                                     window.location.reload();
-                                                }
-                                                else {
-                                                    toastr.error("Ýþlem gerçekleþirken hata oluþtu.");
                                                 }
                                             }
                                         }
@@ -921,7 +881,7 @@ var KTFileManagerList = function () {
             }
 
             initTemplates();
-            initDatatable();
+            /*initDatatable();*/
             initToggleToolbar();
             handleSearchDatatable();
             /*handleDeleteRows();*/

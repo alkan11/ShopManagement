@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Shared.Models.Documents;
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
 using YufkaDashboard.Business.Abstract;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace YufkaDashboard.Web.Controllers
 {
@@ -85,24 +87,11 @@ namespace YufkaDashboard.Web.Controllers
 			return View();
 		}
 		[HttpPost]
-		public async Task<JsonResult> AddFile(string file,int folderId)
+		public async Task<IActionResult> AddFile(IFormFile file,int folderId,Files model)
 		{
-			Files model=new Files();
-			var decodedFile = Uri.UnescapeDataString(file);
-			bool success = false;
-			byte[] fileContent;
-			using (JsonDocument doc = JsonDocument.Parse(decodedFile))
-			{
-				var root = doc.RootElement;
-				
-				// JSON içinden değerleri tek tek çek
-				model.Uuid = root.GetProperty("uuid").GetString();
-				model.Filename = root.GetProperty("filename").GetString();
 
-				long total = root.GetProperty("total").GetInt64();
-				fileContent = BitConverter.GetBytes(total);
-			}
-
+			model.Uuid = Guid.NewGuid().ToString();
+			model.Filename = file.FileName;
 			model.FolderId = folderId;
 			model.CreatedDate=DateTime.Now;
 			model.Status = 1;
@@ -112,7 +101,7 @@ namespace YufkaDashboard.Web.Controllers
 			{
 				if (!result.IsSuccessful)
 				{
-					return Json(new { ok = success, control = 1 });
+					return View();
 				}
 
 
@@ -122,7 +111,7 @@ namespace YufkaDashboard.Web.Controllers
 				{
 					if (!folder.IsSuccessful)
 					{
-						return Json(new { ok = success, control = 2 });
+						return View();
 					}
 
 					if (folder.Data != null)
@@ -132,21 +121,11 @@ namespace YufkaDashboard.Web.Controllers
 							var path = Directory.GetCurrentDirectory();
 							string folderPath = $"{path}\\wwwroot\\Documents\\{folder.Data.Name}\\{model.Filename}";
 
-							if (fileContent != null && fileContent.Length > 0)
+							if (file != null && file.Length > 0)
 							{
-								System.IO.File.WriteAllBytes(folderPath, fileContent);
-								success = true;
-								if (System.IO.File.Exists(folderPath))
+								using (var stream = new FileStream(folderPath, FileMode.Create))
 								{
-									var writtenContent = System.IO.File.ReadAllBytes(folderPath);
-									if (writtenContent.Length == fileContent.Length)
-									{
-										success = true;
-									}
-									else
-									{
-										throw new InvalidOperationException("Dosya eksik veya hatalı yazıldı.");
-									}
+									file.CopyTo(stream);
 								}
 							}
 
@@ -157,7 +136,72 @@ namespace YufkaDashboard.Web.Controllers
 				}
 			}
 
-			return Json(new { ok = success,control=0 });
+			return RedirectToAction("Files", "Documents", new { folderId=folderId});
+		}
+
+		public async Task<JsonResult> DeleteFile(int id)
+		{
+			int control = 0;
+			var filerecord=await _documentBusiness.FindFile(id);
+			if (filerecord != null)
+			{
+				if (!filerecord.IsSuccessful)
+				{
+					return Json(new { ok = false,control=1 });
+				}
+
+				if (filerecord.Data!=null)
+				{
+					var result=await _documentBusiness.DeleteFile(id);
+					if(result != null)
+					{
+						if (!result.IsSuccessful)
+						{
+							return Json(new { ok = false,control=2 });
+						}
+						var path = Directory.GetCurrentDirectory();
+						string folderPath = $"{path}\\wwwroot\\Documents\\{filerecord.Data.FolderName}\\{filerecord.Data.Filename}";
+
+						if (System.IO.File.Exists(folderPath))
+						{
+							System.IO.File.Delete(folderPath);
+						}
+					}
+				}
+			}
+			return Json(new { ok = true,control=control });
+		}
+		public async Task<JsonResult> DeleteFolder(int id)
+		{
+			int control = 0;
+			var folderRecord = await _documentBusiness.FindFolder(id);
+			if (folderRecord != null)
+			{
+				if (!folderRecord.IsSuccessful)
+				{
+					return Json(new { ok = false, control = 1 });
+				}
+
+				if (folderRecord.Data != null)
+				{
+					var result = await _documentBusiness.DeleteFolder(id);
+					if (result != null)
+					{
+						if (!result.IsSuccessful)
+						{
+							return Json(new { ok = false, control = 2 });
+						}
+						var path = Directory.GetCurrentDirectory();
+						string folderPath = $"{path}\\wwwroot\\Documents\\{folderRecord.Data.Name}";
+
+						if (Directory.Exists(folderPath))
+						{
+							Directory.Delete(folderPath, recursive: true);
+						}
+					}
+				}
+			}
+			return Json(new { ok = true, control = control });
 		}
 	}
 }

@@ -14,6 +14,7 @@ namespace Shared.Models.Documents
         public string Filename { get; set; }
         public string FolderName { get; set; }
         public string Uuid { get; set; }
+        public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public int Status { get; set; }
     }

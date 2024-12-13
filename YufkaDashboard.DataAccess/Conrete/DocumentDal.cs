@@ -3,6 +3,7 @@ using Shared.Context;
 using Shared.Models.Documents;
 using Shared.Models.Home;
 using Shared.Models.System;
+using Shared.Results;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -39,7 +40,7 @@ namespace YufkaDashboard.DataAccess.Conrete
 			using (var dbConnection = _context.CreateConnection())
 			{
 				string procedure = "AddFile";
-				var parameters = new { Uuid = model.Uuid, Filename = model.Filename, Status = model.Status, CreatedDate=model.CreatedDate, FolderId=model.FolderId};
+				var parameters = new { Uuid = model.Uuid, Filename = model.Filename, Description=model.Description, Status = model.Status, CreatedDate=model.CreatedDate, FolderId=model.FolderId};
 				var result = await dbConnection.QueryFirstOrDefaultAsync<Files>(procedure, parameters, commandType: CommandType.StoredProcedure);
 				return result;
 			}
@@ -74,6 +75,35 @@ namespace YufkaDashboard.DataAccess.Conrete
 				var parameters = new { @id = id };
 				var result = await dbConnection.QueryFirstOrDefaultAsync<Folder>(procedure,parameters,commandType: CommandType.StoredProcedure);
 				return result;
+			}
+		}
+		public async Task<Files> FindFile(int id)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pFindFile";
+				var parameters = new { @id = id };
+				var result = await dbConnection.QueryFirstOrDefaultAsync<Files>(procedure,parameters,commandType: CommandType.StoredProcedure);
+				return result;
+			}
+		}
+
+		public async Task DeleteFile(int id)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pDeleteFile";
+				var parameters = new { @id = id };
+				await dbConnection.ExecuteAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
+			}
+		}
+		public async Task DeleteFolder(int id)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pDeleteFolder";
+				var parameters = new { @id = id };
+				await dbConnection.ExecuteAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
 			}
 		}
 	}

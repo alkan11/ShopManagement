@@ -67,6 +67,20 @@ namespace YufkaDashboard.Business.Concrete
 				return Response<Folder>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
 			}
 		}
+		public async Task<Response<Files>> FindFile(int id)
+		{
+			try
+			{
+				var result = await _documentDal.FindFile(id);
+
+				return Response<Files>.Success(result, StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<Files>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
 
 		public async Task<Response<List<Files>>> GetAllFilesByFolderId(int folderId)
 		{
@@ -95,6 +109,35 @@ namespace YufkaDashboard.Business.Concrete
 			{
 
 				return Response<List<Folder>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		public  async Task<Response<NoContent>> DeleteFile(int id)
+		{
+			try
+			{
+				  _documentDal.DeleteFile(id);
+
+				return Response<NoContent>.Success(StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<NoContent>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+		public  async Task<Response<NoContent>> DeleteFolder(int id)
+		{
+			try
+			{
+				  _documentDal.DeleteFolder(id);
+
+				return Response<NoContent>.Success(StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<NoContent>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
 			}
 		}
 	}
