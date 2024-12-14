@@ -3,6 +3,7 @@
 	Layout = "~/Views/Shared/_Layout2.cshtml";
 	var allProducts = ViewBag.AllProducts != null ? ViewBag.AllProducts as IEnumerable<Shared.Models.Products.Products> : null;
 	var allPaymentType = ViewBag.AllPaymentType != null ? ViewBag.AllPaymentType as Shared.Models.System.StringGroup : null;
+	var basketList = ViewBag.BasketList != null ? ViewBag.BasketList as IEnumerable<Shared.Models.Home.RepeaterFormModel> : null;
 }
 <style>
 	.locked {
@@ -280,67 +281,79 @@
 							<!--end::Table head-->
 							<!--begin::Table body-->
 							<tbody class="fw-bold text-gray-600">
-								<tr data-kt-docs-datatable-subtable="subtable_template" class="d-none">
-									<td colspan="2">
-										<div class="d-flex align-items-center gap-3">
-											<a href="#" class="symbol symbol-50px bg-secondary bg-opacity-25 rounded">
-												<img src="" data-kt-src-path="assets/media/stock/ecommerce/" alt="" data-kt-table-widget-4="template_image" />
-											</a>
-											<div class="d-flex flex-column text-muted">
-												<a href="#" class="text-gray-800 text-hover-primary fw-bold" data-kt-table-widget-4="template_name">Product name</a>
-												<div class="fs-7" data-kt-table-widget-4="template_description">Product description</div>
-											</div>
-										</div>
-									</td>
-									<td class="text-end">
-										<div class="text-gray-800 fs-7">Cost</div>
-										<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">1</div>
-									</td>
-									<td class="text-end">
-										<div class="text-gray-800 fs-7">Qty</div>
-										<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_qty">1</div>
-									</td>
-									<td class="text-end">
-										<div class="text-gray-800 fs-7">Total</div>
-										<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_total">name</div>
-									</td>
-									<td class="text-end">
-										<div class="text-gray-800 fs-7 me-3">On hand</div>
-										<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_stock">32</div>
-									</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>
-										<a href="../../demo7/dist/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary">1</a>
-									</td>
-									<td class="text-end">7 Dakika Önce</td>
-									<td class="text-end">
-										<span class="text-gray-800 fw-bolder">86.70 Tl</span>
-									</td>
-									<td class="text-end">
-										<span class="badge py-3 px-4 fs-7 badge-light-success">Gerçekleşti</span>
-									</td>
-									<td class="text-end">
-										<button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px" data-kt-docs-datatable-subtable="expand_row">
-											<!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
-											<span class="svg-icon svg-icon-3 m-0 toggle-off">
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1" transform="rotate(-90 11 18)" fill="currentColor" />
-													<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor" />
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
-											<!--begin::Svg Icon | path: icons/duotune/arrows/arr089.svg-->
-											<span class="svg-icon svg-icon-3 m-0 toggle-on">
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor" />
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
-										</button>
-									</td>
-								</tr>
+								@if (basketList != null)
+								{
+									foreach (var item in basketList)
+									{
+										
+										<tr>
+											<td>
+												<a  class="text-gray-800 text-hover-primary">@item.Id</a>
+											</td>
+											<td class="text-end">@item.CreatedDate.ToShortDateString()</td>
+											<td class="text-end">
+												<span class="text-gray-800 fw-bolder">@item.TotalPrice Tl</span>
+											</td>
+											<td class="text-end">
+												@if (item.Status == 1)
+												{
+													<span class="badge py-3 px-4 fs-7 badge-light-success">Gerçekleşti</span>
+												}
+												else
+												{
+													<span class="badge py-3 px-4 fs-7 badge-light-warning">İptal</span>
+												}
+
+											</td>
+											<td class="text-end">
+												<button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px" subtable="expand_row">
+													<!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
+													<span class="svg-icon svg-icon-3 m-0 toggle-off">
+														<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1" transform="rotate(-90 11 18)" fill="currentColor" />
+															<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor" />
+														</svg>
+													</span>
+													<!--end::Svg Icon-->
+													<!--begin::Svg Icon | path: icons/duotune/arrows/arr089.svg-->
+													<span class="svg-icon svg-icon-3 m-0 toggle-on">
+														<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor" />
+														</svg>
+													</span>
+													<!--end::Svg Icon-->
+												</button>
+											</td>
+										</tr>
+										<tr subtable="subtable_template" class="none" style="display:none">
+											<td colspan="1">
+												<div class="d-flex align-items-center gap-3">
+													<div class="d-flex flex-column text-muted">
+														<a href="#" class="text-gray-800 text-hover-primary fw-bold" widget-4="template_name">Product name</a>
+														<div class="fs-7" widget-4="template_description">Product description</div>
+													</div>
+												</div>
+											</td>
+											<td class="text-end">
+												<div class="text-gray-800 fs-7">Cost</div>
+												<div class="text-muted fs-7 fw-bold" widget-4="template_cost">1</div>
+											</td>
+											<td class="text-end">
+												<div class="text-gray-800 fs-7">Qty</div>
+												<div class="text-muted fs-7 fw-bold" widget-4="template_qty">1</div>
+											</td>
+											<td class="text-end">
+												<div class="text-gray-800 fs-7">Total</div>
+												<div class="text-muted fs-7 fw-bold" widget-4="template_total">name</div>
+											</td>
+											<td class="text-end">
+												<div class="text-gray-800 fs-7 me-3">On hand</div>
+												<div class="text-muted fs-7 fw-bold" widget-4="template_stock">32</div>
+											</td>
+										</tr>
+									}
+								}
+								
 							</tbody>
 							<!--end::Table body-->
 						</table>
@@ -2663,7 +2676,6 @@
 	</div>
 	<!--end::Content-->
 	<!--begin::Footer-->
-
 	<script>
 		function ShowPaymentTypeDiv() {
 			GetFormValidate()
@@ -2886,6 +2898,36 @@
 	});
 	});
 	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			
+			// Toggle button için click event listener
+			document.querySelectorAll('[subtable="expand_row"]').forEach(function (button) {
+				button.addEventListener("click", function () {
+					// Tıklanan satırın üst satırdaki "subtable_template" olan `tr`'yi bulma
+					const parentRow = this.closest("tr");
+					const subTableRow = parentRow.nextElementSibling;
+					
+					// Eğer alt satır zaten açık ise, gizle
+					if (subTableRow && subTableRow.getAttribute("subtable") === "subtable_template") {
+						// Alt satır zaten açıksa, gizle
+						console.log("xx")
+						console.log(subTableRow)
+						if (subTableRow.classList.contains("isOpen")) {
+							console.log("isopen kapalı")
+							subTableRow.classList.remove("isOpen");
+							subTableRow.style.display = "none"; // Gizle
+						} else {
+							// Alt satır kapalıysa, aç
+							subTableRow.classList.add("isOpen");
+							console.log("isopen açık")
+							subTableRow.style.display = "table-row"; // Aç
+						}
+					}
+				});
+			});
+		});
+</script>
 	
 
 

@@ -8,6 +8,7 @@ namespace Shared.Models.Home
 {
 	public class Basket
 	{
+		public int BasketDetailId { get; set; }
 		public int Id { get; set; }
 		public int ProductId { get; set; }
 		public decimal Price { get; set; }
@@ -16,10 +17,12 @@ namespace Shared.Models.Home
     }
 	public class RepeaterFormModel
 	{
-		public List<Basket> Baskets { get; set; }
+		public List<Basket> Baskets { get; set; } = new List<Basket>();
+		public int Id { get; set; }
 		public int PaymentTypeId { get; set; }
 		public decimal TotalPrice { get; set; }
 		public int Status { get; set; }
 		public DateTime CreatedDate { get; set; }
 	}
+
 }

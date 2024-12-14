@@ -5,6 +5,7 @@ using Shared.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using YufkaDashboard.Business.Abstract;
@@ -48,6 +49,21 @@ namespace YufkaDashboard.Business.Concrete
 			{
 
 				return Response<AddBasketDetail>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		public async Task<Response<List<RepeaterFormModel>>> GetAllBaskets()
+		{
+			try
+			{
+				var result = await _homeDal.GetAllBaskets();
+
+				return Response<List<RepeaterFormModel>>.Success(result, StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<List<RepeaterFormModel>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
 			}
 		}
 	}

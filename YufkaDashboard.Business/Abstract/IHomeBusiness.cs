@@ -12,5 +12,6 @@ namespace YufkaDashboard.Business.Abstract
 	{
 		public Task<Response<AddBasket>> AddBasket(AddBasket model);
 		public Task<Response<AddBasketDetail>> AddBasketDetail(AddBasketDetail model);
+		public Task<Response<List<RepeaterFormModel>>> GetAllBaskets();
 	}
 }

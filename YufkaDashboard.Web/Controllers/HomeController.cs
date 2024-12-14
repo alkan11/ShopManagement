@@ -26,6 +26,12 @@ namespace YufkaDashboard.Web.Controllers
             var allPaymentType = await _systemBusiness.GetAllStringsByStringGroup("PaymentType");
             ViewBag.AllProducts = allProducts.Data;
             ViewBag.AllPaymentType = allPaymentType.Data;
+
+			var basketList = await _homeBusiness.GetAllBaskets();
+			if (basketList != null)
+			{
+				ViewBag.BasketList = basketList.Data;
+			}
             return View();
         }
         [HttpPost]
@@ -94,6 +100,7 @@ namespace YufkaDashboard.Web.Controllers
 			var product = result.Data;
 			return Json(new { unitPrice = product.UnitPrice });
 		}
+ 
 		public IActionResult Index2()
         {
             return View();
