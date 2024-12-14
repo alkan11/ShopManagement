@@ -23,7 +23,7 @@ namespace YufkaDashboard.Web.Controllers
 		public async Task<IActionResult> Index()
         {
             var allProducts = await _productBusiness.GetAllProducts();
-            var allPaymentType = await _systemBusiness.GetAllStringsByStringGroup("PaymentType");
+            var allPaymentType = await _systemBusiness.GetAllStringsByStringGroupActive("PaymentType");
             ViewBag.AllProducts = allProducts.Data;
             ViewBag.AllPaymentType = allPaymentType.Data;
 
@@ -31,6 +31,12 @@ namespace YufkaDashboard.Web.Controllers
 			if (basketList != null)
 			{
 				ViewBag.BasketList = basketList.Data;
+			}
+
+			var basketCount=await _homeBusiness.GetDailyBasketCount();
+			if (basketCount != null)
+			{
+				ViewBag.BasketCount=basketCount.Data;
 			}
             return View();
         }
@@ -98,7 +104,7 @@ namespace YufkaDashboard.Web.Controllers
 			if (!result.IsSuccessful) return Json(new { unitPrice = 0 });
 
 			var product = result.Data;
-			return Json(new { unitPrice = product.UnitPrice });
+			return Json(new { unitPrice = product.UnitPrice,type=product.Type });
 		}
  
 		public IActionResult Index2()

@@ -15,6 +15,7 @@ namespace YufkaDashboard.Business.Abstract
 		Task<Response<AddStringLocale>> AddStringLocaleAsync(AddStringLocale model);
 		Task<Response<List<Strings>>> GetAllStrings();
 		Task<Response<StringGroup>> GetAllStringsByStringGroup(string groupName);
+		Task<Response<StringGroup>> GetAllStringsByStringGroupActive(string groupName);
 		Task<Response<List<Strings>>> GetAllStringListCurrentPage(int groupId);
 		Task<Response<List<StringGroup>>> GetAllStringGroupCurrentPage();
 		Task<Response<Strings>> GetStringById(int id);

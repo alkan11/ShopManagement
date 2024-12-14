@@ -69,5 +69,15 @@ namespace YufkaDashboard.DataAccess.Conrete
 				return list;
 			}
 		}
+
+		public async Task<int> GetDailyBasketCount()
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "select Count(Id)Counts from Baskets where CAST(CreatedDate as date)=CAST(GETDATE() as date)";
+				var result = await dbConnection.QueryFirstOrDefaultAsync<int>(procedure, commandType: CommandType.Text);
+				return result;
+			}
+		}
 	}
 }

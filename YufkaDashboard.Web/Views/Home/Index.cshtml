@@ -4,6 +4,7 @@
 	var allProducts = ViewBag.AllProducts != null ? ViewBag.AllProducts as IEnumerable<Shared.Models.Products.Products> : null;
 	var allPaymentType = ViewBag.AllPaymentType != null ? ViewBag.AllPaymentType as Shared.Models.System.StringGroup : null;
 	var basketList = ViewBag.BasketList != null ? ViewBag.BasketList as IEnumerable<Shared.Models.Home.RepeaterFormModel> : null;
+	var basketCount = ViewBag.BasketCount != null ? ViewBag.BasketCount : 0;
 }
 <style>
 	.locked {
@@ -204,46 +205,18 @@
 						<!--begin::Title-->
 						<h3 class="card-title align-items-start flex-column">
 							<span class="card-label fw-bold text-gray-800">Sepet Kayıtları</span>
-							<span class="text-gray-400 mt-1 fw-semibold fs-6">Günlük satış sayısı:25</span>
+							<span class="text-gray-400 mt-1 fw-semibold fs-6">Günlük satış sayısı:@basketCount</span>
 						</h3>
 						<!--end::Title-->
 						<!--begin::Actions-->
 						<div class="card-toolbar">
 							<!--begin::Filters-->
+							<button type="button" class="btn btn-l btn-light btn-light-info" style="margin-right: 30px;">
+								Gün Sonu Al
+							</button>
 							<div class="d-flex flex-stack flex-wrap gap-4">
-								<!--begin::Destination-->
-								<div class="d-flex align-items-center fw-bold">
-									<!--begin::Label-->
-									<div class="text-gray-400 fs-7 me-2">Cateogry</div>
-									<!--end::Label-->
-									<!--begin::Select-->
-									@* <select class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="Select an option">
-										<option></option>
-										<option value="Show All" selected="selected">Show All</option>
-										<option value="a">Category A</option>
-										<option value="b">Category A</option>
-									</select> *@
-									<!--end::Select-->
-								</div>
-								<!--end::Destination-->
-								<!--begin::Status-->
-								@* <div class="d-flex align-items-center fw-bold">
-									<!--begin::Label-->
-									<div class="text-gray-400 fs-7 me-2">Status</div>
-									<!--end::Label-->
-									<!--begin::Select-->
-									<select class="form-select form-select-transparent text-dark fs-7 lh-1 fw-bold py-0 ps-3 w-auto" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="Select an option" data-kt-table-widget-4="filter_status">
-										<option></option>
-										<option value="Show All" selected="selected">Show All</option>
-										<option value="Shipped">Shipped</option>
-										<option value="Confirmed">Confirmed</option>
-										<option value="Rejected">Rejected</option>
-										<option value="Pending">Pending</option>
-									</select>
-									<!--end::Select-->
-								</div> *@
-								<!--end::Status-->
 								<!--begin::Search-->
+								
 								<div class="position-relative my-1">
 									<!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
 									<span class="svg-icon svg-icon-2 position-absolute top-50 translate-middle-y ms-4">
@@ -253,10 +226,12 @@
 										</svg>
 									</span>
 									<!--end::Svg Icon-->
+									
 									<input type="text" data-kt-table-widget-4="search" class="form-control w-150px fs-7 ps-12" placeholder="Ara" />
 								</div>
 								<!--end::Search-->
 							</div>
+
 							<!--begin::Filters-->
 						</div>
 						<!--end::Actions-->
@@ -290,23 +265,23 @@
 											<td>
 												<a  class="text-gray-800 text-hover-primary">@item.Id</a>
 											</td>
-											<td class="text-end">@item.CreatedDate.ToShortDateString()</td>
+											<td class="text-end">@item.CreatedDate</td>
 											<td class="text-end">
 												<span class="text-gray-800 fw-bolder">@item.TotalPrice Tl</span>
 											</td>
 											<td class="text-end">
 												@if (item.Status == 1)
 												{
-													<span class="badge py-3 px-4 fs-7 badge-light-success">Gerçekleşti</span>
+													<span class="badge py-3 px-4 fs-7 badge-light-primary">Gerçekleşti</span>
 												}
 												else
 												{
-													<span class="badge py-3 px-4 fs-7 badge-light-warning">İptal</span>
+													<span class="badge py-3 px-4 fs-7 badge-light-danger">İptal</span>
 												}
 
 											</td>
 											<td class="text-end">
-												<button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px" subtable="expand_row">
+												<button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-30px" subtable="expand_row" itemid="@item.Id">
 													<!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
 													<span class="svg-icon svg-icon-3 m-0 toggle-off">
 														<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -324,34 +299,49 @@
 													<!--end::Svg Icon-->
 												</button>
 											</td>
+											<td class="text-end">
+												<button type="button" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-40px" itemid="@item.Id" >
+													<span class="badge py-3 px-4 fs-7 badge-light-danger">Sil</span>
+												</button>
+											</td>
 										</tr>
 										<tr subtable="subtable_template" class="none" style="display:none">
-											<td colspan="1">
-												<div class="d-flex align-items-center gap-3">
-													<div class="d-flex flex-column text-muted">
-														<a href="#" class="text-gray-800 text-hover-primary fw-bold" widget-4="template_name">Product name</a>
-														<div class="fs-7" widget-4="template_description">Product description</div>
-													</div>
-												</div>
-											</td>
-											<td class="text-end">
-												<div class="text-gray-800 fs-7">Cost</div>
-												<div class="text-muted fs-7 fw-bold" widget-4="template_cost">1</div>
-											</td>
-											<td class="text-end">
-												<div class="text-gray-800 fs-7">Qty</div>
-												<div class="text-muted fs-7 fw-bold" widget-4="template_qty">1</div>
-											</td>
-											<td class="text-end">
-												<div class="text-gray-800 fs-7">Total</div>
-												<div class="text-muted fs-7 fw-bold" widget-4="template_total">name</div>
-											</td>
-											<td class="text-end">
-												<div class="text-gray-800 fs-7 me-3">On hand</div>
-												<div class="text-muted fs-7 fw-bold" widget-4="template_stock">32</div>
-											</td>
-										</tr>
+											@foreach(var subItem in item.Baskets)
+											{
+												<tr id="sub" class="none" itemid="@item.Id" style="display:none" >
+													<td colspan="1">
+														<div class="d-flex align-items-center gap-3">
+															<div class="d-flex flex-column text-muted">
+																<a href="#" class="text-gray-800 text-hover-primary fw-bold" widget-4="template_name">@subItem.ProductIdName</a>
+
+															</div>
+														</div>
+													</td>
+													<td class="text-end">
+														<div class="text-gray-800 fs-7">Miktar</div>
+														<div class="text-muted fs-7 fw-bold" widget-4="template_cost">@subItem.Amount</div>
+													</td>
+													<td class="text-end">
+														<div class="text-gray-800 fs-7">Tutar</div>
+														<div class="text-muted fs-7 fw-bold" widget-4="template_qty">@subItem.Price TL</div>
+													</td>
+													<td class="text-end">
+														<div class="text-gray-800 fs-7">Durumu</div>
+														@if (subItem.Status == 1)
+														{
+															<div class="badge badge-light-success">Gerçekleşti</div>
+														}
+														else
+														{
+														<div class="badge badge-light-danger">İptal</div>
+														}
+													</td>
+												</tr>
+											}
+										 </tr>
+										
 									}
+								
 								}
 								
 							</tbody>
@@ -381,7 +371,7 @@
 								<!--begin::Destination-->
 								<div class="d-flex align-items-center fw-bold">
 									<!--begin::Label-->
-									<div class="text-muted fs-7 me-2">Cateogry</div>
+									@*<div class="text-muted fs-7 me-2">Cateogry</div>*@
 									<!--end::Label-->
 									<!--begin::Select-->
 									<select class="form-select form-select-transparent text-dark fs-7 lh-1 fw-bold py-0 ps-3 w-auto" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="Select an option">
@@ -994,7 +984,7 @@
 		</div>
 		<!--end::Row-->
 		<!--begin::Row-->
-		<div class="row gy-5 g-xl-10">
+		@*<div class="row gy-5 g-xl-10">
 			<!--begin::Col-->
 			<div class="col-xl-6 mb-xl-10">
 				<!--begin::Tables widget 2-->
@@ -1740,10 +1730,10 @@
 				<!--end::Chart widget 4-->
 			</div>
 			<!--end::Col-->
-		</div>
+		</div>*@
 		<!--end::Row-->
 		<!--begin::Row-->
-		<div class="row gy-5 g-xl-10">
+		@*<div class="row gy-5 g-xl-10">
 			<!--begin::Col-->
 			<div class="col-xl-4 mb-xl-10">
 				<!--begin::Engage widget 1-->
@@ -1786,12 +1776,12 @@
 			<!--begin::Col-->
 			
 			<!--end::Col-->
-		</div>
+		</div>*@
 		<!--end::Row-->
 		<!--begin::Row-->
-		<div class="row gy-5 g-xl-10">
+		@* <div class="row gy-5 g-xl-10">
 			<!--begin::Col-->
-			@* <div class="col-xl-4">
+			<div class="col-xl-4">
 				<!--begin::List widget 5-->
 				<div class="card card-flush h-xl-100">
 					<!--begin::Header-->
@@ -2509,12 +2499,12 @@
 					<!--end::Body-->
 				</div>
 				<!--end::List widget 5-->
-			</div> *@
+			</div> 
 			<!--end::Col-->
 			<!--begin::Col-->
 			
 			<!--end::Col-->
-		</div>
+			</div>*@
 		<!--end::Row-->
 	</div>
 	<!--end::Container-->
@@ -2594,7 +2584,7 @@
 													</div>
 													<div class="col-md-3">
 														<label class="required form-label">Miktar Giriniz:</label>
-														<input type="number" class="form-control mb-2 mb-md-0" placeholder="" name="Amount" id="Amount" required />
+														<input type="number" inputmode="decimal" class="form-control mb-2 mb-md-0" placeholder="" step="0.1" name="Amount" id="Amount" required />
 													</div>
 													<div class="col-md-3">
 														<label class="form-label">Tutar</label>
@@ -2650,7 +2640,7 @@
 								<!-- İkinci Ödeme Tipi Alanı -->
 								<div class="col-md-5">
 									<label class="form-label">Toplam Tutar:</label>
-									<input type="number" class="form-control mb-1 mb-md-0" placeholder="" name="TotalPrice" id="TotalPrice" />
+									<input type="number" class="form-control mb-1 mb-md-0" placeholder="" step="0.1" name="TotalPrice" id="TotalPrice" />
 								</div>
 							</div>
 							<div class="form-group row mb-5 justify-content-center">
@@ -2828,6 +2818,7 @@
 				const target = e.target;
 				const targetName = target.name;
 				let productUnitPrice = 0;
+				let productType = 0;
 				let index = 0;
 
 				console.log(targetName)
@@ -2853,7 +2844,7 @@
 
 
 				if (targetelementName == "ProductId") {
-					console.log("if içinde")
+
 					selectElement.addEventListener('change', function () {
 						selectProductValue = selectElement.value;
 					});
@@ -2864,6 +2855,7 @@
 							.then(response => response.json())
 							.then(data => {
 								productUnitPrice = data.unitPrice;
+								productType = data.type;
 							})
 							.catch(error => {
 								console.error('Ürün Fiyat Alımında Js Hatası:', error);
@@ -2881,6 +2873,10 @@
 					let enteredValue = inputFieldAmount.value;
 					if (!enteredValue) {
 						enteredValue = 0;
+					}
+					if(productType==5){
+						enteredValue=(enteredValue/1000);
+						
 					}
 					inputFieldPrice.value = productUnitPrice * enteredValue;
 				});
@@ -2907,21 +2903,29 @@
 					// Tıklanan satırın üst satırdaki "subtable_template" olan `tr`'yi bulma
 					const parentRow = this.closest("tr");
 					const subTableRow = parentRow.nextElementSibling;
-					
-					// Eğer alt satır zaten açık ise, gizle
+
+					var rowId=this.getAttribute("itemid");
+
 					if (subTableRow && subTableRow.getAttribute("subtable") === "subtable_template") {
-						// Alt satır zaten açıksa, gizle
-						console.log("xx")
-						console.log(subTableRow)
+
 						if (subTableRow.classList.contains("isOpen")) {
-							console.log("isopen kapalı")
+
 							subTableRow.classList.remove("isOpen");
-							subTableRow.style.display = "none"; // Gizle
+							subTableRow.style.display = "none";
+
+							document.querySelectorAll('tr[id="sub"][itemId="' + rowId + '"]').forEach(row => {
+								row.classList.remove("isOpen");
+								row.style.display = "none"; // Gizle
+							});
+
 						} else {
-							// Alt satır kapalıysa, aç
 							subTableRow.classList.add("isOpen");
-							console.log("isopen açık")
-							subTableRow.style.display = "table-row"; // Aç
+							subTableRow.style.display = "table-row";
+
+							document.querySelectorAll('tr[id="sub"][itemId="' + rowId + '"]').forEach(row => {
+								row.classList.add("isOpen");
+								row.style.display = "table-row"; // Aç
+							});
 						}
 					}
 				});

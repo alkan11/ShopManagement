@@ -170,5 +170,25 @@ namespace YufkaDashboard.DataAccess.Conrete
 				return result;
 			}
 		}
+		public async Task<StringGroup> GetAllStringsByStringGroupActive(string groupName)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pGetAllStringsByStringGroupActive";
+				var parameters = new {@groupName = groupName, @langId = 0 };
+				var result = await dbConnection.QueryFirstOrDefaultAsync<StringGroup>(procedure, parameters, commandType: CommandType.StoredProcedure);
+				if (result != null)
+				{
+					string procedure2 = "pGetAllStringsCurrentPageActive";
+					var parameters2 = new { @groupId = result.Id, @langid = 0 };
+					var result2 = await dbConnection.QueryAsync<Strings>(procedure2, parameters2, commandType: CommandType.StoredProcedure);
+					if (result2.Any())
+					{
+						result._strings.AddRange(result2);
+					}
+				}
+				return result;
+			}
+		}
 	}
 }

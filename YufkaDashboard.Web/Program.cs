@@ -6,6 +6,7 @@ using YufkaDashboard.Business.Concrete;
 using YufkaDashboard.DataAccess.Abstract;
 using YufkaDashboard.DataAccess.Conrete;
 using Microsoft.Extensions.FileProviders;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,11 @@ builder.Services.AddScoped<IHomeDal, HomeDal>();
 builder.Services.AddScoped<ISystemDal, SystemDal>();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<Context>();
+
+var cultureInfo = new CultureInfo("tr-TR");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

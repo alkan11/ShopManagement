@@ -32,7 +32,7 @@ namespace YufkaDashboard.Web.Controllers
 					return View();
 				}
 				ViewBag.Data = result.Data;
-				var result2 = await _systemBusiness.GetAllStringsByStringGroup("SalesUnit");
+				var result2 = await _systemBusiness.GetAllStringsByStringGroupActive("SalesUnit");
 				ViewBag.SalesUnit = result2.Data;
 			}
 			return View();

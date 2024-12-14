@@ -66,5 +66,20 @@ namespace YufkaDashboard.Business.Concrete
 				return Response<List<RepeaterFormModel>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
 			}
 		}
+
+		public async Task<Response<int>> GetDailyBasketCount()
+		{
+			try
+			{
+				var result = await _homeDal.GetDailyBasketCount();
+
+				return Response<int>.Success(result, StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<int>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
 	}
 }

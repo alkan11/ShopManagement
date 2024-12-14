@@ -159,5 +159,19 @@ namespace YufkaDashboard.Business.Concrete
 				return Response<StringGroup>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
 			}
 		}
+		public async Task<Response<StringGroup>> GetAllStringsByStringGroupActive(string groupName)
+		{
+			try
+			{
+				var result = await _systemDal.GetAllStringsByStringGroupActive(groupName);
+
+				return Response<StringGroup>.Success(result, StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<StringGroup>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
 	}
 }
