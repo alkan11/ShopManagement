@@ -14,5 +14,8 @@ namespace YufkaDashboard.Business.Abstract
 		public Task<Response<AddBasketDetail>> AddBasketDetail(AddBasketDetail model);
 		public Task<Response<List<RepeaterFormModel>>> GetAllBaskets();
 		public Task<Response<int>> GetDailyBasketCount();
+		public Task<Response<NoContent>> DeleteBasketDetail(int id);
+		public Task<Response<NoContent>> DeleteBasket(int id);
+		public Task<Response<NoContent>> DeleteBasketDetailByBasketId(int basketId);
 	}
 }

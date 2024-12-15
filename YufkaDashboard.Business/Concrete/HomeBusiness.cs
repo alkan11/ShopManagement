@@ -81,5 +81,47 @@ namespace YufkaDashboard.Business.Concrete
 				return Response<int>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
 			}
 		}
+		public async Task<Response<NoContent>> DeleteBasketDetail(int id)
+		{
+			try
+			{
+				_homeDal.DeleteBasketDetail(id);
+
+				return Response<NoContent>.Success(StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<NoContent>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+		public async Task<Response<NoContent>> DeleteBasket(int id)
+		{
+			try
+			{
+				_homeDal.DeleteBasket(id);
+
+				return Response<NoContent>.Success(StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<NoContent>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+		public async Task<Response<NoContent>> DeleteBasketDetailByBasketId(int basketId)
+		{
+			try
+			{
+				_homeDal.DeleteBasketDetailByBasketId(basketId);
+
+				return Response<NoContent>.Success(StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<NoContent>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
 	}
 }

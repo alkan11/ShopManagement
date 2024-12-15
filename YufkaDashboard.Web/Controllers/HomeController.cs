@@ -106,6 +106,47 @@ namespace YufkaDashboard.Web.Controllers
 			var product = result.Data;
 			return Json(new { unitPrice = product.UnitPrice,type=product.Type });
 		}
+		public async Task<JsonResult> DeleteBasketDetail(int id)
+		{
+			bool success = false;
+			var result=await _homeBusiness.DeleteBasketDetail(id);
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					return Json(new {ok=success});
+				}
+				success= true;
+			}
+			return Json(new { ok = success });
+		}
+		public async Task<JsonResult> DeleteBasket(int id)
+		{
+			bool success = false;
+			var basketDEtailResult = await _homeBusiness.DeleteBasketDetailByBasketId(id);
+			if (basketDEtailResult != null)
+			{
+				if (!basketDEtailResult.IsSuccessful)
+				{
+					return Json(new { ok = success,control=1 });
+				}
+
+				var result = await _homeBusiness.DeleteBasket(id);
+				if (result != null)
+				{
+					if (!result.IsSuccessful)
+					{
+						return Json(new { ok = success,control=2 });
+					}
+					success = true;
+				}
+			}
+
+
+
+			
+			return Json(new { ok = success,control=0 });
+		}
  
 		public IActionResult Index2()
         {

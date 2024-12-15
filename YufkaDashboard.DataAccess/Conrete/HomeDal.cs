@@ -44,6 +44,34 @@ namespace YufkaDashboard.DataAccess.Conrete
 			}
 		}
 
+		public async Task DeleteBasketDetail(int id)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pDeleteBasketDetail";
+				var parameters = new { @id = id };
+				await dbConnection.ExecuteAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
+			}
+		}
+		public async Task DeleteBasket(int id)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pDeleteBasket";
+				var parameters = new { @id = id };
+				await dbConnection.ExecuteAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
+			}
+		}
+		public async Task DeleteBasketDetailByBasketId(int basketId)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pDeleteBasketDetailByBasketId";
+				var parameters = new { @id = basketId };
+				await dbConnection.ExecuteAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
+			}
+		}
+
 		public async Task<List<RepeaterFormModel>> GetAllBaskets()
 		{
 			using (var dbConnection = _context.CreateConnection())
