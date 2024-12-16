@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Models.Home;
+using Shared.Models.Products;
 using System.Reflection;
 using YufkaDashboard.Business.Abstract;
 
@@ -147,7 +148,53 @@ namespace YufkaDashboard.Web.Controllers
 			
 			return Json(new { ok = success,control=0 });
 		}
- 
+
+		[HttpPost]
+		public async Task<IActionResult> AddSummerGoes(SummerGoes model)
+		{
+			var result = await _homeBusiness.AddSummerGoes(model);
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					TempData["error"] = result.Message;
+					return RedirectToAction("Index");
+				}
+			}
+			TempData["success"] = "RecordSuccessfullyCreated";
+			return RedirectToAction("Index");
+		}
+		[HttpPost]
+		public async Task<IActionResult> AddWriteIncome(WriteIncome model)
+		{
+			var result = await _homeBusiness.AddWriteIncome(model);
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					TempData["error"] = result.Message;
+					return RedirectToAction("Index");
+				}
+			}
+			TempData["success"] = "RecordSuccessfullyCreated";
+			return RedirectToAction("Index");
+		}
+		[HttpPost]
+		public async Task<IActionResult> AddEndDay(EndDay model)
+		{
+			var result = await _homeBusiness.AddEndDay(model);
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					TempData["error"] = result.Message;
+					return RedirectToAction("Index");
+				}
+			}
+			TempData["success"] = "RecordSuccessfullyCreated";
+			return RedirectToAction("Index");
+		}
+
 		public IActionResult Index2()
         {
             return View();

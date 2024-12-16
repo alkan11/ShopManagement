@@ -16,5 +16,8 @@ namespace YufkaDashboard.DataAccess.Abstract
 		public Task DeleteBasketDetail(int id);
 		public Task DeleteBasket(int id);
 		public Task DeleteBasketDetailByBasketId(int basketId);
+		public Task<SummerGoes> AddSummerGoes(SummerGoes model);
+		public Task<WriteIncome> AddWriteIncome(WriteIncome model);
+		public Task<EndDay> AddEndDay(EndDay model);
 	}
 }

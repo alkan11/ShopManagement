@@ -22,7 +22,48 @@ namespace YufkaDashboard.Business.Concrete
 		{
 			_homeDal = homeDal;
 		}
+		public async Task<Response<SummerGoes>> AddSummerGoes(SummerGoes model)
+		{
+			try
+			{
+				var result = await _homeDal.AddSummerGoes(model);
 
+				return Response<SummerGoes>.Success(result, StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<SummerGoes>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+		public async Task<Response<WriteIncome>> AddWriteIncome(WriteIncome model)
+		{
+			try
+			{
+				var result = await _homeDal.AddWriteIncome(model);
+
+				return Response<WriteIncome>.Success(result, StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<WriteIncome>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+		public async Task<Response<EndDay>> AddEndDay(EndDay model)
+		{
+			try
+			{
+				var result = await _homeDal.AddEndDay(model);
+
+				return Response<EndDay>.Success(result, StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<EndDay>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
 		public async Task<Response<AddBasket>> AddBasket(AddBasket model)
 		{
 			try

@@ -50,23 +50,23 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 //My Computer
-//app.UseStaticFiles(new StaticFileOptions
-//{
-//	FileProvider = new PhysicalFileProvider("C:\\Users\\simse\\source\\repos\\YufkaDashboard\\YufkaDashboard\\YufkaDashboard.Web\\wwwroot\\Documents\\"),
-//	RequestPath = "/Documents"
-//});
-//Bussiness Computer
 app.UseStaticFiles(new StaticFileOptions
 {
-	FileProvider = new PhysicalFileProvider("C:\\Users\\simse\\source\\repos\\ShopManagement\\YufkaDashboard.Web\\wwwroot"),
+	FileProvider = new PhysicalFileProvider("C:\\Users\\simse\\source\\repos\\YufkaDashboard\\YufkaDashboard\\YufkaDashboard.Web\\wwwroot\\Documents\\"),
 	RequestPath = "/Documents"
 });
+//Bussiness Computer
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//	FileProvider = new PhysicalFileProvider("C:\\Users\\simse\\source\\repos\\ShopManagement\\YufkaDashboard.Web\\wwwroot"),
+//	RequestPath = "/Documents"
+//});
 app.UseRouting();
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Auth}/{action=SignIn}/{id?}");
 
 app.Run();
