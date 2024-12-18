@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Shared.Models.Products;
 using YufkaDashboard.Business.Abstract;
 using YufkaDashboard.Business.Concrete;
 
 namespace YufkaDashboard.Web.Controllers
 {
+
 	public class ProductController : Controller
 	{
 		private readonly IProductBusiness _productBusiness;

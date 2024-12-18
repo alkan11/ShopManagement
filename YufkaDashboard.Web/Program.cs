@@ -7,6 +7,7 @@ using YufkaDashboard.DataAccess.Abstract;
 using YufkaDashboard.DataAccess.Conrete;
 using Microsoft.Extensions.FileProviders;
 using System.Globalization;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,11 +25,13 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddScoped<IProductBusiness,ProductBusiness>();
 builder.Services.AddScoped<IProductDal, ProductDal>();
-builder.Services.AddScoped<IDocumentDal, DocumentDal>();
+builder.Services.AddScoped<IAuthBussiness,AuthBussiness>();
+builder.Services.AddScoped<IAuthDal, AuthDal>();
 builder.Services.AddScoped<IDocumentBusiness, DocumentBusiness>();
-builder.Services.AddScoped<ISystemBusiness, SystemBusiness>();
+builder.Services.AddScoped<IDocumentDal, DocumentDal>();
 builder.Services.AddScoped<IHomeBusiness, HomeBusiness>();
 builder.Services.AddScoped<IHomeDal, HomeDal>();
+builder.Services.AddScoped<ISystemBusiness, SystemBusiness>();
 builder.Services.AddScoped<ISystemDal, SystemDal>();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<Context>();
@@ -62,11 +65,11 @@ app.UseStaticFiles(new StaticFileOptions
 //	RequestPath = "/Documents"
 //});
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Auth}/{action=SignIn}/{id?}");
+    pattern: "{controller=Auth}/{action=Index}/{id?}");
 
 app.Run();

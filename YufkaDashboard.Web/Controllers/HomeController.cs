@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Shared.Models.Home;
 using Shared.Models.Products;
 using System.Reflection;
@@ -6,7 +7,8 @@ using YufkaDashboard.Business.Abstract;
 
 namespace YufkaDashboard.Web.Controllers
 {
-    public class HomeController : Controller
+
+	public class HomeController : Controller
     {
         private readonly IConfiguration _configuration; 
         private readonly ISystemBusiness _systemBusiness;

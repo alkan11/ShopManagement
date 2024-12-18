@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Shared.Models.Products;
 using Shared.Models.System;
 using System;
@@ -7,6 +8,7 @@ using YufkaDashboard.Business.Concrete;
 
 namespace YufkaDashboard.Web.Controllers
 {
+
 	public class SystemController : Controller
 	{
 		private ISystemBusiness _systembusiness;

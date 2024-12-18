@@ -88,7 +88,7 @@ namespace YufkaDashboard.Business.Concrete
 			{
 				var result = await _documentDal.GetAllFilesByFolderId(folderId);
 
-				return Response<List<Files>>.Success(result, StatusCodes.Status201Created);
+				return Response<List<Files>>.Success(result, StatusCodes.Status200OK);
 			}
 			catch (Exception ex)
 			{

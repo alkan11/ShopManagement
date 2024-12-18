@@ -235,7 +235,7 @@
 								Alkan Şimşek
 								<span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>
 							</div>
-							<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">max@kt.com</a>
+							@*<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">max@kt.com</a>*@
 						</div>
 						<!--end::Username-->
 					</div>
@@ -245,9 +245,9 @@
 				<div class="separator my-2"></div>
 				<!--end::Menu separator-->
 				<!--begin::Menu item-->
-				<div class="menu-item px-5">
+				@*<div class="menu-item px-5">
 					<a href="~/theme/demo7/dist/account/overview.html" class="menu-link px-5">My Profile</a>
-				</div>
+				</div>*@
 				<!--end::Menu item-->
 				<!--begin::Menu item-->
 				@*<div class="menu-item px-5">
@@ -372,13 +372,13 @@
 
 				<!--end::Menu item-->
 				<!--begin::Menu item-->
-				<div class="menu-item px-5 my-1">
+				@*<div class="menu-item px-5 my-1">
 					<a href="~/theme/demo7/dist/account/settings.html" class="menu-link px-5">Account Settings</a>
-				</div>
+				</div>*@
 				<!--end::Menu item-->
 				<!--begin::Menu item-->
 				<div class="menu-item px-5">
-					<a href="~/theme/demo7/dist/authentication/flows/basic/sign-in.html" class="menu-link px-5">Sign Out</a>
+					<a href="@Url.Action("Index","Auth")" class="menu-link px-5">Çıkış Yap</a>
 				</div>
 				<!--end::Menu item-->
 			</div>
