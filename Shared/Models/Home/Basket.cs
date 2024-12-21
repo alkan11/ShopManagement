@@ -10,6 +10,7 @@ namespace Shared.Models.Home
 	{
 		public int BasketDetailId { get; set; }
 		public int Id { get; set; }
+		public int BasketId { get; set; }
 		public int Status { get; set; }
 		public int ProductId { get; set; }
 		public string ProductIdName { get; set; }

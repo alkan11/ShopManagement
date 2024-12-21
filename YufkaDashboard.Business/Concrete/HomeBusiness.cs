@@ -122,6 +122,20 @@ namespace YufkaDashboard.Business.Concrete
 				return Response<int>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
 			}
 		}
+		public async Task<Response<List<RepeaterFormModel>>> GetDailyBaskets()
+		{
+			try
+			{
+				var result = await _homeDal.GetDailyBaskets();
+
+				return Response<List<RepeaterFormModel>>.Success(result, StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<List<RepeaterFormModel>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
 		public async Task<Response<NoContent>> DeleteBasketDetail(int id)
 		{
 			try
@@ -155,6 +169,79 @@ namespace YufkaDashboard.Business.Concrete
 			try
 			{
 				_homeDal.DeleteBasketDetailByBasketId(basketId);
+
+				return Response<NoContent>.Success(StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<NoContent>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		public async Task<Response<List<SummerGoes>>> GetDailySummerGoes()
+		{
+			try
+			{
+				var result = await _homeDal.GetDailySummerGoes();
+
+				return Response<List<SummerGoes>>.Success(result, StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<List<SummerGoes>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		public async Task<Response<List<WriteIncome>>> GetDailyWriteIncome()
+		{
+			try
+			{
+				var result = await _homeDal.GetDailyWriteIncome();
+
+				return Response<List<WriteIncome>>.Success(result, StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<List<WriteIncome>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		public async Task<Response<Basket>> FindBasketDetail(int id)
+		{
+			try
+			{
+				var result = await _homeDal.FindBasketDetail(id);
+
+				return Response<Basket>.Success(result, StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<Basket>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+		public async Task<Response<RepeaterFormModel>> FindBasket(int id)
+		{
+			try
+			{
+				var result = await _homeDal.FindBasket(id);
+
+				return Response<RepeaterFormModel>.Success(result, StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<RepeaterFormModel>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+		public async Task<Response<NoContent>> NewBasketTotalPrice(int id,decimal totalPrice)
+		{
+			try
+			{
+				await _homeDal.NewBasketTotalPrice(id,totalPrice);
 
 				return Response<NoContent>.Success(StatusCodes.Status200OK);
 			}

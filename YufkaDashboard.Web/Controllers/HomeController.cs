@@ -25,7 +25,9 @@ namespace YufkaDashboard.Web.Controllers
 
 		public async Task<IActionResult> Index()
         {
-            var allProducts = await _productBusiness.GetAllProducts();
+			decimal sumTotalPrice=0, writeIncomeAmount=0, summerGoesAmount=0;
+
+			var allProducts = await _productBusiness.GetAllProducts();
             var allPaymentType = await _systemBusiness.GetAllStringsByStringGroupActive("PaymentType");
             ViewBag.AllProducts = allProducts.Data;
             ViewBag.AllPaymentType = allPaymentType.Data;
@@ -41,7 +43,39 @@ namespace YufkaDashboard.Web.Controllers
 			{
 				ViewBag.BasketCount=basketCount.Data;
 			}
-            return View();
+
+			var dailyBaskets = await _homeBusiness.GetDailyBaskets();
+			if (dailyBaskets != null)
+			{
+				var cashPaymentCount = dailyBaskets.Data?.Where(x => x.PaymentTypeId == 6).Count();
+				var creditPaymentCount = dailyBaskets.Data?.Where(x => x.PaymentTypeId == 7).Count();
+				var veresPaymentCount = dailyBaskets.Data?.Where(x => x.PaymentTypeId == 8).Count();
+				sumTotalPrice = dailyBaskets.Data != null ? dailyBaskets.Data.Sum(x => x.TotalPrice) : 0;
+
+				ViewBag.CashPaymentCount = cashPaymentCount;
+				ViewBag.CreditPaymentCount = creditPaymentCount;
+				ViewBag.VeresPaymentCount = veresPaymentCount;
+				ViewBag.SumTotalPrice = sumTotalPrice;
+			}
+			
+			var dailySummerGoes = await _homeBusiness.GetDailySummerGoes();
+			if (dailySummerGoes != null)
+			{
+				summerGoesAmount = dailySummerGoes.Data != null ? dailySummerGoes.Data.Sum(x => x.SummerAmount) : 0;
+				ViewBag.SummerGoesAmount=summerGoesAmount;
+			}
+			
+			var dailyWriteIncome = await _homeBusiness.GetDailyWriteIncome();
+			if (dailyWriteIncome != null)
+			{
+				writeIncomeAmount = dailyWriteIncome.Data != null ? dailyWriteIncome.Data.Sum(x => x.WriteIncomeAmount) : 0;
+				ViewBag.WriteIncomeAmount = writeIncomeAmount;
+			}
+
+
+			ViewBag.Ciro = (sumTotalPrice + writeIncomeAmount) - summerGoesAmount;
+
+			return View();
         }
         [HttpPost]
         public async Task<IActionResult> AddBasket(RepeaterFormModel basket)
@@ -112,15 +146,51 @@ namespace YufkaDashboard.Web.Controllers
 		public async Task<JsonResult> DeleteBasketDetail(int id)
 		{
 			bool success = false;
-			var result=await _homeBusiness.DeleteBasketDetail(id);
-			if (result != null)
+
+			var basketRecord=await _homeBusiness.FindBasketDetail(id);
+			if (basketRecord != null)
 			{
-				if (!result.IsSuccessful)
+				if (!basketRecord.IsSuccessful)
 				{
-					return Json(new {ok=success});
+					return Json(new { ok = success });
 				}
-				success= true;
+
+				var result = await _homeBusiness.DeleteBasketDetail(id);
+				if (result != null)
+				{
+					if (!result.IsSuccessful)
+					{
+						return Json(new { ok = success });
+					}
+
+					success = true;
+
+					var newBasketTotalPrice =await _homeBusiness.FindBasket(basketRecord.Data.BasketId);
+					if(newBasketTotalPrice != null)
+					{
+						if (!newBasketTotalPrice.IsSuccessful)
+						{
+							return Json(new { ok = success });
+						}
+
+						var newtotalPrice = newBasketTotalPrice.Data.Baskets.Sum(x => x.Price);
+
+						var updatedResult= await _homeBusiness.NewBasketTotalPrice(basketRecord.Data.BasketId, newtotalPrice);
+						if (updatedResult != null)
+						{
+							if (!updatedResult.IsSuccessful)
+							{
+								return Json(new { ok = success });
+							}
+
+							success = true;
+						}
+
+					}
+				}
+
 			}
+
 			return Json(new { ok = success });
 		}
 		public async Task<JsonResult> DeleteBasket(int id)

@@ -127,6 +127,31 @@ namespace YufkaDashboard.DataAccess.Conrete
 				return list;
 			}
 		}
+		public async Task<RepeaterFormModel> FindBasket(int id)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				var sql = @"pFindBasket";
+				var dictionary = new Dictionary<int, RepeaterFormModel>();
+				var record = dbConnection.Query<RepeaterFormModel, Basket, RepeaterFormModel>(
+				sql,
+				(sd, s) =>
+				{
+					RepeaterFormModel e;
+					if (!dictionary.TryGetValue(sd.Id, out e))
+					{
+						e = sd;
+						dictionary.Add(e.Id, e);
+					}
+					e.Baskets.Add(s);
+					return e;
+				},
+				param: new { id = id },
+				splitOn: "BasketDetailId")
+				.Distinct().SingleOrDefault();
+				return record;
+			}
+		}
 
 		public async Task<int> GetDailyBasketCount()
 		{
@@ -135,6 +160,61 @@ namespace YufkaDashboard.DataAccess.Conrete
 				string procedure = "select Count(Id)Counts from Baskets where CAST(CreatedDate as date)=CAST(GETDATE() as date)";
 				var result = await dbConnection.QueryFirstOrDefaultAsync<int>(procedure, commandType: CommandType.Text);
 				return result;
+			}
+		}
+
+		public async Task<List<RepeaterFormModel>> GetDailyBaskets()
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "select * from Baskets where CAST(CreatedDate as date)=CAST(GETDATE() as date)";
+				var result = await dbConnection.QueryAsync<RepeaterFormModel>(procedure, commandType: CommandType.Text);
+				return result.ToList();
+			}
+		}
+
+		public async Task<List<SummerGoes>> GetDailySummerGoes()
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "select * from SummerGoes where CAST(CreatedDate as date)=CAST(GETDATE() as date)";
+				var result = await dbConnection.QueryAsync<SummerGoes>(procedure, commandType: CommandType.Text);
+				return result.ToList();
+			}
+		}
+
+		public async Task<List<WriteIncome>> GetDailyWriteIncome()
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "select * from WriteIncome where CAST(CreatedDate as date)=CAST(GETDATE() as date)";
+				var result = await dbConnection.QueryAsync<WriteIncome>(procedure, commandType: CommandType.Text);
+				return result.ToList();
+			}
+		}
+
+		public async Task<Basket> FindBasketDetail(int id)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = @"pFindBasketDetail";
+				var parameters = new { @id = id };
+					var result = await dbConnection.QuerySingleOrDefaultAsync<Basket>(procedure,parameters, commandType: CommandType.StoredProcedure);
+				return result;
+			}
+		}
+
+		public async Task NewBasketTotalPrice(int id, decimal totalPrice)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pNewBasketTotalPrice";
+				var parameters = new
+				{
+					Id=id,
+					TotalPrice=totalPrice
+				};
+				await dbConnection.ExecuteAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
 			}
 		}
 	}

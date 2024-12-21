@@ -19,5 +19,13 @@ namespace YufkaDashboard.DataAccess.Abstract
 		public Task<SummerGoes> AddSummerGoes(SummerGoes model);
 		public Task<WriteIncome> AddWriteIncome(WriteIncome model);
 		public Task<EndDay> AddEndDay(EndDay model);
+		public Task<List<RepeaterFormModel>> GetDailyBaskets();
+		public Task<List<SummerGoes>> GetDailySummerGoes();
+		public Task<List<WriteIncome>> GetDailyWriteIncome();
+
+		public Task<Basket> FindBasketDetail(int id);
+		public Task<RepeaterFormModel> FindBasket(int id);
+
+		public Task NewBasketTotalPrice(int id, decimal totalPrice);
 	}
 }
