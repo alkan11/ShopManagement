@@ -35,7 +35,6 @@ builder.Services.AddScoped<ISystemBusiness, SystemBusiness>();
 builder.Services.AddScoped<ISystemDal, SystemDal>();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<Context>();
-
 var cultureInfo = new CultureInfo("tr-TR");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
@@ -53,15 +52,21 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 //My Computer
-app.UseStaticFiles(new StaticFileOptions
-{
-	FileProvider = new PhysicalFileProvider("C:\\Users\\simse\\source\\repos\\YufkaDashboard\\YufkaDashboard\\YufkaDashboard.Web\\wwwroot\\Documents\\"),
-	RequestPath = "/Documents"
-});
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//	FileProvider = new PhysicalFileProvider("C:\\Users\\simse\\source\\repos\\YufkaDashboard\\YufkaDashboard\\YufkaDashboard.Web\\wwwroot\\Documents\\"),
+//	RequestPath = "/Documents"
+//});
 //Bussiness Computer
 //app.UseStaticFiles(new StaticFileOptions
 //{
 //	FileProvider = new PhysicalFileProvider("C:\\Users\\simse\\source\\repos\\ShopManagement\\YufkaDashboard.Web\\wwwroot"),
+//	RequestPath = "/Documents"
+//});
+//Product
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//	FileProvider = new PhysicalFileProvider("/var/www/vhosts/ozkaradeniz.com/httpdocs/wwwroot"),
 //	RequestPath = "/Documents"
 //});
 app.UseRouting();

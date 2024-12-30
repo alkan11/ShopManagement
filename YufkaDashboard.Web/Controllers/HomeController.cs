@@ -224,6 +224,8 @@ namespace YufkaDashboard.Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddSummerGoes(SummerGoes model)
 		{
+			if (string.IsNullOrEmpty(model.CreatedDate.ToString())) { model.CreatedDate = DateTime.Now; }
+
 			var result = await _homeBusiness.AddSummerGoes(model);
 			if (result != null)
 			{
@@ -239,6 +241,8 @@ namespace YufkaDashboard.Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddWriteIncome(WriteIncome model)
 		{
+			if (string.IsNullOrEmpty(model.CreatedDate.ToString())) { model.CreatedDate = DateTime.Now; }
+
 			var result = await _homeBusiness.AddWriteIncome(model);
 			if (result != null)
 			{
@@ -254,6 +258,8 @@ namespace YufkaDashboard.Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddEndDay(EndDay model)
 		{
+			if (string.IsNullOrEmpty(model.CreatedDate.ToString())) { model.CreatedDate = DateTime.Now; }
+
 			var result = await _homeBusiness.AddEndDay(model);
 			if (result != null)
 			{

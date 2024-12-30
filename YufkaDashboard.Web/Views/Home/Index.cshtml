@@ -27,7 +27,7 @@
 	}
 
 </style>
-<div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
+<div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', md: '150px', lg: '300px'}">
 	<div class="container-xxl d-flex align-items-center justify-content-between" id="kt_header_container">
 		<!--begin::Page title-->
 		<div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap mt-n5 mt-lg-0 me-lg-2 pb-2 pb-lg-0" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
@@ -2454,7 +2454,7 @@
 								<span class="required">Miktar Giriniz</span>
 							</label>
 							<!--end::Label-->
-							<input type="text" class="form-control form-control-solid" oninput="validateNumberInput(this)" inputmode="decimal" pattern="^-?[0-9]+([\.,][0-9]+)?" step="0.1" name="SummerAmount" id="SummerAmount" value="" />
+							<input type="text" required class="form-control form-control-solid" oninput="validateNumberInput(this)" inputmode="decimal" pattern="^-?[0-9]+([\.,][0-9]+)?" step="0.1" name="SummerAmount" id="SummerAmount" value="" />
 						</div>
 						<!--end::Input group-->
 						<!--begin::Input group-->
@@ -2480,7 +2480,7 @@
 									<!--end::Svg Icon-->
 									<!--end::Icon-->
 									<!--begin::Datepicker-->
-									<input id="Date-SummerGoes" class="form-control form-control-solid ps-12" placeholder="Tarih Seçiniz" name="CreatedDate" value="" />
+									<input id="Date-SummerGoes" required class="form-control form-control-solid ps-12" placeholder="Tarih Seçiniz" name="CreatedDate" value="" />
 									<!--end::Datepicker-->
 								</div>
 								<!--end::Input-->
@@ -2550,7 +2550,7 @@
 								<span class="required">Miktar Giriniz</span>
 							</label>
 							<!--end::Label-->
-							<input type="text" class="form-control form-control-solid" oninput="validateNumberInput(this)" inputmode="decimal" pattern="^-?[0-9]+([\.,][0-9]+)?" step="0.1" name="WriteIncomeAmount" id="WriteIncomeAmount" value="" />
+							<input type="text" required class="form-control form-control-solid" oninput="validateNumberInput(this)" inputmode="decimal" pattern="^-?[0-9]+([\.,][0-9]+)?" step="0.1" name="WriteIncomeAmount" id="WriteIncomeAmount" value="" />
 						</div>
 						<!--end::Input group-->
 						<!--begin::Input group-->
@@ -2575,7 +2575,7 @@
 									<!--end::Svg Icon-->
 									<!--end::Icon-->
 									<!--begin::Datepicker-->
-									<input id="Date-WriteIncome" class="form-control form-control-solid ps-12" placeholder="Tarih Seçiniz" name="CreatedDate" value="" />
+									<input id="Date-WriteIncome" required class="form-control form-control-solid ps-12" placeholder="Tarih Seçiniz" name="CreatedDate" value="" />
 									<!--end::Datepicker-->
 								</div>
 								<!--end::Input-->
@@ -2660,7 +2660,7 @@
 								<span class="required">Kasa Toplam</span>
 							</label>
 							<!--end::Label-->
-							<input type="text" class="form-control form-control-solid" oninput="validateNumberInput(this)" inputmode="decimal" pattern="^-?[0-9]+([\.,][0-9]+)?" step="0.1" name="CashTotal" id="CashTotal" value="" />
+							<input type="text" class="form-control form-control-solid" required oninput="validateNumberInput(this)" inputmode="decimal" pattern="^-?[0-9]+([\.,][0-9]+)?" step="0.1" name="CashTotal" id="CashTotal" value="" />
 						</div>
 						<div class="d-flex flex-column mb-8 fv-row">
 							<!--begin::Label-->
@@ -2668,7 +2668,7 @@
 								<span class="required">Kasa Fark</span>
 							</label>
 							<!--end::Label-->
-							<input type="text" class="form-control form-control-solid" oninput="validateNumberInput(this)" inputmode="decimal" pattern="^-?[0-9]+([\.,][0-9]+)?" step="0.1" name="CashDiff" id="CashDiff" value="" />
+							<input type="text" class="form-control form-control-solid" required oninput="validateNumberInput(this)" inputmode="decimal" pattern="^-?[0-9]+([\.,][0-9]+)?" step="0.1" name="CashDiff" id="CashDiff" value="" />
 						</div>
 						<!--end::Input group-->
 						<!--begin::Input group-->
@@ -2693,7 +2693,7 @@
 									<!--end::Svg Icon-->
 									<!--end::Icon-->
 									<!--begin::Datepicker-->
-									<input id="Date-Cash" class="form-control form-control-solid ps-12" placeholder="Tarih Seçiniz" name="CreatedDate" value="" />
+									<input id="Date-Cash" required class="form-control form-control-solid ps-12" placeholder="Tarih Seçiniz" name="CreatedDate" />
 									<!--end::Datepicker-->
 								</div>
 								<!--end::Input-->
@@ -2712,8 +2712,8 @@
 						<!--end::Input group-->
 						<!--begin::Actions-->
 						<div class="text-center">
-							<button type="reset" id="product_modal_cancel" class="btn btn-light me-3" data-bs-dismiss="modal">Vazgeç</button>
-							<button type="submit" id="product_modal_submit" class="btn btn-primary">
+							<button type="reset" id="endday_modal_cancel" class="btn btn-light me-3" data-bs-dismiss="modal">Vazgeç</button>
+							<button type="submit" id="endday_modal_submit" class="btn btn-primary">
 								<span class="indicator-label">Kaydet</span>
 								<span class="indicator-progress">
 									Please wait...
@@ -3167,5 +3167,3 @@
 			}
 		}
 	</script>
-
-

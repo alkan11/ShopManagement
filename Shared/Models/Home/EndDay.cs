@@ -11,8 +11,8 @@ namespace Shared.Models.Home
         public int Id { get; set; }
         public decimal CashTotal { get; set; }
         public decimal CashDiff { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public string Description { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string? Description { get; set; }
         public int IsActive { get; set; }
     }
 }

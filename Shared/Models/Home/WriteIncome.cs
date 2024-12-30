@@ -10,8 +10,8 @@ namespace Shared.Models.Home
 	{
         public int Id { get; set; }
         public decimal WriteIncomeAmount { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public string Description { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string? Description { get; set; }
         public int IsActive { get; set; }
     }
 }
