@@ -16,12 +16,9 @@ namespace YufkaDashboard.DataAccess.Abstract
 		public Task DeleteBasketDetail(int id);
 		public Task DeleteBasket(int id);
 		public Task DeleteBasketDetailByBasketId(int basketId);
-		public Task<SummerGoes> AddSummerGoes(SummerGoes model);
-		public Task<WriteIncome> AddWriteIncome(WriteIncome model);
-		public Task<EndDay> AddEndDay(EndDay model);
+		
 		public Task<List<RepeaterFormModel>> GetDailyBaskets();
-		public Task<List<SummerGoes>> GetDailySummerGoes();
-		public Task<List<WriteIncome>> GetDailyWriteIncome();
+		
 
 		public Task<Basket> FindBasketDetail(int id);
 		public Task<RepeaterFormModel> FindBasket(int id);

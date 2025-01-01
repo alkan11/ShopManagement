@@ -14,13 +14,15 @@ namespace YufkaDashboard.Web.Controllers
         private readonly ISystemBusiness _systemBusiness;
         private readonly IProductBusiness _productBusiness;
         private readonly IHomeBusiness _homeBusiness;
+		private readonly IFinanceBusiness _financeBusiness;
 
-		public HomeController(ISystemBusiness systemBusiness, IConfiguration configuration, IProductBusiness productBusiness, IHomeBusiness homeBusiness)
+		public HomeController(ISystemBusiness systemBusiness, IConfiguration configuration, IProductBusiness productBusiness, IHomeBusiness homeBusiness, IFinanceBusiness financeBusiness)
 		{
 			_systemBusiness = systemBusiness;
 			_configuration = configuration;
 			_productBusiness = productBusiness;
 			_homeBusiness = homeBusiness;
+			_financeBusiness = financeBusiness;
 		}
 
 		public async Task<IActionResult> Index()
@@ -57,15 +59,15 @@ namespace YufkaDashboard.Web.Controllers
 				ViewBag.VeresPaymentCount = veresPaymentCount;
 				ViewBag.SumTotalPrice = sumTotalPrice;
 			}
-			
-			var dailySummerGoes = await _homeBusiness.GetDailySummerGoes();
+
+			var dailySummerGoes = await _financeBusiness.GetDailySummerGoes();
 			if (dailySummerGoes != null)
 			{
 				summerGoesAmount = dailySummerGoes.Data != null ? dailySummerGoes.Data.Sum(x => x.SummerAmount) : 0;
-				ViewBag.SummerGoesAmount=summerGoesAmount;
+				ViewBag.SummerGoesAmount = summerGoesAmount;
 			}
-			
-			var dailyWriteIncome = await _homeBusiness.GetDailyWriteIncome();
+
+			var dailyWriteIncome = await _financeBusiness.GetDailyWriteIncome();
 			if (dailyWriteIncome != null)
 			{
 				writeIncomeAmount = dailyWriteIncome.Data != null ? dailyWriteIncome.Data.Sum(x => x.WriteIncomeAmount) : 0;
@@ -221,57 +223,7 @@ namespace YufkaDashboard.Web.Controllers
 			return Json(new { ok = success,control=0 });
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> AddSummerGoes(SummerGoes model)
-		{
-			if (string.IsNullOrEmpty(model.CreatedDate.ToString())) { model.CreatedDate = DateTime.Now; }
-
-			var result = await _homeBusiness.AddSummerGoes(model);
-			if (result != null)
-			{
-				if (!result.IsSuccessful)
-				{
-					TempData["error"] = result.Message;
-					return RedirectToAction("Index");
-				}
-			}
-			TempData["success"] = "RecordSuccessfullyCreated";
-			return RedirectToAction("Index");
-		}
-		[HttpPost]
-		public async Task<IActionResult> AddWriteIncome(WriteIncome model)
-		{
-			if (string.IsNullOrEmpty(model.CreatedDate.ToString())) { model.CreatedDate = DateTime.Now; }
-
-			var result = await _homeBusiness.AddWriteIncome(model);
-			if (result != null)
-			{
-				if (!result.IsSuccessful)
-				{
-					TempData["error"] = result.Message;
-					return RedirectToAction("Index");
-				}
-			}
-			TempData["success"] = "RecordSuccessfullyCreated";
-			return RedirectToAction("Index");
-		}
-		[HttpPost]
-		public async Task<IActionResult> AddEndDay(EndDay model)
-		{
-			if (string.IsNullOrEmpty(model.CreatedDate.ToString())) { model.CreatedDate = DateTime.Now; }
-
-			var result = await _homeBusiness.AddEndDay(model);
-			if (result != null)
-			{
-				if (!result.IsSuccessful)
-				{
-					TempData["error"] = result.Message;
-					return RedirectToAction("Index");
-				}
-			}
-			TempData["success"] = "RecordSuccessfullyCreated";
-			return RedirectToAction("Index");
-		}
+		
 
 		public IActionResult Index2()
         {

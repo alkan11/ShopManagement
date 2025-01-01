@@ -25,6 +25,8 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddScoped<IProductBusiness,ProductBusiness>();
 builder.Services.AddScoped<IProductDal, ProductDal>();
+builder.Services.AddScoped<IFinanceBusiness,FinanceBusiness>();
+builder.Services.AddScoped<IFinanceDal, FinanceDal>();
 builder.Services.AddScoped<IAuthBussiness,AuthBussiness>();
 builder.Services.AddScoped<IAuthDal, AuthDal>();
 builder.Services.AddScoped<IDocumentBusiness, DocumentBusiness>();
@@ -66,7 +68,7 @@ app.UseStaticFiles();
 //Product
 //app.UseStaticFiles(new StaticFileOptions
 //{
-//	FileProvider = new PhysicalFileProvider("/var/www/vhosts/ozkaradeniz.com/httpdocs/wwwroot"),
+//	FileProvider = new PhysicalFileProvider("C:\\Inetpub\\vhosts\\ozkaradenizyufka.tr\\httpdocs\\wwwroot\\Documents"),
 //	RequestPath = "/Documents"
 //});
 app.UseRouting();

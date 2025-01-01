@@ -35,10 +35,11 @@
 						<!--end::Svg Icon-->
 					</div>
 					<div class="menu-sub menu-sub-dropdown p-3 w-300px" id="dropdownMenu2">
-						<div class="menu-item">
+						<div class="menu-item h-30px">
 							<span class="px-1 py-3">
-								<span class="text-primary pb-2 px-3 fs-7 text-uppercase">ÜRÜN YÖNETİMİ</span>
+								<span class="text-primary px-3 fs-7 text-uppercase">ÜRÜN YÖNETİMİ</span>
 							</span>
+							<hr class="separator">
 						</div>
 						<a href="@Url.Action("Index", "Home")" class="menu-link px-1 py-3" id="menuLink2_1">
 							<div class="separator my-2"></div>
@@ -72,18 +73,47 @@
 						<!--end::Svg Icon-->
 					</div>
 					<div class="menu-sub menu-sub-dropdown p-3 w-300px" id="dropdownMenu3">
-						<div class="menu-item">
+						<div class="menu-item h-30px">
 							<span class="px-1 py-3">
-								<span class="text-primary pb-2 px-3 fs-7 text-uppercase">Detay</span>
+								<span class="text-primary px-3 fs-7 text-uppercase">Finans Yönetimi</span>
 							</span>
+							<hr class="separator">
+							
 						</div>
-						<a href="@Url.Action("Index2", "Home")" class="menu-link px-1 py-3" id="menuLink3">
+						<a href="@Url.Action("Analysis", "Finance")" class="menu-link px-1 py-3" id="menuLink3_1">
 							<div class="separator my-2"></div>
 							<div class="menu-item">
 									<span class="menu-bullet mr-3 text-gray-800">
 										<span class="las la-chevron-right"></span>
 									</span>
-									<span class="menu-title">Detays</span>
+									<span class="menu-title">Analizler</span>
+							</div>
+						</a>
+						<a href="@Url.Action("Incomes", "Finance")" class="menu-link px-1 py-3" id="menuLink3_2">
+							<div class="separator my-2"></div>
+							<div class="menu-item">
+									<span class="menu-bullet mr-3 text-gray-800">
+										<span class="las la-chevron-right"></span>
+									</span>
+									<span class="menu-title">Gelirler</span>
+							</div>
+						</a>
+						<a href="@Url.Action("Expenses", "Finance")" class="menu-link px-1 py-3" id="menuLink3_3">
+							<div class="separator my-2"></div>
+							<div class="menu-item">
+									<span class="menu-bullet mr-3 text-gray-800">
+										<span class="las la-chevron-right"></span>
+									</span>
+									<span class="menu-title">Giderler</span>
+							</div>
+						</a>
+						<a href="@Url.Action("EndDays", "Finance")" class="menu-link px-1 py-3" id="menuLink3_4">
+							<div class="separator my-2"></div>
+							<div class="menu-item">
+									<span class="menu-bullet mr-3 text-gray-800">
+										<span class="las la-chevron-right"></span>
+									</span>
+									<span class="menu-title">Gün Sonları</span>
 							</div>
 						</a>
 					</div>
@@ -100,10 +130,11 @@
 						<!--end::Svg Icon-->
 					</a>
 					<div class="menu-sub menu-sub-dropdown p-3 w-300px">
-							<div class="menu-item">
+						<div class="menu-item h-30px">
 							<span href="#" class="px-1 py-3">
-								<span class="text-primary pb-2 px-3 fs-7 text-uppercase">Detay</span>
+								<span class="text-primary  px-3 fs-7 text-uppercase">Detay</span>
 							</span>
+							<hr class="separator">
 							</div>
 						<div class="separator my-2"></div>
 						<div class="menu-item">
@@ -128,10 +159,11 @@
 						<!--end::Svg Icon-->
 					</a>
 					<div class="menu-sub menu-sub-dropdown p-3 w-300px" id="dropdownMenu5">
-							<div class="menu-item">
+						<div class="menu-item h-30px">
 							<span href="#" class="px-1 py-3">
-								<span class="text-primary pb-2 px-3 fs-7 text-uppercase">Doküman Yönetimi</span>
+								<span class="text-primary px-3 fs-7 text-uppercase">Doküman Yönetimi</span>
 							</span>
+							<hr class="separator">
 							</div>
 						<div class="separator my-2"></div>
 						<div class="menu-item">
@@ -156,10 +188,11 @@
 						<!--end::Svg Icon-->
 					</a>
 					<div class="menu-sub menu-sub-dropdown p-3 w-300px">
-							<div class="menu-item">
+						<div class="menu-item h-30px">
 							<span href="#" class="px-1 py-3">
-								<span class="text-primary pb-2 px-3 fs-7 text-uppercase">Detay</span>
+								<span class="text-primary px-3 fs-7 text-uppercase">Detay</span>
 							</span>
+							<hr class="separator">
 							</div>
 						<div class="separator my-2"></div>
 						<div class="menu-item">
@@ -184,10 +217,11 @@
 						<!--end::Svg Icon-->
 					</div>
 					<div class="menu-sub menu-sub-dropdown p-3 w-300px" id="dropdownMenu2">
-						<div class="menu-item">
+						<div class="menu-item h-30px">
 							<span class="px-1 py-3">
-								<span class="text-primary pb-2 px-3 fs-7 text-uppercase">SİSTEM YÖNETİMİ</span>
+								<span class="text-primary px-3 fs-7 text-uppercase">SİSTEM YÖNETİMİ</span>
 							</span>
+							<hr class="separator">
 						</div>
 						<a href="@Url.Action("StringGroupList", "System")" class="menu-link px-1 py-3" id="menuLink7_1">
 							<div class="separator my-2"></div>
@@ -422,6 +456,26 @@
 	//Menu-3
 	// Yönlendirme için link tıklama
     $('#menuLink3').click(function(event) {
+        event.stopPropagation(); // Menü kapanmasını engelle
+        // Yönlendirmeyi gerçekleştir
+        window.location.href = $(this).attr('href');
+    });
+	//$('#menuLink3_1').click(function (event) {
+ //       event.stopPropagation(); // Menü kapanmasını engelle
+ //       // Yönlendirmeyi gerçekleştir
+ //       window.location.href = $(this).attr('href');
+ //   });
+	$('#menuLink3_2').click(function (event) {
+        event.stopPropagation(); // Menü kapanmasını engelle
+        // Yönlendirmeyi gerçekleştir
+        window.location.href = $(this).attr('href');
+    });
+	$('#menuLink3_3').click(function (event) {
+        event.stopPropagation(); // Menü kapanmasını engelle
+        // Yönlendirmeyi gerçekleştir
+        window.location.href = $(this).attr('href');
+    });
+	$('#menuLink3_4').click(function (event) {
         event.stopPropagation(); // Menü kapanmasını engelle
         // Yönlendirmeyi gerçekleştir
         window.location.href = $(this).attr('href');
