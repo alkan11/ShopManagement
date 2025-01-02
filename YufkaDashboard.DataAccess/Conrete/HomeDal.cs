@@ -98,6 +98,31 @@ namespace YufkaDashboard.DataAccess.Conrete
 				return list;
 			}
 		}
+		public async Task<List<RepeaterFormModel>> GetAllSalesRecords()
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				var sql = @"Exec pGetAllSalesRecords";
+				var dictionary = new Dictionary<int, RepeaterFormModel>();
+				var list = dbConnection.Query<RepeaterFormModel, Basket, RepeaterFormModel>(
+				sql,
+				(sd, s) =>
+				{
+					RepeaterFormModel e;
+					if (!dictionary.TryGetValue(sd.Id, out e))
+					{
+						e = sd;
+						dictionary.Add(e.Id, e);
+					}
+					e.Baskets.Add(s);
+					return e;
+				},
+				splitOn: "BasketDetailId")
+				.Distinct()
+				.ToList();
+				return list;
+			}
+		}
 		public async Task<RepeaterFormModel> FindBasket(int id)
 		{
 			using (var dbConnection = _context.CreateConnection())

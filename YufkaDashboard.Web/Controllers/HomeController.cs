@@ -225,9 +225,15 @@ namespace YufkaDashboard.Web.Controllers
 
 		
 
-		public IActionResult Index2()
+		public async Task<IActionResult> SalesRecords()
         {
-            return View();
+
+			var salesRecord = await _homeBusiness.GetAllSalesRecords();
+			if (salesRecord != null)
+			{
+				ViewBag.SalesRecord = salesRecord.Data;
+			}
+			return View();
         }
     }
 }

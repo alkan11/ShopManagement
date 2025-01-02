@@ -1,8 +1,4 @@
-﻿
+﻿Gün sonu kaydetmeden önce emin msiisn diye popup sorsun
 Gün sonu için düzenleme ve listeleme ekranları tasarlanacak
 Gider Yazma ve düzenleme ekranları tasarlanacak uygun bir sayfaya şuan acelesi yok.
 Gelir yazma ve düzenleme ekranları tasarlanacak uygun bir sayfaya şuan acelesi yok.
-
-Bütün Satış kayıtlarını görebileceği yeni bir sayfa yapıcaz.Bu sayfa sepet menünüsün altında olucak.
-Gelir kayıtlarını görebileceği yeni bir sayfa yapıcaz.Bu sayfa sepet menünüsün altında olucak.
-Gider kayıtlarını görebileceği yeni bir sayfa yapıcaz.Bu sayfa sepet menünüsün altında olucak. (Gelir gider aynı sayfada tablarla yapılabilir)
