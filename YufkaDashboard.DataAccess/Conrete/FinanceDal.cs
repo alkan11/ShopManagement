@@ -29,6 +29,16 @@ namespace YufkaDashboard.DataAccess.Conrete
 				return result;
 			}
 		}
+		public async Task<SummerGoes> AddMainCaseSummerGoes(SummerGoes model)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "AddMainCaseSummerGoes";
+				var parameters = new { SummerAmount = model.SummerAmount, CreatedDate = model.CreatedDate, Description = model.Description, IsActive = model.IsActive };
+				var result = await dbConnection.QueryFirstOrDefaultAsync<SummerGoes>(procedure, parameters, commandType: CommandType.StoredProcedure);
+				return result;
+			}
+		}
 		public async Task<WriteIncome> AddWriteIncome(WriteIncome model)
 		{
 			using (var dbConnection = _context.CreateConnection())
@@ -39,11 +49,31 @@ namespace YufkaDashboard.DataAccess.Conrete
 				return result;
 			}
 		}
+		public async Task<WriteIncome> AddMainCaseWriteIncome(WriteIncome model)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "AddMainCaseWriteIncome";
+				var parameters = new { WriteIncomeAmount = model.WriteIncomeAmount, CreatedDate = model.CreatedDate, Description = model.Description, IsActive = model.IsActive };
+				var result = await dbConnection.QueryFirstOrDefaultAsync<WriteIncome>(procedure, parameters, commandType: CommandType.StoredProcedure);
+				return result;
+			}
+		}
 		public async Task<EndDay> AddEndDay(EndDay model)
 		{
 			using (var dbConnection = _context.CreateConnection())
 			{
 				string procedure = "AddEndDay";
+				var parameters = new { CashTotal = model.CashTotal, CashDiff = model.CashDiff, CreatedDate = model.CreatedDate, Description = model.Description, IsActive = model.IsActive };
+				var result = await dbConnection.QueryFirstOrDefaultAsync<EndDay>(procedure, parameters, commandType: CommandType.StoredProcedure);
+				return result;
+			}
+		}
+		public async Task<EndDay> AddEndMounthBuy(EndDay model)
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "AddMainCaseEndMounth";
 				var parameters = new { CashTotal = model.CashTotal, CashDiff = model.CashDiff, CreatedDate = model.CreatedDate, Description = model.Description, IsActive = model.IsActive };
 				var result = await dbConnection.QueryFirstOrDefaultAsync<EndDay>(procedure, parameters, commandType: CommandType.StoredProcedure);
 				return result;
@@ -88,12 +118,30 @@ namespace YufkaDashboard.DataAccess.Conrete
 				return result.ToList();
 			}
 		}
+		public async Task<List<SummerGoes>> GetAllMounthSummerGoes()
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "select * from MainCaseSummerGoes";
+				var result = await dbConnection.QueryAsync<SummerGoes>(procedure, commandType: CommandType.Text);
+				return result.ToList();
+			}
+		}
 
 		public async Task<List<WriteIncome>> GetAllWriteIncome()
 		{
 			using (var dbConnection = _context.CreateConnection())
 			{
 				string procedure = "select * from WriteIncome";
+				var result = await dbConnection.QueryAsync<WriteIncome>(procedure, commandType: CommandType.Text);
+				return result.ToList();
+			}
+		}
+		public async Task<List<WriteIncome>> GetAllMounthWriteIncome()
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "select * from MainCaseWriteIncome";
 				var result = await dbConnection.QueryAsync<WriteIncome>(procedure, commandType: CommandType.Text);
 				return result.ToList();
 			}

@@ -41,6 +41,15 @@
 							</span>
 							<hr class="separator">
 						</div>
+						<a href="@Url.Action("Analysis", "Home")" class="menu-link px-1 py-3" id="menuLink2_0">
+							<div class="separator my-2"></div>
+							<div class="menu-item">
+									<span class="menu-bullet mr-3 text-gray-800">
+										<span class="las la-chevron-right"></span>
+									</span>
+									<span class="menu-title">Analizler</span>
+							</div>
+						</a>
 						<a href="@Url.Action("SalesRecords", "Home")" class="menu-link px-1 py-3" id="menuLink2_1">
 							<div class="separator my-2"></div>
 							<div class="menu-item">
@@ -120,7 +129,7 @@
 					<!--end::Nav link-->
 				</li>
 				@*------------------------------------------------------------4.Menü*@
-				<li class="nav-item mb-2" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
+@*				<li class="nav-item mb-2" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
 					<!--begin::Nav link-->
 					<a class="nav-link btn btn-icon btn-active-color-primary btn-color-gray-400 btn-active-light" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right" data-bs-dismiss="click" title="Görevler">
 						<!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
@@ -147,7 +156,7 @@
 						</div>
 					</div>
 					<!--end::Nav link-->
-				</li>
+				</li>*@
 				@*------------------------------------------------------------5.Menü*@
 				<li class="nav-item mb-2" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
 					<!--begin::Nav link-->
@@ -178,7 +187,7 @@
 					<!--end::Nav link-->
 				</li>
 				@*------------------------------------------------------------6.Menü*@
-				<li class="nav-item mb-2" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
+@*				<li class="nav-item mb-2" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
 					<!--begin::Nav link-->
 					<a class="nav-link btn btn-icon btn-active-color-primary btn-color-gray-400 btn-active-light" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right" data-bs-dismiss="click" title="Ana Sayfa">
 						<!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
@@ -205,7 +214,7 @@
 						</div>
 					</div>
 					<!--end::Nav link-->
-				</li>
+				</li>*@
 				@*------------------------------------------------------------7.Menü*@
 				<li class="nav-item mb-2" data-kt-menu-trigger="click" data-kt-menu-placement="right-start" data-bs-placement="right" data-bs-dismiss="click" title="Sistem">
 					<!--begin::Nav link-->
@@ -442,7 +451,12 @@
 
 	//Menu-2
     // Yönlendirme için link tıklama
-    $('#menuLink2_1').click(function(event) {
+    $('#menuLink2_0').click(function(event) {
+        event.stopPropagation(); // Menü kapanmasını engelle
+        // Yönlendirmeyi gerçekleştir
+        window.location.href = $(this).attr('href');
+    });
+	$('#menuLink2_1').click(function(event) {
         event.stopPropagation(); // Menü kapanmasını engelle
         // Yönlendirmeyi gerçekleştir
         window.location.href = $(this).attr('href');

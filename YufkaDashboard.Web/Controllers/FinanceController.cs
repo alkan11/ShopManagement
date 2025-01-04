@@ -49,6 +49,8 @@ namespace YufkaDashboard.Web.Controllers
 		}
 		public async Task<IActionResult> EndDays()
 		{
+			decimal mounthSummerGoes = 0, mounthWriteIncome = 0, mainCaseTotal = 0;
+
 			var result = await _financeBusiness.GetAllEndDays();
 			if (result != null)
 			{
@@ -58,7 +60,42 @@ namespace YufkaDashboard.Web.Controllers
 					return View();
 				}
 				ViewBag.Data = result.Data;
+				mainCaseTotal = result.Data.Where(x => x.CreatedDate.HasValue && x.CreatedDate.Value.Year == DateTime.Now.Year
+														&& x.CreatedDate.HasValue && x.CreatedDate.Value.Month == DateTime.Now.Month).Select(x => x.CashTotal).Sum();
+				ViewBag.MainCaseTotal = mainCaseTotal;
+				ViewBag.MainCaseCaseDiff = result.Data.Where(x => x.CreatedDate.HasValue && x.CreatedDate.Value.Year == DateTime.Now.Year
+														&& x.CreatedDate.HasValue && x.CreatedDate.Value.Month == DateTime.Now.Month).Select(x => x.CashDiff).Sum();
 			}
+
+			var resultMounthSummerGoes=await _financeBusiness.GetAllMounthSummerGoes();
+			if (resultMounthSummerGoes != null)
+			{
+				if (!resultMounthSummerGoes.IsSuccessful)
+				{
+					TempData["error"] = resultMounthSummerGoes.Message;
+					return View();
+				}
+				mounthSummerGoes = resultMounthSummerGoes.Data.Where(x => x.CreatedDate.Year == DateTime.Now.Year
+														&& x.CreatedDate.Month == DateTime.Now.Month).Select(x => x.SummerAmount).Sum();
+				ViewBag.MounthSummerGoes = mounthSummerGoes;
+
+
+			}
+			var resultMounthWriteIncome = await _financeBusiness.GetAllMounthWriteIncome();
+			if (resultMounthWriteIncome != null)
+			{
+				if (!resultMounthWriteIncome.IsSuccessful)
+				{
+					TempData["error"] = resultMounthWriteIncome.Message;
+					return View();
+				}
+				mounthWriteIncome = resultMounthWriteIncome.Data.Where(x => x.CreatedDate.HasValue && x.CreatedDate.Value.Year == DateTime.Now.Year
+														&& x.CreatedDate.HasValue && x.CreatedDate.Value.Month == DateTime.Now.Month).Select(x => x.WriteIncomeAmount).Sum();
+				ViewBag.MounthWriteIncome = mounthWriteIncome;
+
+			}
+
+			ViewBag.MounthCiro= (mainCaseTotal + mounthWriteIncome) - mounthSummerGoes;
 			return View();
 		}
 
@@ -82,6 +119,23 @@ namespace YufkaDashboard.Web.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 		[HttpPost]
+		public async Task<IActionResult> AddMainCaseSummerGoes(SummerGoes model)
+		{
+			if (string.IsNullOrEmpty(model.CreatedDate.ToString())) { model.CreatedDate = DateTime.Now; }
+
+			var result = await _financeBusiness.AddMainCaseSummerGoes(model);
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					TempData["error"] = result.Message;
+					return RedirectToAction("EndDays", "Finance");
+				}
+			}
+			TempData["success"] = "RecordSuccessfullyCreated";
+			return RedirectToAction("EndDays", "Finance");
+		}
+		[HttpPost]
 		public async Task<IActionResult> AddWriteIncome(WriteIncome model)
 		{
 			if (string.IsNullOrEmpty(model.CreatedDate.ToString())) { model.CreatedDate = DateTime.Now; }
@@ -99,6 +153,23 @@ namespace YufkaDashboard.Web.Controllers
 			return RedirectToAction("Index","Home");
 		}
 		[HttpPost]
+		public async Task<IActionResult> AddMainCaseWriteIncome(WriteIncome model)
+		{
+			if (string.IsNullOrEmpty(model.CreatedDate.ToString())) { model.CreatedDate = DateTime.Now; }
+
+			var result = await _financeBusiness.AddMainCaseWriteIncome(model);
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					TempData["error"] = result.Message;
+					return RedirectToAction("EndDays", "Finance");
+				}
+			}
+			TempData["success"] = "RecordSuccessfullyCreated";
+			return RedirectToAction("EndDays", "Finance");
+		}
+		[HttpPost]
 		public async Task<IActionResult> AddEndDay(EndDay model)
 		{
 			if (string.IsNullOrEmpty(model.CreatedDate.ToString())) { model.CreatedDate = DateTime.Now; }
@@ -114,6 +185,23 @@ namespace YufkaDashboard.Web.Controllers
 			}
 			TempData["success"] = "RecordSuccessfullyCreated";
 			return RedirectToAction("Index", "Home");
+		}
+
+		public async Task<IActionResult> EndMounthBuy(EndDay model)
+		{
+			if (string.IsNullOrEmpty(model.CreatedDate.ToString())) { model.CreatedDate = DateTime.Now; }
+
+			var result = await _financeBusiness.AddEndMounthBuy(model);
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					TempData["error"] = result.Message;
+					return RedirectToAction("EndDays", "Finance");
+				}
+			}
+			TempData["success"] = "RecordSuccessfullyCreated";
+			return RedirectToAction("EndDays", "Finance");
 		}
 
 	}
