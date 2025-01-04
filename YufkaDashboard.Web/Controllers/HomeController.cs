@@ -240,5 +240,22 @@ namespace YufkaDashboard.Web.Controllers
 		{
 			return View();
 		}
-    }
+		public async Task<JsonResult> ChartDailyYufkaCounts() 
+		{
+			List<object> list = new List<object>();
+
+			var result = await _homeBusiness.ChartDailyYufkaCounts();
+			if (result != null)
+			{
+				foreach (var item in result.Data)
+				{
+					item.FormattedDate = item.Date.ToShortDateString();
+				}
+				list.AddRange(result.Data);
+			}
+
+			return Json(new { ok = true ,data=list});
+		}
+
+	}
 }

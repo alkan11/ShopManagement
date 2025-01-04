@@ -194,5 +194,15 @@ namespace YufkaDashboard.DataAccess.Conrete
 				await dbConnection.ExecuteAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
 			}
 		}
+		public async Task<List<ChartDailyYufkaCounts>> ChartDailyYufkaCounts()
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pChartDailyYufkaCounts";
+				var result = await dbConnection.QueryAsync<ChartDailyYufkaCounts>(procedure, commandType: CommandType.StoredProcedure);
+				return result.ToList();
+			}
+		}
+
 	}
 }

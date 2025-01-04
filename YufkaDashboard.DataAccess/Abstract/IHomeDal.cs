@@ -25,5 +25,6 @@ namespace YufkaDashboard.DataAccess.Abstract
 		public Task<RepeaterFormModel> FindBasket(int id);
 
 		public Task NewBasketTotalPrice(int id, decimal totalPrice);
+		public Task<List<ChartDailyYufkaCounts>> ChartDailyYufkaCounts();
 	}
 }

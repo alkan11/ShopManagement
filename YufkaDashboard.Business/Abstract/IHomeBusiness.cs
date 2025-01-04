@@ -20,6 +20,7 @@ namespace YufkaDashboard.Business.Abstract
 		public Task<Response<NoContent>> DeleteBasketDetailByBasketId(int basketId);
 
 		public Task<Response<List<RepeaterFormModel>>> GetDailyBaskets();
+		public Task<Response<List<ChartDailyYufkaCounts>>> ChartDailyYufkaCounts();
 
 		public Task<Response<Basket>> FindBasketDetail(int id);
 		public Task<Response<RepeaterFormModel>> FindBasket(int id);
