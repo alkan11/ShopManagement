@@ -203,6 +203,15 @@ namespace YufkaDashboard.DataAccess.Conrete
 				return result.ToList();
 			}
 		}
+		public async Task<List<ChartDailyMantiKG>> ChartDailyMantiKG()
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pChartDailyMantiKG";
+				var result = await dbConnection.QueryAsync<ChartDailyMantiKG>(procedure, commandType: CommandType.StoredProcedure);
+				return result.ToList();
+			}
+		}
 
 	}
 }

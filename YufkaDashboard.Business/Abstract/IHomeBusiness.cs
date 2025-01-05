@@ -21,6 +21,7 @@ namespace YufkaDashboard.Business.Abstract
 
 		public Task<Response<List<RepeaterFormModel>>> GetDailyBaskets();
 		public Task<Response<List<ChartDailyYufkaCounts>>> ChartDailyYufkaCounts();
+		public Task<Response<List<ChartDailyMantiKG>>> ChartDailyMantiKG();
 
 		public Task<Response<Basket>> FindBasketDetail(int id);
 		public Task<Response<RepeaterFormModel>> FindBasket(int id);

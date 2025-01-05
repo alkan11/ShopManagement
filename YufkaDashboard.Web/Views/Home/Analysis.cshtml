@@ -2,6 +2,8 @@
 @{
 	ViewData["Title"] = "Analysis";
 	Layout = "~/Views/Shared/_Layout2.cshtml";
+	var totalYufkacount = ViewBag.TotalYufkacount != null ? ViewBag.TotalYufkacount : 0;
+	var totalMantiKG = ViewBag.TotalMantiKG != null ? ViewBag.TotalMantiKG : 0;
 }
 <div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
 	<div class="container-xxl d-flex align-items-center justify-content-between" id="kt_header_container">
@@ -41,10 +43,10 @@
 							<!--begin::Statistics-->
 							<div class="d-flex align-items-center mb-2">
 								<!--begin::Currency-->
-								<span class="fs-4 fw-semibold text-gray-400 align-self-start me-1">$</span>
+								@*<span class="fs-4 fw-semibold text-gray-400 align-self-start me-1">$</span>*@
 								<!--end::Currency-->
 								<!--begin::Value-->
-								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">3,706</span>
+								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">@totalYufkacount</span>
 								<!--end::Value-->
 								<!--begin::Label-->
 								
@@ -52,7 +54,7 @@
 							</div>
 							<!--end::Statistics-->
 							<!--begin::Description-->
-							<span class="fs-6 fw-semibold text-gray-400">Total Discounted Sales This Month</span>
+							<span class="fs-6 fw-semibold text-gray-400">Toplamda Aylık Satılan Yufka Sayısı</span>
 							<!--end::Description-->
 						</div>
 						<!--end::Info-->
@@ -73,8 +75,7 @@
 					<div class="card-header py-5">
 						<!--begin::Title-->
 						<h3 class="card-title align-items-start flex-column">
-							<span class="card-label fw-bold text-dark">Discounted Product Sales</span>
-							<span class="text-gray-400 mt-1 fw-semibold fs-6">Users from all channels</span>
+							<span class="card-label fw-bold text-dark">Günlük Bazda Mantı Satışı (Kilogram)</span>
 						</h3>
 						<!--end::Title-->
 						<!--begin::Toolbar-->
@@ -88,16 +89,15 @@
 							<!--begin::Statistics-->
 							<div class="d-flex align-items-center mb-2">
 								<!--begin::Currency-->
-								<span class="fs-4 fw-semibold text-gray-400 align-self-start me-1">$</span>
 								<!--end::Currency-->
 								<!--begin::Value-->
-								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">3,706</span>
+								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">@totalMantiKG</span>
 								<!--end::Value-->
 								<!--end::Label-->
 							</div>
 							<!--end::Statistics-->
 							<!--begin::Description-->
-							<span class="fs-6 fw-semibold text-gray-400">Total Discounted Sales This Month</span>
+							<span class="fs-6 fw-semibold text-gray-400">Toplamda Aylık Satılan Mantı (Kilogram)</span>
 							<!--end::Description-->
 						</div>
 						<!--end::Info-->
@@ -131,7 +131,7 @@
 	* ---------------------------------------
 	*/
 	am5.ready(function () {
-		var root = am5.Root.new("kt_charts_widget_4");
+		var root = am5.Root.new("kt_amcharts_1");
 
 
 		// Set themes
@@ -233,6 +233,132 @@
 			
 		}
 		makeSeries("Yufka", "amounts");
+
+		chart.set("scrollbarX", am5.Scrollbar.new(root, {
+			orientation: "horizontal"
+		}));
+
+
+		// Make stuff animate on load
+		// https://www.amcharts.com/docs/v5/concepts/animations/
+		chart.appear(1000, 100);
+	})
+</script>
+<script>
+	/**
+	* ---------------------------------------
+	* This demo was created using amCharts 5.
+	*
+	* For more information visit:
+	* https://www.amcharts.com/
+	*
+	* Documentation is available at:
+	* https://www.amcharts.com/docs/v5/
+	* ---------------------------------------
+	*/
+	am5.ready(function () {
+		var root = am5.Root.new("kt_charts_widget_4");
+
+
+		// Set themes
+		// https://www.amcharts.com/docs/v5/concepts/themes/
+		root.setThemes([
+			am5themes_Animated.new(root)
+		]);
+
+
+		// Create chart
+		// https://www.amcharts.com/docs/v5/charts/xy-chart/
+		var chart = root.container.children.push(am5xy.XYChart.new(root, {
+			panX: false,
+			panY: false,
+			wheelX: "panX",
+			wheelY: "zoomX",
+			layout: root.verticalLayout
+		}));
+
+
+		// Add legend
+		// https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+		var legend = chart.children.push(
+			am5.Legend.new(root, {
+				centerX: am5.p50,
+				x: am5.p50
+			})
+		);
+
+		async function yufkaCount() {
+			try {
+				const result = await $.ajax({
+					type: "GET",
+					url: "/Home/ChartDailyMantiKG",
+					dataType: "json"
+				});
+
+				if (result != null && result.ok) {
+					// Eksik tarihleri doldur
+					console.log(result.data)
+					return result.data; // Doldurulmuş veriyi döndür
+				} else {
+					throw new Error("Geçersiz veri!");
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		}
+
+
+
+		// Create axes
+		// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+		var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+			categoryField: "formattedDate",
+			renderer: am5xy.AxisRendererX.new(root, { minGridDistance: 35 }),
+			tooltip: am5.Tooltip.new(root, {})
+		}));
+		xAxis.get("renderer").labels.template.setAll({
+			rotation: 270, // Dikey yapmak için 270 derece döndürülür
+			centerX: am5.p50, // Etiketlerin ortalanması için
+			centerY: am5.p50, // Etiketlerin ortalanması için
+			paddingTop: 15, // Etiketlerin üst kısmında boşluk eklemek için
+			paddingBottom: 10 // Etiketlerin alt kısmında boşluk eklemek için
+		});
+
+
+		var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+			autoZoom: false,
+			renderer: am5xy.AxisRendererY.new(root, {})
+		}));
+
+
+		// Add series
+		// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+		function makeSeries(name, fieldName) {
+			var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+				name: name,
+				xAxis: xAxis,
+				yAxis: yAxis,
+				valueYField: "amount",
+				categoryXField: "formattedDate",
+				stacked: true,
+				tooltip: am5.Tooltip.new(root, {
+					labelText: "{valueY}" // Y eksenindeki değeri tooltip içinde göster
+				})
+			}));
+			series.columns.template.setAll({
+				tooltipText: "{valueY}", // Y değeri barın üstünde de görünür
+				cursorOverStyle: "pointer" // Barın üzerine gelindiğinde imleci değiştirebilirsiniz
+			});
+			(async () => {
+				const data = await yufkaCount();
+				xAxis.data.setAll(data);
+				series.data.setAll(data);
+				series.appear();
+				legend.data.push(series);
+			})();
+
+		}
+		makeSeries("Mantı", "amount");
 
 		chart.set("scrollbarX", am5.Scrollbar.new(root, {
 			orientation: "horizontal"

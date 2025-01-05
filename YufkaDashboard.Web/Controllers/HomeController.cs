@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Shared.Models.Home;
 using Shared.Models.Products;
+using System.Collections.Generic;
 using System.Reflection;
 using YufkaDashboard.Business.Abstract;
 
@@ -238,6 +239,16 @@ namespace YufkaDashboard.Web.Controllers
 
 		public async Task<IActionResult> Analysis()
 		{
+			var result = await _homeBusiness.ChartDailyYufkaCounts();
+			if (result != null)
+			{
+				ViewBag.TotalYufkacount = result.Data.Select(x => x.Amounts).Sum();
+			}
+			var result2 = await _homeBusiness.ChartDailyMantiKG();
+			if (result2 != null)
+			{
+				ViewBag.TotalMantiKG = result2.Data.Select(x => x.Amount).Sum();
+			}
 			return View();
 		}
 		public async Task<JsonResult> ChartDailyYufkaCounts() 
@@ -250,12 +261,29 @@ namespace YufkaDashboard.Web.Controllers
 				foreach (var item in result.Data)
 				{
 					item.FormattedDate = item.Date.ToShortDateString();
+
 				}
 				list.AddRange(result.Data);
 			}
-
 			return Json(new { ok = true ,data=list});
 		}
+		public async Task<JsonResult> ChartDailyMantiKG() 
+		{
+			List<object> list = new List<object>();
+
+			var result = await _homeBusiness.ChartDailyMantiKG();
+			if (result != null)
+			{
+				foreach (var item in result.Data)
+				{
+					item.FormattedDate = item.Date.ToShortDateString();
+
+				}
+				list.AddRange(result.Data);
+			}
+			return Json(new { ok = true ,data=list});
+		}
+		
 
 	}
 }

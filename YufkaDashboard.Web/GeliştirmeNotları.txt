@@ -1,4 +1,5 @@
-﻿Gün sonu kaydetmeden önce emin msiisn diye popup sorsun
+﻿Finansal Grafikleri yap.
+Gün sonu kaydetmeden önce emin msiisn diye popup sorsun
 Gün sonu için düzenleme ve listeleme ekranları tasarlanacak
 Gider Yazma ve düzenleme ekranları tasarlanacak uygun bir sayfaya şuan acelesi yok.
 Gelir yazma ve düzenleme ekranları tasarlanacak uygun bir sayfaya şuan acelesi yok.
