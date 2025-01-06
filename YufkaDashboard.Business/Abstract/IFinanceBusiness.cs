@@ -1,4 +1,5 @@
 ﻿using Shared.Models.Finance;
+using Shared.Models.Home;
 using Shared.Results;
 using System;
 using System.Collections.Generic;
@@ -23,5 +24,6 @@ namespace YufkaDashboard.Business.Abstract
 		public Task<Response<List<WriteIncome>>> GetAllMounthWriteIncome();
 		public Task<Response<List<SummerGoes>>> GetAllSummerGoes();
 		public Task<Response<List<SummerGoes>>> GetAllMounthSummerGoes();
+		public Task<Response<List<ChartDailyEndDay>>> ChartDailyEndDay();
 	}
 }

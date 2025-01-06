@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Shared.Models.Finance;
+using Shared.Models.Home;
 using Shared.Results;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using YufkaDashboard.Business.Abstract;
 using YufkaDashboard.DataAccess.Abstract;
+using YufkaDashboard.DataAccess.Conrete;
 
 namespace YufkaDashboard.Business.Concrete
 {
@@ -203,6 +205,20 @@ namespace YufkaDashboard.Business.Concrete
 			{
 
 				return Response<List<SummerGoes>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
+			}
+		}
+		public async Task<Response<List<ChartDailyEndDay>>> ChartDailyEndDay()
+		{
+			try
+			{
+				var result = await _financeDal.ChartDailyEndDay();
+
+				return Response<List<ChartDailyEndDay>>.Success(result, StatusCodes.Status200OK);
+			}
+			catch (Exception ex)
+			{
+
+				return Response<List<ChartDailyEndDay>>.Fail("TheOperationCouldNotBePerformed", StatusCodes.Status500InternalServerError);
 			}
 		}
 	}

@@ -2,6 +2,7 @@
 using Shared.Models.Finance;
 using System.Reflection;
 using YufkaDashboard.Business.Abstract;
+using YufkaDashboard.Business.Concrete;
 
 namespace YufkaDashboard.Web.Controllers
 {
@@ -12,11 +13,6 @@ namespace YufkaDashboard.Web.Controllers
 		public FinanceController(IFinanceBusiness financeBusiness)
 		{
 			_financeBusiness = financeBusiness;
-		}
-
-		public IActionResult Analysis()
-		{
-			return View();
 		}
 
 		public async Task<IActionResult> Incomes()
@@ -202,6 +198,27 @@ namespace YufkaDashboard.Web.Controllers
 			}
 			TempData["success"] = "RecordSuccessfullyCreated";
 			return RedirectToAction("EndDays", "Finance");
+		}
+		public async Task<IActionResult> Analysis()
+		{
+			return View();
+		}
+
+		public async Task<JsonResult> ChartDailyEndDay()
+		{
+			List<object> list = new List<object>();
+
+			var result = await _financeBusiness.ChartDailyEndDay();
+			if (result != null)
+			{
+				foreach (var item in result.Data)
+				{
+					item.FormattedDate = item.Date.ToShortDateString();
+
+				}
+				list.AddRange(result.Data);
+			}
+			return Json(new { ok = true, data = list });
 		}
 
 	}

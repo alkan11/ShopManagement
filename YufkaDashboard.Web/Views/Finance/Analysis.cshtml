@@ -1,0 +1,239 @@
+﻿
+@{
+	ViewData["Title"] = "Analysis";
+	Layout = "~/Views/Shared/_Layout2.cshtml";
+
+	//var totalYufkacount = ViewBag.TotalYufkacount != null ? ViewBag.TotalYufkacount : 0;
+	//var totalMantiKG = ViewBag.TotalMantiKG != null ? ViewBag.TotalMantiKG : 0;
+}
+<div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
+	<div class="container-xxl d-flex align-items-center justify-content-between" id="kt_header_container">
+		<!--begin::Page title-->
+		<div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap mt-n5 mt-lg-0 me-lg-2 pb-2 pb-lg-0" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
+			<!--begin::Heading-->
+			<h1 class="text-dark fw-bold my-0 fs-2">Finans Yönetimi</h1>
+			<!--end::Heading-->
+			<ol class="breadcrumb text-muted fs-6 fw-semibold" style="margin-top:10px;">
+				<li class="breadcrumb-item"><a href="@Url.Action("Index","Home")" class="">Ana Sayfa</a></li>
+				<li class="breadcrumb-item text-muted">Finans Analizleri</li>
+			</ol>
+		</div>
+		<!--end::Toolbar wrapper-->
+	</div>
+</div>
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+	<!--begin::Container-->
+	<div class="container-xxl" id="kt_content_container">
+		<div class="row gy-5 g-xl-10">
+			<div class="col-xl-6 mb-xl-10">
+				<!--begin::Tables widget 2-->
+				<div class="card card-flush overflow-hidden h-md-100">
+					<!--begin::Header-->
+					<div class="card-header py-5">
+						<!--begin::Title-->
+						<h3 class="card-title align-items-start flex-column">
+							<span class="card-label fw-bold text-dark">Günlük Bazda Gün Sonu</span>
+						</h3>
+
+					</div>
+					<!--end::Header-->
+					<!--begin::Card body-->
+					<div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
+						<!--begin::Info-->
+						<div class="px-9 mb-5">
+							<!--begin::Statistics-->
+							<div class="d-flex align-items-center mb-2">
+								<!--begin::Currency-->
+								@*<span class="fs-4 fw-semibold text-gray-400 align-self-start me-1">$</span>*@
+								<!--end::Currency-->
+								<!--begin::Value-->
+								<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">@*@totalYufkacount*@</span>
+								<!--end::Value-->
+								<!--begin::Label-->
+								
+								<!--end::Label-->
+							</div>
+							<!--end::Statistics-->
+							<!--begin::Description-->
+							@*<span class="fs-6 fw-semibold text-gray-400">Toplamda Aylık Satılan Yufka Sayısı</span>*@
+							<!--end::Description-->
+						</div>
+						<!--end::Info-->
+						<!--begin::Chart-->
+						<div id="chartdiv_1" style="height: 500px;"></div>
+						<!--end::Chart-->
+					</div>
+					<!--end::Card body-->
+				</div>
+				<!--end::Tables widget 2-->
+			</div>
+			<!--end::Col-->
+			<!--begin::Col-->
+			<div class="col-xl-6 mb-5 mb-xl-10">
+				<!--begin::Chart widget 4-->
+				<div class="card card-flush overflow-hidden h-md-100">
+					<!--begin::Header-->
+					<div class="card-header py-5">
+						<!--begin::Title-->
+						<h3 class="card-title align-items-start flex-column">
+							<span class="card-label fw-bold text-dark">Aylık Bazda Ay Sonu</span>
+						</h3>
+						<!--end::Title-->
+						<!--begin::Toolbar-->
+						<!--end::Toolbar-->
+					</div>
+					<!--end::Header-->
+					<!--begin::Card body-->
+					<div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
+						<!--begin::Info-->
+						<div class="px-9 mb-5">
+							<!--begin::Statistics-->
+							<div class="d-flex align-items-center mb-2">
+								<!--begin::Currency-->
+								<!--end::Currency-->
+								<!--begin::Value-->
+								@*<span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">@totalMantiKG</span>*@
+								<!--end::Value-->
+								<!--end::Label-->
+							</div>
+							<!--end::Statistics-->
+							<!--begin::Description-->
+							@*<span class="fs-6 fw-semibold text-gray-400">Toplamda Aylık Satılan Mantı (Kilogram)</span>*@
+							<!--end::Description-->
+						</div>
+						<!--end::Info-->
+						<!--begin::Chart-->
+						<div id="kt_charts_widget_4" class="min-h-auto ps-4 pe-6" style="height: 500px"></div>
+						<!--end::Chart-->
+					</div>
+					<!--end::Card body-->
+				</div>
+				<!--end::Chart widget 4-->
+			</div>
+		</div>
+	</div>
+</div>
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Responsive.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/locales/tr_TR.js"></script>
+
+<script>
+	var root = am5.Root.new("chartdiv_1");
+
+	root.setThemes([
+		am5themes_Animated.new(root)
+	]);
+
+	var chart = root.container.children.push(
+		am5xy.XYChart.new(root, {
+			panY: false,
+			wheelY: "zoomX",
+			layout: root.verticalLayout,
+			maxTooltipDistance: 0
+		})
+	);
+
+	async function yufkaCount() {
+		try {
+			const result = await $.ajax({
+				type: "GET",
+				url: "/Finance/ChartDailyEndDay",
+				dataType: "json"
+			});
+
+			if (result != null && result.ok) {
+				// Eksik tarihleri doldur
+				
+				result.data = result.data.map(item => {
+					return {
+						
+						date: new Date(item.date).getTime(),
+						totalValue:item.totalValue
+					};
+				});
+				return result.data; // Doldurulmuş veriyi döndür
+			} else {
+				throw new Error("Geçersiz veri!");
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	// Create Y-axis
+	var yAxis = chart.yAxes.push(
+		am5xy.ValueAxis.new(root, {
+			extraTooltipPrecision: 1,
+			renderer: am5xy.AxisRendererY.new(root, {})
+		})
+	);
+
+	// Create X-Axis
+	let xAxis = chart.xAxes.push(
+		am5xy.DateAxis.new(root, {
+			baseInterval: { timeUnit: "day", count: 1 },
+			startLocation: 0.5,
+			endLocation: 0.5,
+			renderer: am5xy.AxisRendererX.new(root, {
+				minGridDistance: 30
+			})
+		})
+	);
+
+	xAxis.get("dateFormats")["day"] = "MM/dd";
+	xAxis.get("periodChangeDateFormats")["day"] = "MM/dd";
+
+	// Create series
+	function createSeries(name, field) {
+		var series = chart.series.push(
+			am5xy.LineSeries.new(root, {
+				name: name,
+				xAxis: xAxis,
+				yAxis: yAxis,
+				valueYField: field,
+				valueXField: "date",
+				tooltip: am5.Tooltip.new(root, {}),
+				maskBullets: false
+			})
+		);
+
+		series.bullets.push(function () {
+			return am5.Bullet.new(root, {
+				sprite: am5.Circle.new(root, {
+					radius: 5,
+					fill: series.get("fill")
+				})
+			});
+		});
+
+		series.strokes.template.set("strokeWidth", 2);
+		(async () => {
+			const data = await yufkaCount();
+			series.data.setAll(data);
+		})();
+		series.get("tooltip").label.set("text", "[bold]{name}[/]\n{valueX.formatDate()}: {valueY}")
+			
+		
+	}
+	
+	createSeries("EndDay", "totalValue");
+
+	// Add cursor
+	chart.set("cursor", am5xy.XYCursor.new(root, {
+		behavior: "zoomXY",
+		xAxis: xAxis
+	}));
+
+	xAxis.set("tooltip", am5.Tooltip.new(root, {
+		themeTags: ["axis"]
+	}));
+
+	yAxis.set("tooltip", am5.Tooltip.new(root, {
+		themeTags: ["axis"]
+	}));
+</script>
+
+
+

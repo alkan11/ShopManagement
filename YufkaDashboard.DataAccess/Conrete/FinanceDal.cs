@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Shared.Context;
 using Shared.Models.Finance;
+using Shared.Models.Home;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -143,6 +144,15 @@ namespace YufkaDashboard.DataAccess.Conrete
 			{
 				string procedure = "select * from MainCaseWriteIncome";
 				var result = await dbConnection.QueryAsync<WriteIncome>(procedure, commandType: CommandType.Text);
+				return result.ToList();
+			}
+		}
+		public async Task<List<ChartDailyEndDay>> ChartDailyEndDay()
+		{
+			using (var dbConnection = _context.CreateConnection())
+			{
+				string procedure = "pChartDailyEndDay";
+				var result = await dbConnection.QueryAsync<ChartDailyEndDay>(procedure, commandType: CommandType.StoredProcedure);
 				return result.ToList();
 			}
 		}
