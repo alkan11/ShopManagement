@@ -29,6 +29,20 @@ namespace YufkaDashboard.Web.Controllers
 			}
 			return View();
 		}
+		public async Task<IActionResult> MainIncomes()
+		{
+			var result = await _financeBusiness.GetAllMounthWriteIncome();
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					TempData["error"] = result.Message;
+					return View();
+				}
+				ViewBag.Data=result.Data.Where(x => x.CreatedDate.Value.Month == DateTime.Now.Month).ToList(); ;
+			}
+			return View();
+		}
 		public async Task<IActionResult> Expenses()
 		{
 			var result = await _financeBusiness.GetAllSummerGoes();
@@ -39,7 +53,21 @@ namespace YufkaDashboard.Web.Controllers
 					TempData["error"] = result.Message;
 					return View();
 				}
-				ViewBag.Data = result.Data;
+				ViewBag.Data = result.Data.Where(x => x.CreatedDate.Month == DateTime.Now.Month).ToList();
+			}
+			return View();
+		}
+		public async Task<IActionResult> MainExpenses()
+		{
+			var result = await _financeBusiness.GetAllMounthSummerGoes();
+			if (result != null)
+			{
+				if (!result.IsSuccessful)
+				{
+					TempData["error"] = result.Message;
+					return View();
+				}
+				ViewBag.Data = result.Data.Where(x=>x.CreatedDate.Month==DateTime.Now.Month).ToList();
 			}
 			return View();
 		}
@@ -129,7 +157,7 @@ namespace YufkaDashboard.Web.Controllers
 				}
 			}
 			TempData["success"] = "RecordSuccessfullyCreated";
-			return RedirectToAction("EndDays", "Finance");
+			return RedirectToAction("MainExpenses", "Finance");
 		}
 		[HttpPost]
 		public async Task<IActionResult> AddWriteIncome(WriteIncome model)
@@ -163,7 +191,7 @@ namespace YufkaDashboard.Web.Controllers
 				}
 			}
 			TempData["success"] = "RecordSuccessfullyCreated";
-			return RedirectToAction("EndDays", "Finance");
+			return RedirectToAction("MainIncomes", "Finance");
 		}
 		[HttpPost]
 		public async Task<IActionResult> AddEndDay(EndDay model)

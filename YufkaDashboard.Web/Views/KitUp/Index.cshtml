@@ -1,0 +1,343 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
+	<div class="container-xxl d-flex align-items-center justify-content-between" id="kt_header_container">
+		<!--begin::Page title-->
+		<div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap mt-n5 mt-lg-0 me-lg-2 pb-2 pb-lg-0" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
+			<!--begin::Heading-->
+			<h1 class="text-dark fw-bold my-0 fs-2">Kitap Yönetimi</h1>
+			<!--end::Heading-->
+			<ol class="breadcrumb text-muted fs-6 fw-semibold" style="margin-top:10px;">
+				<li class="breadcrumb-item"><a href="@Url.Action("Index","Home")" class="">Ana Sayfa</a></li>
+				<li class="breadcrumb-item text-muted">Kitap Oku</li>
+			</ol>
+		</div>
+		<!--end::Toolbar wrapper-->
+	</div>
+</div>
+
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+	<div class="container-xxl" id="kt_content_container">
+		<!--begin::Products-->
+		<div class="card card-flush">
+			<div class="card-header align-items-center py-5 gap-2 gap-md-5">
+			</div>
+			<div class="card-body pt-0">
+                <div class="d-flex">
+                    <!-- PDF Görüntüleme Alanı -->
+                    <div class="pdf-viewer me-4" style="flex: 1;">
+                        <canvas id="pdfViewer" style="border: 1px solid #ddd; width: 100%;"></canvas>
+                    </div>
+
+                    <!-- Hızlı Okuma Alanı -->
+                    <div class="speed-reading-container" style="flex: 1;">
+                        <!-- Kitap Seçim Alanı -->
+                        <div class="book-selection mb-4">
+                            <div class="d-flex align-items-center justify-content-center gap-4">
+                                <input type="file" class="form-control" id="pdfFileInput" accept=".pdf" style="max-width: 300px;">
+                            </div>
+                        </div>
+
+                        <div class="controls mb-4">
+                            <div class="d-flex align-items-center justify-content-center gap-4">
+                                <button class="btn btn-icon btn-sm btn-light" id="prevWord" disabled>
+                                    <i class="fas fa-backward"></i>
+                                </button>
+                                <button class="btn btn-icon btn-sm btn-light" id="playPause" disabled>
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <button class="btn btn-icon btn-sm btn-light" id="nextWord" disabled>
+                                    <i class="fas fa-forward"></i>
+                                </button>
+                                <div class="speed-control d-flex align-items-center gap-2">
+                                    <label>Hız (Kelime/Dakika):</label>
+                                    <input type="range" class="form-range" id="speedControl" min="100" max="800" step="50" value="300" disabled>
+                                    <span id="speedValue">300</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="word-display p-8 text-center">
+                            <h1 id="currentWord" class="display-1">Lütfen PDF dosyası seçiniz</h1>
+                            <div class="word-type mt-2">
+                                <span id="wordType" class="badge bg-primary"></span>
+                            </div>
+                            <div class="word-counter mt-4">
+                                <span id="currentWordIndex">0</span> / <span id="totalWords">0</span> kelime
+                                <div class="page-info">
+                                    Sayfa: <span id="currentPage">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<!--end::Products-->
+	</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+<script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+
+    let words = [];
+    let wordTypes = [];
+    let wordPages = [];
+    let currentIndex = 0;
+    let isPlaying = false;
+    let intervalId = null;
+    let longPressTimer = null;
+    let continuousScrollInterval = null;
+    let currentPdfPage = 1;
+    let pdfDoc = null;
+
+    const fileInput = document.getElementById('pdfFileInput');
+    const currentWordElement = document.getElementById('currentWord');
+    const wordTypeElement = document.getElementById('wordType');
+    const speedControl = document.getElementById('speedControl');
+    const speedValue = document.getElementById('speedValue');
+    const playPauseBtn = document.getElementById('playPause');
+    const prevWordBtn = document.getElementById('prevWord');
+    const nextWordBtn = document.getElementById('nextWord');
+    const currentWordIndexElement = document.getElementById('currentWordIndex');
+    const totalWordsElement = document.getElementById('totalWords');
+    const currentPageElement = document.getElementById('currentPage');
+    const canvas = document.getElementById('pdfViewer');
+    const ctx = canvas.getContext('2d');
+
+    async function renderPage(pageNum) {
+        const page = await pdfDoc.getPage(pageNum);
+        const viewport = page.getViewport({scale: 1.5});
+
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+            canvasContext: ctx,
+            viewport: viewport
+        };
+
+        await page.render(renderContext).promise;
+        currentPageElement.textContent = pageNum;
+    }
+
+    async function extractTextFromPdf(file) {
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            pdfDoc = await pdfjsLib.getDocument(arrayBuffer).promise;
+            let extractedWords = [];
+            let extractedTypes = [];
+            let extractedPages = [];
+
+            // İlk sayfayı göster
+            await renderPage(1);
+
+            for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+                const page = await pdfDoc.getPage(pageNum);
+                const textContent = await page.getTextContent();
+
+                textContent.items.forEach(item => {
+                    const fontSize = item.transform[0];
+                    const words = item.str.split(/\s+/).filter(word => word.length > 0);
+
+                    words.forEach(word => {
+                        extractedWords.push(word);
+                        extractedTypes.push(fontSize > 14 ? 'heading' : 'text');
+                        extractedPages.push(pageNum);
+                    });
+                });
+            }
+
+            return {
+                words: extractedWords,
+                types: extractedTypes,
+                pages: extractedPages
+            };
+        } catch (error) {
+            console.error('PDF okuma hatası:', error);
+            return { words: [], types: [], pages: [] };
+        }
+    }
+
+    fileInput.addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        currentWordElement.textContent = "PDF okunuyor...";
+
+        try {
+            const result = await extractTextFromPdf(file);
+            words = result.words;
+            wordTypes = result.types;
+            wordPages = result.pages;
+
+            const savedIndex = localStorage.getItem(`pdf_${file.name}_index`);
+            currentIndex = savedIndex ? parseInt(savedIndex) : 0;
+
+            enableControls();
+            updateWord();
+        } catch (error) {
+            console.error('Hata:', error);
+            currentWordElement.textContent = "PDF okuma hatası oluştu";
+        }
+    });
+
+    function enableControls() {
+        speedControl.disabled = false;
+        playPauseBtn.disabled = false;
+        prevWordBtn.disabled = false;
+        nextWordBtn.disabled = false;
+    }
+
+    function disableControls() {
+        speedControl.disabled = true;
+        playPauseBtn.disabled = true;
+        prevWordBtn.disabled = true;
+        nextWordBtn.disabled = true;
+        words = [];
+        wordTypes = [];
+        wordPages = [];
+        currentIndex = 0;
+        updateWord();
+    }
+
+    async function updateWord() {
+        if (words.length === 0) {
+            currentWordElement.textContent = "Lütfen PDF dosyası seçiniz";
+            wordTypeElement.textContent = "";
+            currentWordIndexElement.textContent = "0";
+            totalWordsElement.textContent = "0";
+            currentPageElement.textContent = "0";
+            return;
+        }
+
+        currentWordElement.textContent = words[currentIndex];
+
+        // Sayfa değişimi kontrolü
+        const newPage = wordPages[currentIndex];
+        if (currentPdfPage !== newPage) {
+            currentPdfPage = newPage;
+            await renderPage(currentPdfPage);
+        }
+
+        if (wordTypes[currentIndex] === 'heading') {
+            wordTypeElement.textContent = "BAŞLIK";
+            wordTypeElement.className = "badge bg-warning";
+            currentWordElement.style.fontWeight = "bold";
+        } else {
+            wordTypeElement.textContent = "Metin";
+            wordTypeElement.className = "badge bg-primary";
+            currentWordElement.style.fontWeight = "normal";
+        }
+
+        currentWordIndexElement.textContent = currentIndex + 1;
+        totalWordsElement.textContent = words.length;
+
+        if (fileInput.files[0]) {
+            localStorage.setItem(`pdf_${fileInput.files[0].name}_index`, currentIndex);
+        }
+    }
+
+    function startReading() {
+        const speed = speedControl.value;
+        const interval = 60000 / speed;
+
+        speedControl.disabled = true;
+
+        intervalId = setInterval(async () => {
+            if (currentIndex < words.length - 1) {
+                currentIndex++;
+                await updateWord();
+            } else {
+                stopReading();
+            }
+        }, interval);
+    }
+
+    function stopReading() {
+        clearInterval(intervalId);
+        isPlaying = false;
+        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        speedControl.disabled = false;
+    }
+
+    function startContinuousScroll(direction) {
+        if (continuousScrollInterval) return;
+
+        continuousScrollInterval = setInterval(async () => {
+            if (direction === 'prev' && currentIndex > 0) {
+                currentIndex--;
+                await updateWord();
+            } else if (direction === 'next' && currentIndex < words.length - 1) {
+                currentIndex++;
+                await updateWord();
+            }
+        }, 200);
+    }
+
+    function stopContinuousScroll() {
+        if (continuousScrollInterval) {
+            clearInterval(continuousScrollInterval);
+            continuousScrollInterval = null;
+        }
+    }
+
+    playPauseBtn.addEventListener('click', () => {
+        isPlaying = !isPlaying;
+        if (isPlaying) {
+            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            startReading();
+        } else {
+            stopReading();
+        }
+    });
+
+    prevWordBtn.addEventListener('mousedown', async (e) => {
+        if (currentIndex > 0) {
+            currentIndex--;
+            await updateWord();
+        }
+        longPressTimer = setTimeout(() => {
+            startContinuousScroll('prev');
+        }, 500);
+    });
+
+    nextWordBtn.addEventListener('mousedown', async (e) => {
+        if (currentIndex < words.length - 1) {
+            currentIndex++;
+            await updateWord();
+        }
+        longPressTimer = setTimeout(() => {
+            startContinuousScroll('next');
+        }, 500);
+    });
+
+    [prevWordBtn, nextWordBtn].forEach(btn => {
+        btn.addEventListener('mouseup', () => {
+            clearTimeout(longPressTimer);
+            stopContinuousScroll();
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            clearTimeout(longPressTimer);
+            stopContinuousScroll();
+        });
+    });
+
+    speedControl.addEventListener('input', () => {
+        speedValue.textContent = speedControl.value;
+        if (isPlaying) {
+            stopReading();
+            startReading();
+        }
+    });
+
+    const savedSpeed = localStorage.getItem('readingSpeed');
+    if (savedSpeed) {
+        speedControl.value = savedSpeed;
+        speedValue.textContent = savedSpeed;
+    }
+</script>

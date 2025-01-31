@@ -104,7 +104,16 @@
 									<span class="menu-bullet mr-3 text-gray-800">
 										<span class="las la-chevron-right"></span>
 									</span>
-									<span class="menu-title">Gelirler</span>
+									<span class="menu-title">Günlük Gelirler</span>
+							</div>
+						</a>
+						<a href="@Url.Action("MainIncomes", "Finance")" class="menu-link px-1 py-3" id="menuLink3_6">
+							<div class="separator my-2"></div>
+							<div class="menu-item">
+									<span class="menu-bullet mr-3 text-gray-800">
+										<span class="las la-chevron-right"></span>
+									</span>
+									<span class="menu-title">Ana Kasa Gelirler</span>
 							</div>
 						</a>
 						<a href="@Url.Action("Expenses", "Finance")" class="menu-link px-1 py-3" id="menuLink3_3">
@@ -113,7 +122,16 @@
 									<span class="menu-bullet mr-3 text-gray-800">
 										<span class="las la-chevron-right"></span>
 									</span>
-									<span class="menu-title">Giderler</span>
+									<span class="menu-title">Günlük Giderler</span>
+							</div>
+						</a>
+						<a href="@Url.Action("MainExpenses", "Finance")" class="menu-link px-1 py-3" id="menuLink3_5">
+							<div class="separator my-2"></div>
+							<div class="menu-item">
+									<span class="menu-bullet mr-3 text-gray-800">
+										<span class="las la-chevron-right"></span>
+									</span>
+									<span class="menu-title">Ana Kasa Giderler</span>
 							</div>
 						</a>
 						<a href="@Url.Action("EndDays", "Finance")" class="menu-link px-1 py-3" id="menuLink3_4">
@@ -129,35 +147,6 @@
 					<!--end::Nav link-->
 				</li>
 				@*------------------------------------------------------------4.Menü*@
-@*				<li class="nav-item mb-2" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
-					<!--begin::Nav link-->
-					<a class="nav-link btn btn-icon btn-active-color-primary btn-color-gray-400 btn-active-light" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right" data-bs-dismiss="click" title="Görevler">
-						<!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
-						<span class="svg-icon svg-icon-2x">
-							<svg xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 512 512"><path fill="#c8c9cb" d="M152.1 38.2c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 113C-2.3 103.6-2.3 88.4 7 79s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zm0 160c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 273c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zM224 96c0-17.7 14.3-32 32-32l224 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32zm0 160c0-17.7 14.3-32 32-32l224 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32zM160 416c0-17.7 14.3-32 32-32l288 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-288 0c-17.7 0-32-14.3-32-32zM48 368a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" /></svg>
-						</span>
-						<!--end::Svg Icon-->
-					</a>
-					<div class="menu-sub menu-sub-dropdown p-3 w-300px">
-						<div class="menu-item h-30px">
-							<span href="#" class="px-1 py-3">
-								<span class="text-primary  px-3 fs-7 text-uppercase">Detay</span>
-							</span>
-							<hr class="separator">
-							</div>
-						<div class="separator my-2"></div>
-						<div class="menu-item">
-								<a href="#" class="menu-link px-1 py-3">
-									<span class="menu-bullet mr-3 text-gray-800">
-										<span class="las la-chevron-right"></span>
-									</span>
-									<span class="menu-title">Detays</span>
-								</a>
-						</div>
-					</div>
-					<!--end::Nav link-->
-				</li>*@
-				@*------------------------------------------------------------5.Menü*@
 				<li class="nav-item mb-2" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
 					<!--begin::Nav link-->
 					<a class="nav-link btn btn-icon btn-active-color-primary btn-color-gray-400 btn-active-light" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right" data-bs-dismiss="click" title="Dokümanlar">
@@ -186,8 +175,8 @@
 					</div>
 					<!--end::Nav link-->
 				</li>
-				@*------------------------------------------------------------6.Menü*@
-@*				<li class="nav-item mb-2" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
+				@*------------------------------------------------------------5.Menü*@
+				<li class="nav-item mb-2" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
 					<!--begin::Nav link-->
 					<a class="nav-link btn btn-icon btn-active-color-primary btn-color-gray-400 btn-active-light" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right" data-bs-dismiss="click" title="Ana Sayfa">
 						<!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
@@ -196,25 +185,25 @@
 						</span>
 						<!--end::Svg Icon-->
 					</a>
-					<div class="menu-sub menu-sub-dropdown p-3 w-300px">
+					<div class="menu-sub menu-sub-dropdown p-3 w-300px" id="dropdownMenu12">
 						<div class="menu-item h-30px">
 							<span href="#" class="px-1 py-3">
-								<span class="text-primary px-3 fs-7 text-uppercase">Detay</span>
+								<span class="text-primary px-3 fs-7 text-uppercase">Kişisel Gelişim</span>
 							</span>
 							<hr class="separator">
 							</div>
 						<div class="separator my-2"></div>
 						<div class="menu-item">
-								<a href="#" class="menu-link px-1 py-3">
+							<a href="@Url.Action("Index", "KitUp")" class="menu-link px-1 py-3" id="menuLink12_1">
 									<span class="menu-bullet mr-3 text-gray-800">
 										<span class="las la-chevron-right"></span>
 									</span>
-									<span class="menu-title">Detays</span>
+									<span class="menu-title">Kitap Oku</span>
 								</a>
 						</div>
 					</div>
 					<!--end::Nav link-->
-				</li>*@
+				</li>
 				@*------------------------------------------------------------7.Menü*@
 				<li class="nav-item mb-2" data-kt-menu-trigger="click" data-kt-menu-placement="right-start" data-bs-placement="right" data-bs-dismiss="click" title="Sistem">
 					<!--begin::Nav link-->
@@ -244,7 +233,6 @@
 					</div>
 					<!--end::Nav link-->
 				</li>
-				@*------------------------------------------------------------3.Menü*@
 									
 				<!--end::Nav item-->
 			</ul>
@@ -443,7 +431,7 @@
         $('#dropdownMenu3').toggle(); // Menü açma / kapama
     });
 	$('#dropdownToggle5').click(function() {
-        $('#dropdownMenu5').toggle(); // Menü açma / kapama
+        $('#dropdownMenu12').toggle(); // Menü açma / kapama
     });
 	$('#dropdownToggle7').click(function() {
         $('#dropdownMenu7').toggle(); // Menü açma / kapama
@@ -494,10 +482,25 @@
         // Yönlendirmeyi gerçekleştir
         window.location.href = $(this).attr('href');
     });
+	$('#menuLink3_5').click(function (event) {
+        event.stopPropagation(); // Menü kapanmasını engelle
+        // Yönlendirmeyi gerçekleştir
+        window.location.href = $(this).attr('href');
+    });
+	$('#menuLink3_6').click(function (event) {
+        event.stopPropagation(); // Menü kapanmasını engelle
+        // Yönlendirmeyi gerçekleştir
+        window.location.href = $(this).attr('href');
+    });
 	
 	//Menu-5
 	// Yönlendirme için link tıklama
     $('#menuLink5_1').click(function(event) {
+        event.stopPropagation(); // Menü kapanmasını engelle
+        // Yönlendirmeyi gerçekleştir
+        window.location.href = $(this).attr('href');
+    });
+	$('#menuLink12_1').click(function(event) {
         event.stopPropagation(); // Menü kapanmasını engelle
         // Yönlendirmeyi gerçekleştir
         window.location.href = $(this).attr('href');

@@ -123,7 +123,7 @@ namespace YufkaDashboard.DataAccess.Conrete
 		{
 			using (var dbConnection = _context.CreateConnection())
 			{
-				string procedure = "select * from MainCaseSummerGoes";
+				string procedure = "select * from MainCaseSummerGoes order by CreatedDate desc";
 				var result = await dbConnection.QueryAsync<SummerGoes>(procedure, commandType: CommandType.Text);
 				return result.ToList();
 			}
