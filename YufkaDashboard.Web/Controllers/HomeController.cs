@@ -8,8 +8,8 @@ using YufkaDashboard.Business.Abstract;
 
 namespace YufkaDashboard.Web.Controllers
 {
-
-	public class HomeController : Controller
+    [Authorize]
+    public class HomeController : Controller
     {
         private readonly IConfiguration _configuration; 
         private readonly ISystemBusiness _systemBusiness;

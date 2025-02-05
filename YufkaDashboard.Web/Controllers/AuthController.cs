@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Models.Auth;
+using System.Security.Claims;
 using YufkaDashboard.Business.Abstract;
 
 namespace YufkaDashboard.Web.Controllers
@@ -17,13 +20,14 @@ namespace YufkaDashboard.Web.Controllers
 
 		[HttpGet]
 
-		public IActionResult Index()
+		public IActionResult Index(string returnUrl = null)
 		{
-			return View();
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
 		}
-		[HttpPost]
+        [HttpPost]
 
-		public async Task<IActionResult> SignIn(Users model)
+		public async Task<IActionResult> SignIn(Users model, string returnUrl = null)
 		{
 			var result = await _authBussiness.GetAllUsers();
 			if (result != null)
@@ -36,7 +40,17 @@ namespace YufkaDashboard.Web.Controllers
 				var userApprove = result.Data?.Exists(x => x.UserName == model.UserName && x.Password == model.Password);
 				if (userApprove != null && userApprove == true)
 				{
-					return RedirectToAction("Index","Home");
+                    var claims = new List<Claim>
+					{
+						new Claim(ClaimTypes.Name, model.UserName)
+					};
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = true
+                    };
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                    return !string.IsNullOrEmpty(returnUrl) ? Redirect(returnUrl) : RedirectToAction("Index", "Home");
 				}
 				else
 				{

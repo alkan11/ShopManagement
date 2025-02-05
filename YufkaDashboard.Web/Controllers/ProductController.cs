@@ -6,8 +6,8 @@ using YufkaDashboard.Business.Concrete;
 
 namespace YufkaDashboard.Web.Controllers
 {
-
-	public class ProductController : Controller
+    [Authorize]
+    public class ProductController : Controller
 	{
 		private readonly IProductBusiness _productBusiness;
 		private readonly ISystemBusiness _systemBusiness;

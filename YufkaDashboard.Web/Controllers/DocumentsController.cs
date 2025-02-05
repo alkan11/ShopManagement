@@ -11,8 +11,8 @@ using static NuGet.Packaging.PackagingConstants;
 
 namespace YufkaDashboard.Web.Controllers
 {
-
-	public class DocumentsController : Controller
+    [Authorize]
+    public class DocumentsController : Controller
 	{
 		private readonly IDocumentBusiness _documentBusiness;
 

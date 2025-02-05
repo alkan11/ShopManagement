@@ -104,7 +104,7 @@ namespace YufkaDashboard.DataAccess.Conrete
 		{
 			using (var dbConnection = _context.CreateConnection())
 			{
-				string procedure = "select * from Endday";
+				string procedure = "select * from EndDay order by CreatedDate desc";
 				var result = await dbConnection.QueryAsync<EndDay>(procedure, commandType: CommandType.Text);
 				return result.ToList();
 			}

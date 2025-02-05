@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Shared.Models.Finance;
 using System.Reflection;
 using YufkaDashboard.Business.Abstract;
@@ -6,7 +7,8 @@ using YufkaDashboard.Business.Concrete;
 
 namespace YufkaDashboard.Web.Controllers
 {
-	public class FinanceController : Controller
+    [Authorize]
+    public class FinanceController : Controller
 	{
 		private readonly IFinanceBusiness _financeBusiness;
 
