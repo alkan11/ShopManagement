@@ -8,7 +8,7 @@ using YufkaDashboard.Business.Concrete;
 
 namespace YufkaDashboard.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class SystemController : Controller
 	{
 		private ISystemBusiness _systembusiness;

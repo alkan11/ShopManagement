@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace YufkaDashboard.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class KitUpController : Controller
     {
         public IActionResult Index()

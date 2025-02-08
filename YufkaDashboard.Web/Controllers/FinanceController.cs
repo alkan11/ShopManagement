@@ -7,7 +7,7 @@ using YufkaDashboard.Business.Concrete;
 
 namespace YufkaDashboard.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class FinanceController : Controller
 	{
 		private readonly IFinanceBusiness _financeBusiness;

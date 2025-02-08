@@ -41,13 +41,13 @@ var cultureInfo = new CultureInfo("tr-TR");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/Auth/Index"; // Kullanýcý oturum açmadýysa yönlendirilecek sayfa
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Oturum süresi 30 dakika
-        options.SlidingExpiration = true; // Kullanýcý aktifse süre uzasýn
-    });
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//    .AddCookie(options =>
+//    {
+//        options.LoginPath = "/Auth/Index"; // Kullanýcý oturum açmadýysa yönlendirilecek sayfa
+//        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Oturum süresi 30 dakika
+//        options.SlidingExpiration = true; // Kullanýcý aktifse süre uzasýn
+//    });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

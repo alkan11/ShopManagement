@@ -22,10 +22,10 @@ namespace YufkaDashboard.Web.Controllers
 
 		public IActionResult Index(string returnUrl = null)
 		{
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+			//ViewData["ReturnUrl"] = returnUrl;
+			return View();
 		}
-        [HttpPost]
+		[HttpPost]
 
 		public async Task<IActionResult> SignIn(Users model, string returnUrl = null)
 		{
@@ -34,24 +34,26 @@ namespace YufkaDashboard.Web.Controllers
 			{
 				if (!result.IsSuccessful)
 				{
-					return View();
-				}
+                    return RedirectToAction("Index", "Auth");
+                }
 
 				var userApprove = result.Data?.Exists(x => x.UserName == model.UserName && x.Password == model.Password);
 				if (userApprove != null && userApprove == true)
 				{
-                    var claims = new List<Claim>
-					{
-						new Claim(ClaimTypes.Name, model.UserName)
-					};
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var authProperties = new AuthenticationProperties
-                    {
-                        IsPersistent = true
-                    };
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-                    return !string.IsNullOrEmpty(returnUrl) ? Redirect(returnUrl) : RedirectToAction("Index", "Home");
-				}
+					//               var claims = new List<Claim>
+					//{
+					//	new Claim(ClaimTypes.Name, model.UserName)
+					//};
+					//               var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+					//               var authProperties = new AuthenticationProperties
+					//               {
+					//                   IsPersistent = true
+					//               };
+					//await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+					//return !string.IsNullOrEmpty(returnUrl) ? Redirect(returnUrl) : RedirectToAction("Index", "Home");
+					return RedirectToAction("Index", "Home");
+
+                }
 				else
 				{
 					TempData["msg"] = "Kullanıcı adı veya şifre hatalıdır. Tekrar deneyin!";
