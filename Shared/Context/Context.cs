@@ -16,9 +16,6 @@ namespace Shared.Context
 		public Context(IConfiguration configuration)
 		{
 			_configuration = configuration;
-			//_connectionString = "Data Source=(localdb)\\YufkaDB;Initial Catalog=YufkaDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
-			//_connectionString = "Data Source=ALKAN;Initial Catalog=YufkaDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
-			//_connectionString = "Data Source=78.142.210.82\\MSSQLSERVER2022;Initial Catalog=YufkaDB; User ID=alkanUser;Password=ALK11.alk.veritabani;TrustServerCertificate=true";
 			_connectionString = configuration.GetConnectionString("DefaultConnection");
 		}
 
