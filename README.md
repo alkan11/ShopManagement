@@ -18,7 +18,9 @@
 
 
 ## 📷 Ekran Görüntüleri
-![Uygulama Görseli](screenshot.png)
+![Uygulama Görseli](YufkaDashboard.Web/wwwroot/Media/image3.png)
+![Uygulama Görseli](YufkaDashboard.Web/wwwroot/Media/image4.png)
+![Uygulama Görseli](YufkaDashboard.Web/wwwroot/Media/image1.png)
+![Uygulama Görseli](YufkaDashboard.Web/wwwroot/Media/image2.png)
 
-Eğer bir görsel eklemek istiyorsanız `screenshot.png` dosyasını proje dizinine koyabilirsiniz.
 
