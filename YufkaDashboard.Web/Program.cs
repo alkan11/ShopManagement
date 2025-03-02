@@ -8,6 +8,9 @@ using YufkaDashboard.DataAccess.Conrete;
 using Microsoft.Extensions.FileProviders;
 using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Quartz;
+using YufkaDashboard.Web.Quartz;
+using static Quartz.Logging.OperationName;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +40,8 @@ builder.Services.AddScoped<ISystemBusiness, SystemBusiness>();
 builder.Services.AddScoped<ISystemDal, SystemDal>();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<Context>();
+
+
 var cultureInfo = new CultureInfo("tr-TR");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
@@ -49,6 +54,8 @@ CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 //        options.SlidingExpiration = true; // Kullanýcý aktifse süre uzasýn
 //    });
 var app = builder.Build();
+
+await BackgroundConfig.Start();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
